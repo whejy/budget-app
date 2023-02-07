@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { VictoryPie, VictoryTheme, VictoryLabel } from 'victory-native';
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
+import CategoryDetails from './CategoryDetails';
 
 const Pie = ({ data }) => {
-  const [category, setCategory] = useState();
+  const [category, setCategory] = useState('');
   const { expenses, income } = data;
   let pieData = [];
 
@@ -17,20 +19,12 @@ const Pie = ({ data }) => {
   }
 
   // Calculate remaining income
-  pieData.push({
-    x: 'Income',
-    y: pieData.reduce((acc, curr) => acc - curr.y, income),
-  });
-
-  function getItems(category) {
-    const test =
-      category != 'Income' &&
-      data.expenses[category].map(
-        (expense) => `${expense.item}: ${expense.cost}`
-      );
-
-    setCategory(test);
-  }
+  pieData
+    .sort((a, b) => b.y - a.y)
+    .push({
+      x: 'Income',
+      y: pieData.reduce((acc, curr) => acc - curr.y, income),
+    });
 
   const events = [
     {
@@ -41,8 +35,9 @@ const Pie = ({ data }) => {
             {
               target: 'data',
               mutation: (props) => {
+                console.log(props);
                 // setCategory(props.datum.x);
-                getItems(props.datum.x);
+                setCategory(props.datum.x);
                 // console.log(props.datum.x, props.datum.y);
                 //   return props.text === 'clicked' ? null : { text: 'clicked' };
               },
@@ -52,6 +47,7 @@ const Pie = ({ data }) => {
       },
     },
   ];
+  console.log(pieData);
 
   return (
     <View>
@@ -60,17 +56,11 @@ const Pie = ({ data }) => {
       </Text>
       <VictoryPie
         theme={VictoryTheme.material}
+        // colorScale={['tomato', 'orange', 'gold', 'cyan', 'navy']}
         data={pieData}
         events={events}
         labels={({ datum }) => `${datum.x} \n$${datum.y}`}
-        labelComponent={
-          <VictoryLabel
-            style={{
-              parent: { border: '1px solid #ccc' },
-            }}
-            textAnchor={'middle'}
-          />
-        }
+        labelComponent={<VictoryLabel textAnchor={'middle'} />}
         //   <Text>
         //     <VictoryLabel
         //       textAnchor={({ text }) => (text[0].length > 14 ? 'start' : 'end')}
@@ -82,7 +72,7 @@ const Pie = ({ data }) => {
         //   </Text>
         // }
       />
-      <Text style={{ textAlign: 'center' }}>{category}</Text>
+      <CategoryDetails category={category} expenses={expenses[category]} />
     </View>
   );
 };
