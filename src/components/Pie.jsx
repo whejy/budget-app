@@ -33,13 +33,47 @@ const Pie = ({ data }) => {
         onPressIn: () => {
           return [
             {
-              target: 'data',
+              //   target: 'data',
+              eventKey: 'all',
+              mutation: () => null,
+            },
+
+            {
               mutation: (props) => {
-                console.log(props);
-                // setCategory(props.datum.x);
                 setCategory(props.datum.x);
-                // console.log(props.datum.x, props.datum.y);
-                //   return props.text === 'clicked' ? null : { text: 'clicked' };
+                return props.datum.x === category
+                  ? setCategory(null)
+                  : {
+                      style: {
+                        ...props.style,
+                        stroke: 'grey',
+                        fillOpacity: 0.6,
+                      },
+                    };
+              },
+            },
+          ];
+        },
+        onClick: () => {
+          return [
+            {
+              //   target: 'data',
+              eventKey: 'all',
+              mutation: () => null,
+            },
+
+            {
+              mutation: (props) => {
+                setCategory(props.datum.x);
+                return props.datum.x === category
+                  ? setCategory(null)
+                  : {
+                      style: {
+                        ...props.style,
+                        stroke: props.style.fill,
+                        strokeWidth: 4,
+                      },
+                    };
               },
             },
           ];
@@ -47,7 +81,6 @@ const Pie = ({ data }) => {
       },
     },
   ];
-  console.log(pieData);
 
   return (
     <View>
@@ -60,17 +93,10 @@ const Pie = ({ data }) => {
         data={pieData}
         events={events}
         labels={({ datum }) => `${datum.x} \n$${datum.y}`}
+        style={{
+          parent: { border: '1px solid #ccc' },
+        }}
         labelComponent={<VictoryLabel textAnchor={'middle'} />}
-        //   <Text>
-        //     <VictoryLabel
-        //       textAnchor={({ text }) => (text[0].length > 14 ? 'start' : 'end')}
-        //       style={{
-        //         labels: { fontSize: 12 },
-        //         parent: { border: '1px solid #ccc' },
-        //       }}
-        //     />
-        //   </Text>
-        // }
       />
       <CategoryDetails category={category} expenses={expenses[category]} />
     </View>
