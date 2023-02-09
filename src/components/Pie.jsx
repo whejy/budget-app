@@ -1,8 +1,8 @@
-/* eslint-disable no-unused-vars */
 import { VictoryPie, VictoryTheme, VictoryLabel } from 'victory-native';
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 import CategoryDetails from './CategoryDetails';
+import FormToggle from './FormToggle';
 
 const Pie = ({ data }) => {
   const [category, setCategory] = useState('');
@@ -33,31 +33,6 @@ const Pie = ({ data }) => {
         onPressIn: () => {
           return [
             {
-              //   target: 'data',
-              eventKey: 'all',
-              mutation: () => null,
-            },
-
-            {
-              mutation: (props) => {
-                setCategory(props.datum.x);
-                return props.datum.x === category
-                  ? setCategory(null)
-                  : {
-                      style: {
-                        ...props.style,
-                        stroke: 'grey',
-                        fillOpacity: 0.6,
-                      },
-                    };
-              },
-            },
-          ];
-        },
-        onClick: () => {
-          return [
-            {
-              //   target: 'data',
               eventKey: 'all',
               mutation: () => null,
             },
@@ -71,6 +46,31 @@ const Pie = ({ data }) => {
                       style: {
                         ...props.style,
                         stroke: props.style.fill,
+                        fillOpacity: 0.6,
+                        strokeWidth: 4,
+                      },
+                    };
+              },
+            },
+          ];
+        },
+        onClick: () => {
+          return [
+            {
+              eventKey: 'all',
+              mutation: () => null,
+            },
+
+            {
+              mutation: (props) => {
+                setCategory(props.datum.x);
+                return props.datum.x === category
+                  ? setCategory(null)
+                  : {
+                      style: {
+                        ...props.style,
+                        stroke: props.style.fill,
+                        fillOpacity: 0.6,
                         strokeWidth: 4,
                       },
                     };
@@ -94,11 +94,13 @@ const Pie = ({ data }) => {
         events={events}
         labels={({ datum }) => `${datum.x} \n$${datum.y}`}
         style={{
-          parent: { border: '1px solid #ccc' },
+          labels: { fontSize: 16 },
+          parent: { border: '1px solid #ccc', paddingBottom: 0 },
         }}
         labelComponent={<VictoryLabel textAnchor={'middle'} />}
       />
       <CategoryDetails category={category} expenses={expenses[category]} />
+      <FormToggle />
     </View>
   );
 };
