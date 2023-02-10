@@ -49,13 +49,13 @@ const validationSchema = yup.object().shape({
 
 const AddExpense = () => {
   const onSubmit = (values) => {
-    let today = new Date();
+    values.date = String(new Date());
     // var dd = String(today.getDate()).padStart(2, '0');
     // var mm = String(today.getMonth() + 1).padStart(2, '0');
     // var yyyy = today.getFullYear();
 
     // today = dd + '/' + mm + '/' + yyyy;
-    console.log(values, today);
+    console.log(values);
   };
 
   return (
