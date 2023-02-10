@@ -1,4 +1,5 @@
 import { TextInput as NativeTextInput, StyleSheet } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import theme from '../../theme';
 
 const styles = StyleSheet.create({
@@ -14,10 +15,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const TextInput = ({ style, error, ...props }) => {
+export const TextInput = ({ style, error, ...props }) => {
   const textInputStyle = [styles.input, error && styles.error, style];
 
   return <NativeTextInput style={textInputStyle} {...props} />;
 };
 
-export default TextInput;
+export const SelectInput = ({ style, error, ...props }) => {
+  const selectInputStyle = [styles.input, error && styles.error, style];
+
+  return <Picker style={selectInputStyle} {...props} />;
+};

@@ -54,30 +54,6 @@ const Pie = ({ data }) => {
             },
           ];
         },
-        onClick: () => {
-          return [
-            {
-              eventKey: 'all',
-              mutation: () => null,
-            },
-
-            {
-              mutation: (props) => {
-                setCategory(props.datum.x);
-                return props.datum.x === category
-                  ? setCategory(null)
-                  : {
-                      style: {
-                        ...props.style,
-                        stroke: props.style.fill,
-                        fillOpacity: 0.6,
-                        strokeWidth: 4,
-                      },
-                    };
-              },
-            },
-          ];
-        },
       },
     },
   ];
