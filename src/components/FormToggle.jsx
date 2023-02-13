@@ -1,18 +1,17 @@
-import AddExpense from './AddExpense';
 import { Pressable, Text, View } from 'react-native';
 import { useState } from 'react';
 
-const FormToggle = () => {
+const FormToggle = ({ children, buttonText }) => {
   const [form, setForm] = useState(false);
 
-  const content = form ? 'Cancel' : 'Add Expense';
+  const content = form ? 'Cancel' : buttonText;
 
   return (
     <View>
       <Pressable onPress={() => setForm(!form)}>
         <Text>{content}</Text>
       </Pressable>
-      {form && <AddExpense />}
+      {form && children}
     </View>
   );
 };

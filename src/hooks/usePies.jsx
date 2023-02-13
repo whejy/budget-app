@@ -1,17 +1,7 @@
+/* eslint-disable no-unused-vars */
+import { useState, useEffect } from 'react';
 // Responsible for fetching all Pies from local storage
 const usePies = () => {
-  //   class Pie {
-  //     constructor(date, income, expenses) {
-  //       this.weekStart = date;
-  //       this.income = income;
-  //       this.expenses = expenses;
-  //     }
-  //   }
-
-  //   const test = new Pie('12-11-1990', 1500, {
-  //     Shopping: [{ item: 'Makeup', cost: 1400 }],
-  //   });
-
   const data = [
     {
       weekStart: '13-11-2001',
@@ -56,7 +46,14 @@ const usePies = () => {
       },
     },
   ];
-  return data;
+
+  const [pies, setPies] = useState(data);
+
+  const addPie = (newPie) => {
+    setPies([...pies, newPie]);
+  };
+
+  return { pies, addPie };
 };
 
 export default usePies;

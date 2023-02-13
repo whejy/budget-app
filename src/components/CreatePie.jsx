@@ -1,10 +1,13 @@
 /* eslint-disable no-unused-vars */
+
+import FormToggle from './FormToggle';
 // Form and logic for creating Pies
 const CreatePie = (_newItem) => {
   //   Structure of new Pie data
   class Pie {
     constructor(date, income) {
       this.weekStart = date;
+      this.weekEnd = date;
       this.income = income;
     }
   }

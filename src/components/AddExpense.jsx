@@ -2,7 +2,6 @@ import { View, Button, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { categories } from '../data/categories';
-// import { useState } from 'react';
 import { Picker } from '@react-native-picker/picker';
 import { FormikTextInput, FormikSelectInput } from './FormikInputs';
 
@@ -35,7 +34,7 @@ const ExpenseForm = ({ onSubmit }) => {
 const initialValues = {
   item: '',
   cost: 0,
-  category: null,
+  category: '',
 };
 
 const validationSchema = yup.object().shape({
@@ -49,13 +48,21 @@ const validationSchema = yup.object().shape({
 
 const AddExpense = () => {
   const onSubmit = (values) => {
-    values.date = String(new Date());
-    // var dd = String(today.getDate()).padStart(2, '0');
-    // var mm = String(today.getMonth() + 1).padStart(2, '0');
-    // var yyyy = today.getFullYear();
-
-    // today = dd + '/' + mm + '/' + yyyy;
     console.log(values);
+
+    // const newItem = { item: 'handbag', cost: 500, category: 'Shopping' };
+    // const newItem2 = { item: 'gas', cost: 500, category: 'Bills' };
+
+    // //   Adding a category to test following IF/ELSE logic
+    // test.expenses = { Shopping: [{ item: 'makeup', cost: 900 }] };
+
+    // //   IF category already exists, add item to category array,
+    // // ELSE create category array
+    // const addItem = ({ item, cost, category }) => {
+    //   Object.keys(test.expenses).includes(category)
+    //     ? test.expenses[category].push({ item, cost })
+    //     : (test.expenses[category] = [{ item, cost }]);
+    // };
   };
 
   return (

@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 import CategoryDetails from './CategoryDetails';
 import FormToggle from './FormToggle';
+import AddExpense from './AddExpense';
 
 const Pie = ({ data }) => {
   const [category, setCategory] = useState('');
@@ -76,7 +77,9 @@ const Pie = ({ data }) => {
         labelComponent={<VictoryLabel textAnchor={'middle'} />}
       />
       <CategoryDetails category={category} expenses={expenses[category]} />
-      <FormToggle />
+      <FormToggle buttonText={'Add Expense'}>
+        <AddExpense />
+      </FormToggle>
     </View>
   );
 };
