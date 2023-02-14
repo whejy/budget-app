@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { FlatList, StyleSheet, View } from 'react-native';
 import Pie from './Pie';
 import FormToggle from './FormToggle';
@@ -25,6 +26,12 @@ const PieList = () => {
     setPies([...pies, newPie]);
   };
 
+  const updatePie = (newPie) => {
+    setPies(
+      pies.map((pie) => (newPie.weekStart !== pie.weekStart ? pie : newPie))
+    );
+  };
+
   return (
     <View style={{ padding: 10 }}>
       <FormToggle buttonText="New Pie">
@@ -33,7 +40,9 @@ const PieList = () => {
       <FlatList
         data={pies}
         ItemSeparatorComponent={ItemSeparator}
-        renderItem={({ item }) => <Pie item={item} data={item} />}
+        renderItem={({ item }) => (
+          <Pie item={item} data={item} updatePie={updatePie} />
+        )}
         keyExtractor={(_, i) => i}
       />
     </View>

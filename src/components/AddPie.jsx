@@ -12,6 +12,18 @@ const styles = StyleSheet.create({
   },
 });
 
+const initialValues = {
+  income: '',
+  weekStart: '',
+  weekEnd: '',
+};
+
+const validationSchema = yup.object().shape({
+  income: yup.number().required('Cost is required').positive(),
+  weekStart: yup.string().required('Item is required'),
+  weekEnd: yup.string().required('Item is required'),
+});
+
 const PieForm = ({ onSubmit }) => {
   return (
     <View style={styles.form}>
@@ -29,27 +41,9 @@ const PieForm = ({ onSubmit }) => {
   );
 };
 
-const initialValues = {
-  income: 0,
-  weekStart: '',
-  weekEnd: '',
-};
-
-const validationSchema = yup.object().shape({
-  income: yup.number().required('Cost is required').positive(),
-  weekStart: yup.string().required('Item is required'),
-  weekEnd: yup.string().required('Item is required'),
-});
-
 const AddPie = ({ updateList }) => {
   const onSubmit = (values) => {
     // values.date = String(new Date());
-
-    const parsedData = {
-      weekStart: values.weekStart,
-      weekEnd: values.weekEnd,
-      income: parseNumber(values.income),
-    };
 
     class Pie {
       constructor({ weekStart, weekEnd, income }) {
@@ -59,6 +53,12 @@ const AddPie = ({ updateList }) => {
         this.expenses = [];
       }
     }
+
+    const parsedData = {
+      weekStart: values.weekStart,
+      weekEnd: values.weekEnd,
+      income: parseNumber(values.income),
+    };
 
     return updateList(new Pie(parsedData));
   };

@@ -5,7 +5,7 @@ import CategoryDetails from './CategoryDetails';
 import FormToggle from './FormToggle';
 import AddExpense from './AddExpense';
 
-const Pie = ({ data }) => {
+const Pie = ({ data, updatePie }) => {
   const [category, setCategory] = useState('');
   const { expenses, income } = data;
   let pieData = [];
@@ -78,7 +78,7 @@ const Pie = ({ data }) => {
       />
       <CategoryDetails category={category} expenses={expenses[category]} />
       <FormToggle buttonText={'Add Expense'}>
-        <AddExpense />
+        <AddExpense updatePie={updatePie} pie={data} />
       </FormToggle>
     </View>
   );
