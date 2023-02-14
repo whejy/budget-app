@@ -1,9 +1,8 @@
-/* eslint-disable no-unused-vars */
 import { View, Button, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import usePies from '../hooks/usePies';
 import { FormikTextInput } from './FormikInputs';
+import { parseNumber } from '../utils';
 
 const styles = StyleSheet.create({
   form: {
@@ -16,7 +15,11 @@ const styles = StyleSheet.create({
 const PieForm = ({ onSubmit }) => {
   return (
     <View style={styles.form}>
-      <FormikTextInput name="income" placeholder="Income" />
+      <FormikTextInput
+        name="income"
+        placeholder="Income"
+        keyboardType="numeric"
+      />
       <FormikTextInput name="weekStart" placeholder="Start Date" />
       <FormikTextInput name="weekEnd" placeholder="End Date" />
       <Button onPress={onSubmit} title="Add Pie">
@@ -33,34 +36,32 @@ const initialValues = {
 };
 
 const validationSchema = yup.object().shape({
-  income: yup
-    .number()
-    .min(0.5, 'Cost must be greater or equal to 0.50')
-    .required('Cost is required'),
+  income: yup.number().required('Cost is required').positive(),
   weekStart: yup.string().required('Item is required'),
   weekEnd: yup.string().required('Item is required'),
 });
 
-const AddPie = () => {
-  const pies = usePies();
+const AddPie = ({ updateList }) => {
   const onSubmit = (values) => {
     // values.date = String(new Date());
 
-    const createPie = ({ weekStart, weekEnd, income }) => {
-      class Pie {
-        constructor(weekStart, weekEnd, income) {
-          this.weekStart = weekStart;
-          this.weekEnd = weekEnd;
-          this.income = income;
-        }
-      }
-      return new Pie(weekStart, weekEnd, income);
+    const parsedData = {
+      weekStart: values.weekStart,
+      weekEnd: values.weekEnd,
+      income: parseNumber(values.income),
     };
 
-    const newPie = createPie(values);
-    pies.addPie(newPie);
-  };
+    class Pie {
+      constructor({ weekStart, weekEnd, income }) {
+        this.weekStart = weekStart;
+        this.weekEnd = weekEnd;
+        this.income = income;
+        this.expenses = [];
+      }
+    }
 
+    return updateList(new Pie(parsedData));
+  };
   return (
     <View style={styles.container}>
       <Formik

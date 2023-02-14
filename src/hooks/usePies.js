@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 // Responsible for fetching all Pies from local storage
 const usePies = () => {
-  const data = [
+  const initialPies = [
     {
       weekStart: '13-11-2001',
       income: 1500,
@@ -47,13 +47,7 @@ const usePies = () => {
     },
   ];
 
-  const [pies, setPies] = useState(data);
-
-  const addPie = (newPie) => {
-    setPies([...pies, newPie]);
-  };
-
-  return { pies, addPie };
+  return { initialPies };
 };
 
 export default usePies;
