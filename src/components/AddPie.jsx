@@ -1,7 +1,7 @@
 import { View, Button, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { FormikTextInput } from './FormikInputs';
+import { FormikDateSelect, FormikTextInput } from './FormikInputs';
 import { parseNumber } from '../utils';
 
 const styles = StyleSheet.create({
@@ -14,14 +14,13 @@ const styles = StyleSheet.create({
 
 const initialValues = {
   income: '',
-  weekStart: '',
-  weekEnd: '',
+  dates: { weekStart: '', weekEnd: '' },
 };
 
 const validationSchema = yup.object().shape({
   income: yup.number().required('Cost is required').positive(),
-  weekStart: yup.string().required('Item is required'),
-  weekEnd: yup.string().required('Item is required'),
+  //   weekStart: yup.string().required('Item is required'),
+  //   weekEnd: yup.string().required('Item is required'),
 });
 
 const PieForm = ({ onSubmit }) => {
@@ -32,8 +31,7 @@ const PieForm = ({ onSubmit }) => {
         placeholder="Income"
         keyboardType="numeric"
       />
-      <FormikTextInput name="weekStart" placeholder="Start Date" />
-      <FormikTextInput name="weekEnd" placeholder="End Date" />
+      <FormikDateSelect name="dates" />
       <Button onPress={onSubmit} title="Add Pie">
         Add Pie
       </Button>
@@ -43,22 +41,24 @@ const PieForm = ({ onSubmit }) => {
 
 const AddPie = ({ updateList }) => {
   const onSubmit = (values) => {
-    // values.date = String(new Date());
-
     class Pie {
-      constructor({ weekStart, weekEnd, income }) {
-        this.weekStart = weekStart;
-        this.weekEnd = weekEnd;
-        this.income = income;
+      constructor({ dates, income }) {
+        (this.dates = { weekStart: dates.weekStart, weekEnd: dates.weekEnd }),
+          (this.income = income);
         this.expenses = [];
       }
     }
 
     const parsedData = {
-      weekStart: values.weekStart,
-      weekEnd: values.weekEnd,
+      dates: {
+        weekStart: values.dates.weekStart,
+        weekEnd: values.dates.weekEnd,
+      },
       income: parseNumber(values.income),
     };
+
+    const newPie = new Pie(parsedData);
+    console.log(newPie);
 
     return updateList(new Pie(parsedData));
   };

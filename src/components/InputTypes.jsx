@@ -1,5 +1,6 @@
 import { TextInput as NativeTextInput, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { Calendar } from 'react-native-calendars';
 import theme from '../../theme';
 
 const styles = StyleSheet.create({
@@ -25,4 +26,10 @@ export const SelectInput = ({ style, error, ...props }) => {
   const selectInputStyle = [styles.input, error && styles.error, style];
 
   return <Picker style={selectInputStyle} {...props} />;
+};
+
+export const DateInput = ({ style, error, ...props }) => {
+  const dateInputStyle = [styles.input, error && styles.error, style];
+
+  return <Calendar style={dateInputStyle} {...props} />;
 };

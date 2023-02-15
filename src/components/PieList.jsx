@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { FlatList, StyleSheet, View } from 'react-native';
 import Pie from './Pie';
 import FormToggle from './FormToggle';
@@ -26,9 +25,12 @@ const PieList = () => {
     setPies([...pies, newPie]);
   };
 
-  const updatePie = (newPie) => {
+  // NEED TO ADD ID TO PIE
+  const updatePie = (updatedPie) => {
     setPies(
-      pies.map((pie) => (newPie.weekStart !== pie.weekStart ? pie : newPie))
+      pies.map((pie) =>
+        updatedPie.dates.weekStart !== pie.dates.weekStart ? pie : updatedPie
+      )
     );
   };
 

@@ -8,6 +8,7 @@ import AddExpense from './AddExpense';
 const Pie = ({ data, updatePie }) => {
   const [category, setCategory] = useState('');
   const { expenses, income } = data;
+
   let pieData = [];
 
   // Get total expense for each category and format data for Pie component
@@ -62,7 +63,8 @@ const Pie = ({ data, updatePie }) => {
   return (
     <View>
       <Text style={{ textAlign: 'center' }}>
-        Week Beginning: {data.weekStart}
+        Week Beginning: {data.dates.weekStart}
+        Week Ending: {data.dates.weekEnd}
       </Text>
       <VictoryPie
         theme={VictoryTheme.material}

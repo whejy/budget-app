@@ -1,9 +1,9 @@
 import { View, Button, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { categories } from '../data/categories';
 import { Picker } from '@react-native-picker/picker';
 import { FormikTextInput, FormikSelectInput } from './FormikInputs';
+import { categories } from '../data/categories';
 import { parseNumber } from '../utils';
 
 const styles = StyleSheet.create({
@@ -59,7 +59,7 @@ const AddExpense = ({ pie, updatePie }) => {
     };
 
     addItem(parsedData);
-    updatePie(pie);
+    return updatePie(pie);
   };
 
   return (
