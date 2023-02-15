@@ -43,8 +43,8 @@ const AddPie = ({ updateList }) => {
   const onSubmit = (values) => {
     class Pie {
       constructor({ dates, income }) {
-        (this.dates = { weekStart: dates.weekStart, weekEnd: dates.weekEnd }),
-          (this.income = income);
+        this.dates = dates;
+        this.income = income;
         this.expenses = [];
       }
     }
@@ -56,9 +56,6 @@ const AddPie = ({ updateList }) => {
       },
       income: parseNumber(values.income),
     };
-
-    const newPie = new Pie(parsedData);
-    console.log(newPie);
 
     return updateList(new Pie(parsedData));
   };
