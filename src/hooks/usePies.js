@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 const usePies = () => {
   const initialPies = [
     {
+      id: '1',
       dates: { weekStart: '2001-02-15', weekEnd: '2001-02-24' },
       income: 1500,
       expenses: {
@@ -20,6 +21,7 @@ const usePies = () => {
       },
     },
     {
+      id: '2',
       dates: { weekStart: '2008-02-15', weekEnd: '2008-02-24' },
       income: 1500,
       expenses: {
@@ -29,6 +31,7 @@ const usePies = () => {
       },
     },
     {
+      id: '3',
       dates: { weekStart: '2019-07-15', weekEnd: '2019-07-24' },
       income: 1500,
       expenses: {

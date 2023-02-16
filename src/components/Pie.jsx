@@ -63,8 +63,8 @@ const Pie = ({ data, updatePie }) => {
   return (
     <View>
       <Text style={{ textAlign: 'center' }}>
-        Week Beginning: {data.dates.weekStart}
-        Week Ending: {data.dates.weekEnd}
+        Week Beginning: {data.startDate}
+        Week Ending: {data.endDate}
       </Text>
       <VictoryPie
         theme={VictoryTheme.material}

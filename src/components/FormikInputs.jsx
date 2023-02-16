@@ -1,7 +1,10 @@
-import { StyleSheet } from 'react-native';
+import { Keyboard, StyleSheet } from 'react-native';
+import { useState } from 'react';
 import { useField } from 'formik';
-import { TextInput, SelectInput, DateInput } from './InputTypes';
+import { TextInput, SelectInput } from './InputTypes';
+import CalendarModal from './CalendarModal';
 import Text from './Text';
+import { Calendar } from 'react-native-calendars';
 
 const styles = StyleSheet.create({
   errorText: {
@@ -45,44 +48,48 @@ export const FormikSelectInput = ({ name, ...props }) => {
   );
 };
 
-export const FormikDateSelect = ({ name, ...props }) => {
+export const FormikDateInput = ({ name, ...props }) => {
   const [field, meta, helpers] = useField(name);
+  const [modalOpen, setModalOpen] = useState(false);
   const showError = meta.touched && meta.error;
 
   const markedDates = {
-    [field.value.weekStart]: { startingDay: 'true', color: 'green' },
-    [field.value.weekEnd]: { endingDay: 'true', color: 'green' },
+    [field.value]: { selected: true, marked: true },
   };
 
-  console.log('HERE');
-
-  const setDates = (day) => {
-    switch (field.value.weekStart) {
-      case '':
-        helpers.setValue({ weekStart: day.dateString, weekEnd: '' });
-        break;
-      default:
-        helpers.setValue({ ...field.value, weekEnd: day.dateString });
-        break;
-    }
+  const openModal = () => {
+    setModalOpen(true);
   };
 
-  const resetDates = () => helpers.setValue({ weekStart: '', weekEnd: '' });
+  const handlePress = (day) => {
+    helpers.setValue(day.dateString);
+    setModalOpen(false);
+  };
 
   return (
     <>
-      <DateInput
-        // selectedValue={field.value}
-        error={showError}
-        {...props}
-        // onValueChange={(value) => helpers.setValue(value)}
+      <TextInput
+        value={field.value}
         onBlur={() => helpers.setTouched(true)}
-        onDayPress={(day) => setDates(day)}
-        onDayLongPress={() => resetDates()}
-        markingType={'period'}
-        markedDates={markedDates}
+        // onChangeText={(value) => helpers.setValue(value)}
+        placeholder="YYYY-DD-MM"
+        onFocus={() => {
+          Keyboard.dismiss();
+        }}
+        onPressIn={openModal}
       />
       {showError && <Text style={styles.errorText}>{meta.error}</Text>}
+      <CalendarModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
+        <Calendar
+          selectedValue={field.value}
+          error={showError}
+          {...props}
+          // onValueChange={(value) => helpers.setValue(value)}
+          // onBlur={() => helpers.setTouched(true)}
+          onDayPress={(day) => handlePress(day)}
+          markedDates={markedDates}
+        />
+      </CalendarModal>
     </>
   );
 };

@@ -27,11 +27,7 @@ const PieList = () => {
 
   // NEED TO ADD ID TO PIE
   const updatePie = (updatedPie) => {
-    setPies(
-      pies.map((pie) =>
-        updatedPie.dates.weekStart !== pie.dates.weekStart ? pie : updatedPie
-      )
-    );
+    setPies(pies.map((pie) => (updatedPie.id !== pie.id ? pie : updatedPie)));
   };
 
   return (

@@ -1,7 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { View, Button, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { FormikDateSelect, FormikTextInput } from './FormikInputs';
+import { v4 as uuid } from 'uuid';
+import { FormikDateInput, FormikTextInput } from './FormikInputs';
 import { parseNumber } from '../utils';
 
 const styles = StyleSheet.create({
@@ -14,13 +16,14 @@ const styles = StyleSheet.create({
 
 const initialValues = {
   income: '',
-  dates: { weekStart: '', weekEnd: '' },
+  startDate: '',
+  endDate: '',
 };
 
 const validationSchema = yup.object().shape({
   income: yup.number().required('Cost is required').positive(),
-  //   weekStart: yup.string().required('Item is required'),
-  //   weekEnd: yup.string().required('Item is required'),
+  startDate: yup.string().required('Item is required'),
+  endDate: yup.string().required('Item is required'),
 });
 
 const PieForm = ({ onSubmit }) => {
@@ -31,7 +34,8 @@ const PieForm = ({ onSubmit }) => {
         placeholder="Income"
         keyboardType="numeric"
       />
-      <FormikDateSelect name="dates" />
+      <FormikDateInput name="startDate" />
+      <FormikDateInput name="endDate" />
       <Button onPress={onSubmit} title="Add Pie">
         Add Pie
       </Button>
@@ -42,18 +46,18 @@ const PieForm = ({ onSubmit }) => {
 const AddPie = ({ updateList }) => {
   const onSubmit = (values) => {
     class Pie {
-      constructor({ dates, income }) {
-        this.dates = dates;
+      constructor({ startDate, endDate, income }) {
+        this.id = uuid();
+        this.startDate = startDate;
+        this.endDate = endDate;
         this.income = income;
         this.expenses = [];
       }
     }
 
     const parsedData = {
-      dates: {
-        weekStart: values.dates.weekStart,
-        weekEnd: values.dates.weekEnd,
-      },
+      startDate: values.startDate,
+      endDate: values.endDate,
       income: parseNumber(values.income),
     };
 
