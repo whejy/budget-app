@@ -1,11 +1,11 @@
 import React from 'react';
-import { Modal, StyleSheet, Pressable, View } from 'react-native';
+import { Modal, StyleSheet, Pressable, View, Button } from 'react-native';
 
-const CalendarModal = ({ modalOpen, setModalOpen, children }) => {
+const MyModal = ({ modalOpen, setModalOpen, children, animation }) => {
   return (
     <View style={styles.centeredView}>
       <Modal
-        animationType="slide"
+        animationType={animation}
         transparent={true}
         visible={modalOpen}
         onRequestClose={() => {
@@ -16,6 +16,7 @@ const CalendarModal = ({ modalOpen, setModalOpen, children }) => {
           <View style={styles.modalView}>
             <Pressable>{children}</Pressable>
           </View>
+          <Button title="Cancel" onPress={() => setModalOpen(false)} />
         </View>
       </Modal>
     </View>
@@ -66,4 +67,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CalendarModal;
+export default MyModal;

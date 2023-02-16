@@ -1,8 +1,9 @@
-import { Keyboard, StyleSheet } from 'react-native';
+/* eslint-disable no-unused-vars */
+import { StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { useField } from 'formik';
 import { TextInput, SelectInput } from './InputTypes';
-import CalendarModal from './CalendarModal';
+import MyModal from './Modal';
 import Text from './Text';
 import { Calendar } from 'react-native-calendars';
 
@@ -57,6 +58,8 @@ export const FormikDateInput = ({ name, ...props }) => {
     [field.value]: { selected: true, marked: true },
   };
 
+  console.log(field);
+
   const openModal = () => {
     setModalOpen(true);
   };
@@ -72,14 +75,16 @@ export const FormikDateInput = ({ name, ...props }) => {
         value={field.value}
         onBlur={() => helpers.setTouched(true)}
         // onChangeText={(value) => helpers.setValue(value)}
+        showSoftInputOnFocus={false}
         placeholder="YYYY-DD-MM"
-        onFocus={() => {
-          Keyboard.dismiss();
-        }}
         onPressIn={openModal}
       />
       {showError && <Text style={styles.errorText}>{meta.error}</Text>}
-      <CalendarModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
+      <MyModal
+        animation="slide"
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+      >
         <Calendar
           selectedValue={field.value}
           error={showError}
@@ -89,7 +94,7 @@ export const FormikDateInput = ({ name, ...props }) => {
           onDayPress={(day) => handlePress(day)}
           markedDates={markedDates}
         />
-      </CalendarModal>
+      </MyModal>
     </>
   );
 };

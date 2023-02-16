@@ -26,25 +26,28 @@ const validationSchema = yup.object().shape({
   category: yup.string().required('Category is required'),
 });
 
-const ExpenseForm = ({ onSubmit }) => {
+const ExpenseForm = ({ onSubmit, onCancel }) => {
   return (
     <View style={styles.form}>
       <FormikTextInput name="item" placeholder="Item" />
       <FormikTextInput name="cost" placeholder="Cost" keyboardType="numeric" />
       <FormikSelectInput name="category">
-        <Picker.Item label="Select a category..." value={null} />
+        <Picker.Item
+          label="Select a category..."
+          value={null}
+          enabled={false}
+        />
         {categories.map((category, i) => (
           <Picker.Item key={i} label={category} value={category} />
         ))}
       </FormikSelectInput>
-      <Button onPress={onSubmit} title="Add Expense">
-        Add Expense
-      </Button>
+      <Button title="Add Expense" onPress={onSubmit} />
+      <Button title="Cancel" onPress={onCancel} />
     </View>
   );
 };
 
-const AddExpense = ({ pie, updatePie }) => {
+const AddExpense = ({ pie, updatePie, setForm }) => {
   const onSubmit = (values) => {
     const parsedData = {
       item: values.item,
@@ -59,6 +62,7 @@ const AddExpense = ({ pie, updatePie }) => {
     };
 
     addItem(parsedData);
+    setForm(false);
     return updatePie(pie);
   };
 
@@ -69,7 +73,12 @@ const AddExpense = ({ pie, updatePie }) => {
         onSubmit={onSubmit}
         validationSchema={validationSchema}
       >
-        {({ handleSubmit }) => <ExpenseForm onSubmit={handleSubmit} />}
+        {({ handleSubmit }) => (
+          <ExpenseForm
+            onSubmit={handleSubmit}
+            onCancel={() => setForm(false)}
+          />
+        )}
       </Formik>
     </View>
   );

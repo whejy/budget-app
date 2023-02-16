@@ -21,12 +21,12 @@ const initialValues = {
 };
 
 const validationSchema = yup.object().shape({
-  income: yup.number().required('Cost is required').positive(),
-  startDate: yup.string().required('Item is required'),
-  endDate: yup.string().required('Item is required'),
+  income: yup.number().required('Income is required').positive(),
+  startDate: yup.string().required('Start date is required'),
+  endDate: yup.string().required('End date is required'),
 });
 
-const PieForm = ({ onSubmit }) => {
+const PieForm = ({ onSubmit, onCancel }) => {
   return (
     <View style={styles.form}>
       <FormikTextInput
@@ -36,14 +36,13 @@ const PieForm = ({ onSubmit }) => {
       />
       <FormikDateInput name="startDate" />
       <FormikDateInput name="endDate" />
-      <Button onPress={onSubmit} title="Add Pie">
-        Add Pie
-      </Button>
+      <Button title="Add Pie" onPress={onSubmit} />
+      <Button title="Cancel" onPress={onCancel} />
     </View>
   );
 };
 
-const AddPie = ({ updateList }) => {
+const AddPie = ({ updateList, setForm }) => {
   const onSubmit = (values) => {
     class Pie {
       constructor({ startDate, endDate, income }) {
@@ -61,6 +60,7 @@ const AddPie = ({ updateList }) => {
       income: parseNumber(values.income),
     };
 
+    setForm(false);
     return updateList(new Pie(parsedData));
   };
   return (
@@ -70,7 +70,9 @@ const AddPie = ({ updateList }) => {
         onSubmit={onSubmit}
         validationSchema={validationSchema}
       >
-        {({ handleSubmit }) => <PieForm onSubmit={handleSubmit} />}
+        {({ handleSubmit }) => (
+          <PieForm onSubmit={handleSubmit} onCancel={() => setForm(false)} />
+        )}
       </Formik>
     </View>
   );
