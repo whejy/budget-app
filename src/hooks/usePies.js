@@ -5,8 +5,7 @@ const usePies = () => {
   const initialPies = [
     {
       id: '1',
-      startDate: '2001-02-15',
-      endDate: '2001-02-24',
+      dates: { startDate: '2001-02-15', endDate: '2001-02-24' },
       income: 1500,
       expenses: {
         Shopping: [
@@ -23,8 +22,7 @@ const usePies = () => {
     },
     {
       id: '2',
-      startDate: '2008-02-15',
-      endDate: '2008-02-24',
+      dates: { startDate: '2008-02-15', endDate: '2008-02-24' },
       income: 1500,
       expenses: {
         Shopping: [{ item: 'Handbag', cost: 150 }],
@@ -34,8 +32,7 @@ const usePies = () => {
     },
     {
       id: '3',
-      startDate: '2019-07-15',
-      endDate: '2019-07-24',
+      dates: { startDate: '2019-07-15', endDate: '2019-07-24' },
       income: 1500,
       expenses: {
         Shopping: [

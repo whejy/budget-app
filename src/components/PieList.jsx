@@ -25,7 +25,6 @@ const PieList = () => {
     setPies([...pies, newPie]);
   };
 
-  // NEED TO ADD ID TO PIE
   const updatePie = (updatedPie) => {
     setPies(pies.map((pie) => (updatedPie.id !== pie.id ? pie : updatedPie)));
   };

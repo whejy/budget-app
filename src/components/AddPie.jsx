@@ -16,14 +16,13 @@ const styles = StyleSheet.create({
 
 const initialValues = {
   income: '',
-  startDate: '',
-  endDate: '',
+  dates: { startDate: '', endDate: '' },
 };
 
 const validationSchema = yup.object().shape({
   income: yup.number().required('Income is required').positive(),
-  startDate: yup.string().required('Start date is required'),
-  endDate: yup.string().required('End date is required'),
+  // startDate: yup.string().required('Start date is required'),
+  // endDate: yup.string().required('End date is required'),
 });
 
 const PieForm = ({ onSubmit, onCancel }) => {
@@ -34,8 +33,7 @@ const PieForm = ({ onSubmit, onCancel }) => {
         placeholder="Income"
         keyboardType="numeric"
       />
-      <FormikDateInput name="startDate" />
-      <FormikDateInput name="endDate" />
+      <FormikDateInput name="dates" />
       <Button title="Add Pie" onPress={onSubmit} />
       <Button title="Cancel" onPress={onCancel} />
     </View>
@@ -45,18 +43,16 @@ const PieForm = ({ onSubmit, onCancel }) => {
 const AddPie = ({ updateList, setForm }) => {
   const onSubmit = (values) => {
     class Pie {
-      constructor({ startDate, endDate, income }) {
+      constructor({ dates, income }) {
         this.id = uuid();
-        this.startDate = startDate;
-        this.endDate = endDate;
+        this.dates = dates;
         this.income = income;
         this.expenses = [];
       }
     }
 
     const parsedData = {
-      startDate: values.startDate,
-      endDate: values.endDate,
+      dates: values.dates,
       income: parseNumber(values.income),
     };
 

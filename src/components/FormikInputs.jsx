@@ -52,32 +52,52 @@ export const FormikSelectInput = ({ name, ...props }) => {
 export const FormikDateInput = ({ name, ...props }) => {
   const [field, meta, helpers] = useField(name);
   const [modalOpen, setModalOpen] = useState(false);
+  const [inputCaller, setInputCaller] = useState('');
   const showError = meta.touched && meta.error;
 
   const markedDates = {
-    [field.value]: { selected: true, marked: true },
+    [field.value.startDate]: { selected: true, marked: true },
+    [field.value.endDate]: { selected: true, marked: true },
   };
 
-  console.log(field);
+  console.log(field.value);
 
-  const openModal = () => {
+  const openModal = (caller) => {
+    setInputCaller(caller);
     setModalOpen(true);
   };
 
   const handlePress = (day) => {
-    helpers.setValue(day.dateString);
+    switch (inputCaller) {
+      case 'startDate':
+        helpers.setValue({ ...field.value, startDate: day.dateString });
+        break;
+      case 'endDate':
+        helpers.setValue({ ...field.value, endDate: day.dateString });
+        break;
+      default:
+        helpers.setValue({ startDate: '', endDate: '' });
+    }
     setModalOpen(false);
   };
 
   return (
     <>
       <TextInput
-        value={field.value}
+        value={field.value.startDate}
+        name="startDate"
         onBlur={() => helpers.setTouched(true)}
-        // onChangeText={(value) => helpers.setValue(value)}
         showSoftInputOnFocus={false}
         placeholder="YYYY-DD-MM"
-        onPressIn={openModal}
+        onPressIn={() => openModal('startDate')}
+      />
+      <TextInput
+        value={field.value.endDate}
+        name="endDate"
+        onBlur={() => helpers.setTouched(true)}
+        showSoftInputOnFocus={false}
+        placeholder="YYYY-DD-MM"
+        onPressIn={() => openModal('endDate')}
       />
       {showError && <Text style={styles.errorText}>{meta.error}</Text>}
       <MyModal
@@ -86,11 +106,9 @@ export const FormikDateInput = ({ name, ...props }) => {
         setModalOpen={setModalOpen}
       >
         <Calendar
-          selectedValue={field.value}
+          selectedValue={field.value.startDate}
           error={showError}
           {...props}
-          // onValueChange={(value) => helpers.setValue(value)}
-          // onBlur={() => helpers.setTouched(true)}
           onDayPress={(day) => handlePress(day)}
           markedDates={markedDates}
         />

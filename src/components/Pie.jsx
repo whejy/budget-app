@@ -63,8 +63,8 @@ const Pie = ({ data, updatePie }) => {
   return (
     <View>
       <Text style={{ textAlign: 'center' }}>
-        From: {data.startDate}
-        To: {data.endDate}
+        From: {data.dates.startDate}
+        To: {data.dates.endDate}
       </Text>
       <VictoryPie
         theme={VictoryTheme.material}
