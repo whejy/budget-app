@@ -4,7 +4,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { v4 as uuid } from 'uuid';
 import { FormikDateInput, FormikTextInput } from './FormikInputs';
-import { parseNumber } from '../utils';
+import { parseNumber } from '../../utils/helpers';
 
 const styles = StyleSheet.create({
   form: {

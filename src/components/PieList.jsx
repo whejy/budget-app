@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View, Text } from 'react-native';
 import Pie from './Pie';
 import FormToggle from './FormToggle';
 import AddPie from './AddPie';
@@ -17,8 +17,12 @@ const PieList = () => {
   const [pies, setPies] = useState([]);
 
   useEffect(() => {
-    const { initialPies } = usePies();
-    setPies(initialPies);
+    async function getPies() {
+      const { initialPies } = await usePies();
+      console.log(initialPies);
+      return setPies(initialPies);
+    }
+    getPies();
   }, []);
 
   const updateList = (newPie) => {
@@ -34,14 +38,18 @@ const PieList = () => {
       <FormToggle buttonText="New Pie">
         <AddPie updateList={updateList} />
       </FormToggle>
-      <FlatList
-        data={pies}
-        ItemSeparatorComponent={ItemSeparator}
-        renderItem={({ item }) => (
-          <Pie item={item} data={item} updatePie={updatePie} />
-        )}
-        keyExtractor={(_, i) => i}
-      />
+      {pies.length > 0 ? (
+        <FlatList
+          data={pies}
+          ItemSeparatorComponent={ItemSeparator}
+          renderItem={({ item }) => (
+            <Pie item={item} data={item} updatePie={updatePie} />
+          )}
+          keyExtractor={(_, i) => i}
+        />
+      ) : (
+        <Text>Add your first pie!</Text>
+      )}
     </View>
   );
 };

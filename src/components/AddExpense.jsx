@@ -4,7 +4,7 @@ import * as yup from 'yup';
 import { Picker } from '@react-native-picker/picker';
 import { FormikTextInput, FormikSelectInput } from './FormikInputs';
 import { categories } from '../data/categories';
-import { parseNumber } from '../utils';
+import { parseNumber } from '../../utils/helpers';
 
 const styles = StyleSheet.create({
   form: {

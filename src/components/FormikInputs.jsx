@@ -60,8 +60,6 @@ export const FormikDateInput = ({ name, ...props }) => {
     [field.value.endDate]: { selected: true, marked: true },
   };
 
-  console.log(field.value);
-
   const openModal = (caller) => {
     setInputCaller(caller);
     setModalOpen(true);
