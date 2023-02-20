@@ -13,10 +13,14 @@ class PieStorage {
   async setPies(newPie) {
     const currentPies = await this.getPies();
     const updatedPies = [...currentPies, newPie];
-    await AsyncStorage.setItem(
-      `${this.namespace}:pies`,
-      JSON.stringify(updatedPies)
-    );
+    try {
+      await AsyncStorage.setItem(
+        `${this.namespace}:pies`,
+        JSON.stringify(updatedPies)
+      );
+    } catch (e) {
+      console.log(e);
+    }
     return updatedPies;
   }
 
@@ -26,34 +30,14 @@ class PieStorage {
       updatedPie.id !== pie.id ? pie : updatedPie
     );
 
-    console.log(
-      JSON.stringify(updatedPie, [
-        'id',
-        'dates',
-        'income',
-        'expenses',
-        'Other',
-        'item',
-        'cost',
-      ])
-    );
     try {
       await AsyncStorage.setItem(
         `${this.namespace}:pies`,
-        JSON.stringify(updatedPies, [
-          'id',
-          'dates',
-          'income',
-          'expenses',
-          'Other',
-          'item',
-          'cost',
-        ])
+        JSON.stringify(updatedPies)
       );
     } catch (e) {
       console.log(e);
     }
-
     return updatedPies;
   }
 
