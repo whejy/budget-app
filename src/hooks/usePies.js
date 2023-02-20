@@ -3,6 +3,11 @@ import { useState, useEffect } from 'react';
 import PieStorage from '../../utils/pieStorage';
 // Responsible for fetching all Pies from local storage
 const usePies = async () => {
+  // const data = new PieStorage();
+
+  const initialPies = await PieStorage.getPies();
+  return { initialPies };
+
   // const initialPies = [
   //   {
   //     id: '1',
@@ -50,10 +55,6 @@ const usePies = async () => {
   //     },
   //   },
   // ];
-
-  const data = new PieStorage();
-  const initialPies = await data.getPies();
-  return { initialPies };
 };
 
 export default usePies;

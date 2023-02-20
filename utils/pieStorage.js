@@ -10,8 +10,51 @@ class PieStorage {
     return pies ? JSON.parse(pies) : [];
   }
 
-  async setPies(pies) {
-    await AsyncStorage.setItem(`${this.namespace}:pies`, JSON.stringify(pies));
+  async setPies(newPie) {
+    const currentPies = await this.getPies();
+    const updatedPies = [...currentPies, newPie];
+    await AsyncStorage.setItem(
+      `${this.namespace}:pies`,
+      JSON.stringify(updatedPies)
+    );
+    return updatedPies;
+  }
+
+  async updatePie(updatedPie) {
+    const currentPies = await this.getPies();
+    const updatedPies = currentPies.map((pie) =>
+      updatedPie.id !== pie.id ? pie : updatedPie
+    );
+
+    console.log(
+      JSON.stringify(updatedPie, [
+        'id',
+        'dates',
+        'income',
+        'expenses',
+        'Other',
+        'item',
+        'cost',
+      ])
+    );
+    try {
+      await AsyncStorage.setItem(
+        `${this.namespace}:pies`,
+        JSON.stringify(updatedPies, [
+          'id',
+          'dates',
+          'income',
+          'expenses',
+          'Other',
+          'item',
+          'cost',
+        ])
+      );
+    } catch (e) {
+      console.log(e);
+    }
+
+    return updatedPies;
   }
 
   async removePies() {
@@ -19,4 +62,4 @@ class PieStorage {
   }
 }
 
-export default PieStorage;
+export default new PieStorage();

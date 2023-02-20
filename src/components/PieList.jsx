@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { FlatList, StyleSheet, View, Text } from 'react-native';
 import Pie from './Pie';
 import FormToggle from './FormToggle';
 import AddPie from './AddPie';
-import usePies from '../hooks/usePies';
+// import usePies from '../hooks/usePies';
 import { useEffect, useState } from 'react';
+import PieStorage from '../../utils/pieStorage';
 
 const styles = StyleSheet.create({
   separator: {
@@ -16,34 +18,36 @@ const ItemSeparator = () => <View style={styles.separator} />;
 const PieList = () => {
   const [pies, setPies] = useState([]);
 
+  async function getStoragePies() {
+    const initialPies = await PieStorage.getPies();
+    return setPies(initialPies);
+  }
+
+  async function setStoragePies(newPie) {
+    const updatedPies = await PieStorage.setPies(newPie);
+    return setPies(updatedPies);
+  }
+
+  async function updateStoragePie(newPie) {
+    const updatedPies = await PieStorage.updatePie(newPie);
+    return setPies(updatedPies);
+  }
+
   useEffect(() => {
-    async function getPies() {
-      const { initialPies } = await usePies();
-      console.log(initialPies);
-      return setPies(initialPies);
-    }
-    getPies();
+    getStoragePies();
   }, []);
-
-  const updateList = (newPie) => {
-    setPies([...pies, newPie]);
-  };
-
-  const updatePie = (updatedPie) => {
-    setPies(pies.map((pie) => (updatedPie.id !== pie.id ? pie : updatedPie)));
-  };
 
   return (
     <View style={{ padding: 10 }}>
       <FormToggle buttonText="New Pie">
-        <AddPie updateList={updateList} />
+        <AddPie updateList={setStoragePies} />
       </FormToggle>
       {pies.length > 0 ? (
         <FlatList
           data={pies}
           ItemSeparatorComponent={ItemSeparator}
           renderItem={({ item }) => (
-            <Pie item={item} data={item} updatePie={updatePie} />
+            <Pie item={item} data={item} updatePie={updateStoragePie} />
           )}
           keyExtractor={(_, i) => i}
         />

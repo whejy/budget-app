@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import { v4 as uuid } from 'uuid';
 import { FormikDateInput, FormikTextInput } from './FormikInputs';
 import { parseNumber } from '../../utils/helpers';
+import PieStorage from '../../utils/pieStorage';
 
 const styles = StyleSheet.create({
   form: {
@@ -42,12 +43,16 @@ const PieForm = ({ onSubmit, onCancel }) => {
 
 const AddPie = ({ updateList, setForm }) => {
   const onSubmit = (values) => {
+    // const storePie = async (newPie) => {
+    //   await PieStorage.setPies(newPie);
+    // };
+
     class Pie {
       constructor({ dates, income }) {
         this.id = uuid();
         this.dates = dates;
         this.income = income;
-        this.expenses = [];
+        this.expenses = {};
       }
     }
 
@@ -57,6 +62,8 @@ const AddPie = ({ updateList, setForm }) => {
     };
 
     setForm(false);
+    // storePie(newPie);
+
     return updateList(new Pie(parsedData));
   };
   return (

@@ -88,6 +88,7 @@ export const FormikDateInput = ({ name, ...props }) => {
         showSoftInputOnFocus={false}
         placeholder="YYYY-DD-MM"
         onPressIn={() => openModal('startDate')}
+        onClick={() => openModal('startDate')}
       />
       <TextInput
         value={field.value.endDate}
@@ -96,6 +97,7 @@ export const FormikDateInput = ({ name, ...props }) => {
         showSoftInputOnFocus={false}
         placeholder="YYYY-DD-MM"
         onPressIn={() => openModal('endDate')}
+        onClick={() => openModal('endDate')}
       />
       {showError && <Text style={styles.errorText}>{meta.error}</Text>}
       <MyModal
