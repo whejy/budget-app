@@ -1,11 +1,10 @@
-/* eslint-disable no-unused-vars */
-import { FlatList, StyleSheet, View, Text } from 'react-native';
+import { FlatList, StyleSheet, View, Text, Button } from 'react-native';
 import Pie from './Pie';
 import FormToggle from './FormToggle';
 import AddPie from './AddPie';
-// import usePies from '../hooks/usePies';
 import { useEffect, useState } from 'react';
 import PieStorage from '../../utils/pieStorage';
+import pieStorage from '../../utils/pieStorage';
 
 const styles = StyleSheet.create({
   separator: {
@@ -33,6 +32,16 @@ const PieList = () => {
     return setPies(updatedPies);
   }
 
+  async function removeAllPies() {
+    await pieStorage.removePies();
+    return setPies([]);
+  }
+
+  async function removePie(pie) {
+    const updatedPies = await pieStorage.removePie(pie);
+    return setPies(updatedPies);
+  }
+
   useEffect(() => {
     getStoragePies();
   }, []);
@@ -43,14 +52,22 @@ const PieList = () => {
         <AddPie updateList={setStoragePies} />
       </FormToggle>
       {pies.length > 0 ? (
-        <FlatList
-          data={pies}
-          ItemSeparatorComponent={ItemSeparator}
-          renderItem={({ item }) => (
-            <Pie item={item} data={item} updatePie={updateStoragePie} />
-          )}
-          keyExtractor={(_, i) => i}
-        />
+        <View>
+          <Button onPress={() => removeAllPies()} title="Remove All" />
+          <FlatList
+            data={pies}
+            ItemSeparatorComponent={ItemSeparator}
+            renderItem={({ item }) => (
+              <Pie
+                item={item}
+                data={item}
+                removePie={removePie}
+                updatePie={updateStoragePie}
+              />
+            )}
+            keyExtractor={(_, i) => i}
+          />
+        </View>
       ) : (
         <Text>Add your first pie!</Text>
       )}

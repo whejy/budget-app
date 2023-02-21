@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 const initialValues = {
   item: '',
   cost: '',
-  category: '',
+  category: 'Shopping',
 };
 
 const validationSchema = yup.object().shape({
@@ -32,11 +32,6 @@ const ExpenseForm = ({ onSubmit, onCancel }) => {
       <FormikTextInput name="item" placeholder="Item" />
       <FormikTextInput name="cost" placeholder="Cost" keyboardType="numeric" />
       <FormikSelectInput name="category">
-        <Picker.Item
-          label="Select a category..."
-          value={null}
-          enabled={false}
-        />
         {categories.map((category, i) => (
           <Picker.Item key={i} label={category} value={category} />
         ))}

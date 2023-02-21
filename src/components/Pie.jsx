@@ -1,11 +1,11 @@
 import { VictoryPie, VictoryTheme, VictoryLabel } from 'victory-native';
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Button } from 'react-native';
 import CategoryDetails from './CategoryDetails';
 import FormToggle from './FormToggle';
 import AddExpense from './AddExpense';
 
-const Pie = ({ data, updatePie }) => {
+const Pie = ({ data, updatePie, removePie }) => {
   const [category, setCategory] = useState('');
   const { expenses, income } = data;
 
@@ -78,6 +78,7 @@ const Pie = ({ data, updatePie }) => {
         }}
         labelComponent={<VictoryLabel textAnchor={'middle'} />}
       />
+      <Button title="Remove Pie" onPress={() => removePie(data)} />
       <CategoryDetails category={category} expenses={expenses[category]} />
       <FormToggle buttonText={'Add Expense'}>
         <AddExpense updatePie={updatePie} pie={data} />

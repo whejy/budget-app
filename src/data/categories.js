@@ -1,1 +1,12 @@
-export const categories = ['Bills', 'Savings', 'Shopping', 'Other'];
+export const categories = [
+  'Bills',
+  'Entertainment',
+  'Food',
+  'Gifts',
+  'Medical',
+  'Personal',
+  'Savings',
+  'Shopping',
+  'Transport',
+  'Other',
+];

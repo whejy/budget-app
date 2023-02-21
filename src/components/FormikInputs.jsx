@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { StyleSheet } from 'react-native';
 import { useState } from 'react';
 import { useField } from 'formik';
@@ -55,6 +54,8 @@ export const FormikDateInput = ({ name, ...props }) => {
   const [inputCaller, setInputCaller] = useState('');
   const showError = meta.touched && meta.error;
 
+  console.log(meta.error);
+
   const markedDates = {
     [field.value.startDate]: { selected: true, marked: true },
     [field.value.endDate]: { selected: true, marked: true },
@@ -90,6 +91,9 @@ export const FormikDateInput = ({ name, ...props }) => {
         onPressIn={() => openModal('startDate')}
         onClick={() => openModal('startDate')}
       />
+      {showError?.startDate && (
+        <Text style={styles.errorText}>{meta.error.startDate}</Text>
+      )}
       <TextInput
         value={field.value.endDate}
         name="endDate"
@@ -99,7 +103,10 @@ export const FormikDateInput = ({ name, ...props }) => {
         onPressIn={() => openModal('endDate')}
         onClick={() => openModal('endDate')}
       />
-      {showError && <Text style={styles.errorText}>{meta.error}</Text>}
+      {showError?.endDate && (
+        <Text style={styles.errorText}>{meta.error.endDate}</Text>
+      )}
+
       <MyModal
         animation="slide"
         modalOpen={modalOpen}

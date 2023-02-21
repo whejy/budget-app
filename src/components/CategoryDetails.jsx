@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Text, FlatList, View, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({

@@ -1,11 +1,9 @@
-/* eslint-disable no-unused-vars */
 import { View, Button, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { v4 as uuid } from 'uuid';
 import { FormikDateInput, FormikTextInput } from './FormikInputs';
 import { parseNumber } from '../../utils/helpers';
-import PieStorage from '../../utils/pieStorage';
 
 const styles = StyleSheet.create({
   form: {
@@ -22,8 +20,10 @@ const initialValues = {
 
 const validationSchema = yup.object().shape({
   income: yup.number().required('Income is required').positive(),
-  // startDate: yup.string().required('Start date is required'),
-  // endDate: yup.string().required('End date is required'),
+  dates: yup.object().shape({
+    startDate: yup.string().required('Start date is required'),
+    endDate: yup.string().required('End date is required'),
+  }),
 });
 
 const PieForm = ({ onSubmit, onCancel }) => {
@@ -43,10 +43,6 @@ const PieForm = ({ onSubmit, onCancel }) => {
 
 const AddPie = ({ updateList, setForm }) => {
   const onSubmit = (values) => {
-    // const storePie = async (newPie) => {
-    //   await PieStorage.setPies(newPie);
-    // };
-
     class Pie {
       constructor({ dates, income }) {
         this.id = uuid();
@@ -62,8 +58,6 @@ const AddPie = ({ updateList, setForm }) => {
     };
 
     setForm(false);
-    // storePie(newPie);
-
     return updateList(new Pie(parsedData));
   };
   return (

@@ -41,6 +41,22 @@ class PieStorage {
     return updatedPies;
   }
 
+  async removePie(removedPie) {
+    const currentPies = await this.getPies();
+    const updatedPies = currentPies.filter((pie) => pie.id !== removedPie.id);
+    console.log(updatedPies);
+
+    try {
+      await AsyncStorage.setItem(
+        `${this.namespace}:pies`,
+        JSON.stringify(updatedPies)
+      );
+    } catch (e) {
+      console.log(e);
+    }
+    return updatedPies;
+  }
+
   async removePies() {
     await AsyncStorage.removeItem(`${this.namespace}:pies`);
   }
