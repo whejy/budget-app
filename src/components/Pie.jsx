@@ -32,6 +32,30 @@ const Pie = ({ data, updatePie, removePie }) => {
     {
       target: 'data',
       eventHandlers: {
+        onClick: () => {
+          return [
+            {
+              eventKey: 'all',
+              mutation: () => null,
+            },
+
+            {
+              mutation: (props) => {
+                setCategory(props.datum.x);
+                return props.datum.x === category
+                  ? setCategory(null)
+                  : {
+                      style: {
+                        ...props.style,
+                        stroke: props.style.fill,
+                        fillOpacity: 0.6,
+                        strokeWidth: 4,
+                      },
+                    };
+              },
+            },
+          ];
+        },
         onPressIn: () => {
           return [
             {
@@ -79,7 +103,12 @@ const Pie = ({ data, updatePie, removePie }) => {
         labelComponent={<VictoryLabel textAnchor={'middle'} />}
       />
       <Button title="Remove Pie" onPress={() => removePie(data)} />
-      <CategoryDetails category={category} expenses={expenses[category]} />
+      <CategoryDetails
+        category={category}
+        pie={data}
+        updatePie={updatePie}
+        expenses={expenses[category]}
+      />
       <FormToggle buttonText={'Add Expense'}>
         <AddExpense updatePie={updatePie} pie={data} />
       </FormToggle>

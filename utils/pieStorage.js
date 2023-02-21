@@ -44,7 +44,6 @@ class PieStorage {
   async removePie(removedPie) {
     const currentPies = await this.getPies();
     const updatedPies = currentPies.filter((pie) => pie.id !== removedPie.id);
-    console.log(updatedPies);
 
     try {
       await AsyncStorage.setItem(

@@ -27,8 +27,8 @@ const PieList = () => {
     return setPies(updatedPies);
   }
 
-  async function updateStoragePie(newPie) {
-    const updatedPies = await PieStorage.updatePie(newPie);
+  async function updateStoragePie(updatedPie) {
+    const updatedPies = await PieStorage.updatePie(updatedPie);
     return setPies(updatedPies);
   }
 

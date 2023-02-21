@@ -1,4 +1,5 @@
-import { Text, FlatList, View, StyleSheet } from 'react-native';
+/* eslint-disable no-unused-vars */
+import { Text, FlatList, View, StyleSheet, Button } from 'react-native';
 
 const styles = StyleSheet.create({
   separator: {
@@ -7,7 +8,24 @@ const styles = StyleSheet.create({
 });
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const CategoryDetails = ({ expenses, category }) => {
+const CategoryDetails = ({ expenses, category, pie, updatePie }) => {
+  const editExpense = (item) => {
+    console.log(item);
+  };
+
+  const removeExpense = (item) => {
+    const updatedCategory = pie.expenses[category].filter(
+      (expense) => expense.item !== item.item
+    );
+
+    // If this item is the final item within the category, remove category
+    updatedCategory.length > 0
+      ? (pie.expenses[category] = updatedCategory)
+      : delete pie.expenses[category];
+
+    updatePie(pie);
+  };
+
   expenses?.sort((a, b) => b.cost - a.cost);
   return (
     <View style={{ alignItems: 'center' }}>
@@ -20,6 +38,8 @@ const CategoryDetails = ({ expenses, category }) => {
         renderItem={({ item }) => (
           <View>
             <Text style={{ textAlign: 'center' }}>{item.item}</Text>
+            <Button onPress={() => removeExpense(item)} title="Remove" />
+            <Button onPress={() => editExpense(item)} title="Edit" />
             <Text style={{ textAlign: 'center' }}>${item.cost}</Text>
           </View>
         )}
