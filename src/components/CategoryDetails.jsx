@@ -13,6 +13,11 @@ const CategoryDetails = ({ expenses, category, pie, updatePie }) => {
     console.log(item);
   };
 
+  const removeCategory = () => {
+    delete pie.expenses[category];
+    updatePie(pie);
+  };
+
   const removeExpense = (item) => {
     const updatedCategory = pie.expenses[category].filter(
       (expense) => expense.item !== item.item
@@ -30,6 +35,7 @@ const CategoryDetails = ({ expenses, category, pie, updatePie }) => {
   return (
     <View style={{ alignItems: 'center' }}>
       <Text>{category}</Text>
+      <Button title="Remove Category" onPress={() => removeCategory()} />
       <FlatList
         data={expenses}
         ItemSeparatorComponent={ItemSeparator}

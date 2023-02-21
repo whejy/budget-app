@@ -103,12 +103,14 @@ const Pie = ({ data, updatePie, removePie }) => {
         labelComponent={<VictoryLabel textAnchor={'middle'} />}
       />
       <Button title="Remove Pie" onPress={() => removePie(data)} />
-      <CategoryDetails
-        category={category}
-        pie={data}
-        updatePie={updatePie}
-        expenses={expenses[category]}
-      />
+      {category?.length > 0 && (
+        <CategoryDetails
+          category={category}
+          pie={data}
+          updatePie={updatePie}
+          expenses={expenses[category]}
+        />
+      )}
       <FormToggle buttonText={'Add Expense'}>
         <AddExpense updatePie={updatePie} pie={data} />
       </FormToggle>
