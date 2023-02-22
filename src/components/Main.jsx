@@ -1,5 +1,6 @@
 import Constants from 'expo-constants';
-import { Text, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import AppBar from './AppBar';
 import PieList from './PieList';
 
 const styles = StyleSheet.create({
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
 const Main = () => {
   return (
     <View style={styles.container}>
-      <Text>Budget Application</Text>
+      <AppBar />
       <PieList />
     </View>
   );

@@ -10,7 +10,8 @@ const theme = {
   },
   fontSizes: {
     body: 14,
-    subheading: 16,
+    subheading: 20,
+    heading: 32,
   },
   fonts: {
     main: Platform.select({

@@ -18,8 +18,14 @@ const styles = StyleSheet.create({
   fontSizeSubheading: {
     fontSize: theme.fontSizes.subheading,
   },
+  fontSizeHeading: {
+    fontSize: theme.fontSizes.heading,
+  },
   fontWeightBold: {
     fontWeight: theme.fontWeights.bold,
+  },
+  fontStyleItalic: {
+    fontStyle: 'italic',
   },
 });
 
@@ -29,27 +35,32 @@ const Text = ({ color, fontSize, fontWeight, style, ...props }) => {
     color === 'textSecondary' && styles.colorTextSecondary,
     color === 'primary' && styles.colorPrimary,
     fontSize === 'subheading' && styles.fontSizeSubheading,
+    fontSize === 'heading' && styles.fontSizeHeading,
     fontWeight === 'bold' && styles.fontWeightBold,
+    fontWeight === 'italic' && styles.fontStyleItalic,
     style,
   ];
 
   return <NativeText style={textStyle} {...props} />;
 };
 
+export const Heading = ({ ...props }) => {
+  return (
+    <Text
+      fontSize="heading"
+      fontWeight="bold"
+      style={{ color: 'white', paddingBottom: 25 }}
+      {...props}
+    />
+  );
+};
+
 export const Subheading = ({ ...props }) => {
   return <Text fontSize="subheading" {...props} />;
 };
 
-export const ItemStats = ({ ...props }) => {
-  return <Text style={{ paddingBottom: 5 }} fontWeight="bold" {...props} />;
-};
-
-export const Dates = ({ ...props }) => {
-  return <Text fontWeight="bold" fontSizeSubheading {...props} />;
-};
-
-export const ItemStatsLabel = ({ ...props }) => {
-  return <Text color="textSecondary" {...props} />;
+export const DatesText = ({ ...props }) => {
+  return <Text fontSize="subheading" fontWeight="italic" {...props} />;
 };
 
 export default Text;

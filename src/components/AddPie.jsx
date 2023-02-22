@@ -1,7 +1,7 @@
 import { View, Button, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { v4 as uuid } from 'uuid';
+import uuid from 'react-native-uuid';
 import { FormikDateInput, FormikTextInput } from './FormikInputs';
 import { parseNumber, parseDates } from '../../utils/helpers';
 
@@ -47,7 +47,7 @@ const AddPie = ({ updateList, setModalOpen }) => {
   const onSubmit = (values) => {
     class Pie {
       constructor({ dates, income }) {
-        this.id = uuid();
+        this.id = uuid.v4();
         this.dates = dates;
         this.income = income;
         this.expenses = {};
