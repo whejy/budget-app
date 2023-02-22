@@ -15,8 +15,8 @@ const MyModal = ({ modalOpen, setModalOpen, children, animation }) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Pressable>{children}</Pressable>
+            <Button title="Cancel" onPress={() => setModalOpen(false)} />
           </View>
-          <Button title="Cancel" onPress={() => setModalOpen(false)} />
         </View>
       </Modal>
     </View>

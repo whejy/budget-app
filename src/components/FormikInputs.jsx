@@ -54,11 +54,13 @@ export const FormikDateInput = ({ name, ...props }) => {
   const [inputCaller, setInputCaller] = useState('');
   const showError = meta.touched && meta.error;
 
-  console.log(meta.error);
-
   const markedDates = {
     [field.value.startDate]: { selected: true, marked: true },
-    [field.value.endDate]: { selected: true, marked: true },
+    [field.value.endDate]: {
+      selected: true,
+      marked: true,
+      selectedColor: 'green',
+    },
   };
 
   const openModal = (caller) => {
@@ -85,7 +87,7 @@ export const FormikDateInput = ({ name, ...props }) => {
       <TextInput
         value={field.value.startDate}
         name="startDate"
-        onBlur={() => helpers.setTouched(true)}
+        // onBlur={() => helpers.setTouched(true)}
         showSoftInputOnFocus={false}
         placeholder="YYYY-DD-MM"
         onPressIn={() => openModal('startDate')}
@@ -97,7 +99,7 @@ export const FormikDateInput = ({ name, ...props }) => {
       <TextInput
         value={field.value.endDate}
         name="endDate"
-        onBlur={() => helpers.setTouched(true)}
+        // onBlur={() => helpers.setTouched(true)}
         showSoftInputOnFocus={false}
         placeholder="YYYY-DD-MM"
         onPressIn={() => openModal('endDate')}

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Text, FlatList, View, StyleSheet, Button } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -18,9 +17,9 @@ const CategoryDetails = ({ expenses, category, pie, updatePie }) => {
     updatePie(pie);
   };
 
-  const removeExpense = (item) => {
+  const removeExpense = (expenseToRemove) => {
     const updatedCategory = pie.expenses[category].filter(
-      (expense) => expense.item !== item.item
+      (expense) => expense.item !== expenseToRemove.item
     );
 
     // If this item is the final item within the category, remove category
