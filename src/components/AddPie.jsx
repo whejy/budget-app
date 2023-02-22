@@ -3,7 +3,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { v4 as uuid } from 'uuid';
 import { FormikDateInput, FormikTextInput } from './FormikInputs';
-import { parseNumber } from '../../utils/helpers';
+import { parseNumber, parseDates } from '../../utils/helpers';
 
 const styles = StyleSheet.create({
   form: {
@@ -55,7 +55,7 @@ const AddPie = ({ updateList, setModalOpen }) => {
     }
 
     const parsedData = {
-      dates: values.dates,
+      dates: parseDates(values.dates),
       income: parseNumber(values.income),
     };
 

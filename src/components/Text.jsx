@@ -44,6 +44,10 @@ export const ItemStats = ({ ...props }) => {
   return <Text style={{ paddingBottom: 5 }} fontWeight="bold" {...props} />;
 };
 
+export const Dates = ({ ...props }) => {
+  return <Text fontWeight="bold" fontSizeSubheading {...props} />;
+};
+
 export const ItemStatsLabel = ({ ...props }) => {
   return <Text color="textSecondary" {...props} />;
 };

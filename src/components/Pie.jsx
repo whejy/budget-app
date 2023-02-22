@@ -4,6 +4,7 @@ import { Text, View, Button } from 'react-native';
 import CategoryDetails from './CategoryDetails';
 import FormToggle from './FormToggle';
 import AddExpense from './AddExpense';
+import { Dates } from './Text';
 
 const Pie = ({ data, updatePie, removePie }) => {
   const [category, setCategory] = useState('');
@@ -87,8 +88,9 @@ const Pie = ({ data, updatePie, removePie }) => {
   return (
     <View>
       <Text style={{ textAlign: 'center' }}>
-        From: {data.dates.startDate}
-        To: {data.dates.endDate}
+        <Dates>
+          {data.dates.startDate} - {data.dates.endDate}
+        </Dates>
       </Text>
       <VictoryPie
         theme={VictoryTheme.material}

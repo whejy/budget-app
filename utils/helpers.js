@@ -14,3 +14,13 @@ export const parseNumber = (number) => {
   }
   return parsedNumber;
 };
+
+export const parseDates = (dates) => {
+  const startDate = new Date(dates.startDate);
+  const endDate = new Date(dates.endDate);
+  const parsedDates = {
+    startDate: startDate.toDateString(),
+    endDate: endDate.toDateString(),
+  };
+  return parsedDates;
+};
