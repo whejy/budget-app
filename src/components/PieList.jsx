@@ -1,11 +1,9 @@
-import { FlatList, StyleSheet, View, Text, Button } from 'react-native';
+import { FlatList, StyleSheet, View, Text } from 'react-native';
 import Pie from './Pie';
-// import FormToggle from './FormToggle';
-import AddPie from './AddPie';
 import { useEffect, useState } from 'react';
 import PieStorage from '../../utils/pieStorage';
 import pieStorage from '../../utils/pieStorage';
-import MyModal from './Modal';
+import AlterPieList from './AlterPieList';
 
 const styles = StyleSheet.create({
   separator: {
@@ -17,7 +15,6 @@ const ItemSeparator = () => <View style={styles.separator} />;
 
 const PieList = () => {
   const [pies, setPies] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
 
   async function getStoragePies() {
     const initialPies = await PieStorage.getPies();
@@ -50,20 +47,13 @@ const PieList = () => {
 
   return (
     <View style={{ padding: 10 }}>
-      {/* <FormToggle buttonText="New Pie">
-        <AddPie updateList={setStoragePies} />
-      </FormToggle> */}
-      <Button title="New Pie" onPress={() => setModalOpen(true)} />
-      <MyModal
-        animation="fade"
-        modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-      >
-        <AddPie setModalOpen={setModalOpen} updateList={setStoragePies} />
-      </MyModal>
+      <AlterPieList buttonText="New Pie" setStoragePies={setStoragePies} />
       {pies.length > 0 ? (
         <View>
-          <Button onPress={() => removeAllPies()} title="Remove All" />
+          <AlterPieList
+            buttonText="Remove Pies"
+            removeAllPies={removeAllPies}
+          />
           <FlatList
             data={pies}
             ItemSeparatorComponent={ItemSeparator}

@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Button } from 'react-native';
 import { useState } from 'react';
 import { useField } from 'formik';
 import { TextInput, SelectInput } from './InputTypes';
@@ -121,6 +121,7 @@ export const FormikDateInput = ({ name, ...props }) => {
           onDayPress={(day) => handlePress(day)}
           markedDates={markedDates}
         />
+        <Button title="Cancel" onPress={() => setModalOpen(false)} />
       </MyModal>
     </>
   );

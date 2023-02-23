@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, StyleSheet, Pressable, View, Button } from 'react-native';
+import { Modal, StyleSheet, Pressable, View } from 'react-native';
 
 const MyModal = ({ modalOpen, setModalOpen, children, animation }) => {
   return (
@@ -15,7 +15,6 @@ const MyModal = ({ modalOpen, setModalOpen, children, animation }) => {
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Pressable>{children}</Pressable>
-            <Button title="Cancel" onPress={() => setModalOpen(false)} />
           </View>
         </View>
       </Modal>

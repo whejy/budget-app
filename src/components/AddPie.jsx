@@ -26,7 +26,7 @@ const validationSchema = yup.object().shape({
   }),
 });
 
-const PieForm = ({ onSubmit }) => {
+const PieForm = ({ onSubmit, setModalOpen }) => {
   return (
     <View style={styles.form}>
       <FormikTextInput
@@ -38,7 +38,7 @@ const PieForm = ({ onSubmit }) => {
       />
       <FormikDateInput name="dates" />
       <Button title="Add Pie" onPress={onSubmit} />
-      {/* <Button title="Cancel" onPress={onCancel} /> */}
+      <Button title="Cancel" onPress={() => setModalOpen(false)} />
     </View>
   );
 };
@@ -69,7 +69,9 @@ const AddPie = ({ updateList, setModalOpen }) => {
         onSubmit={onSubmit}
         validationSchema={validationSchema}
       >
-        {({ handleSubmit }) => <PieForm onSubmit={handleSubmit} />}
+        {({ handleSubmit }) => (
+          <PieForm setModalOpen={setModalOpen} onSubmit={handleSubmit} />
+        )}
       </Formik>
     </View>
   );
