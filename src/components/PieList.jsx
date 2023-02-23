@@ -46,7 +46,7 @@ const PieList = () => {
   }, []);
 
   return (
-    <View style={{ padding: 10 }}>
+    <View style={{ paddingBottom: 350 }}>
       <AlterPieList buttonText="New Pie" setStoragePies={setStoragePies} />
       {pies.length > 0 ? (
         <View>

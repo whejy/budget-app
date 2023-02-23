@@ -4,23 +4,37 @@ import MyModal from './Modal';
 import AddPie from './AddPie';
 import Prompt from './Prompt';
 
-const AlterPieList = ({ setStoragePies, removeAllPies, buttonText }) => {
+const AlterPieList = ({
+  setStoragePies,
+  removeAllPies,
+  removePie,
+  buttonText,
+}) => {
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleDelete = () => {
+  const handleDeleteAll = () => {
     setModalOpen(false);
     removeAllPies();
   };
 
-  const promptMessage = 'Are you sure you want to delete all of your data?';
+  const handleDeleteSingle = () => {
+    setModalOpen(false);
+    removePie();
+  };
 
   const child = setStoragePies ? (
     <AddPie setModalOpen={setModalOpen} updateList={setStoragePies} />
+  ) : removeAllPies ? (
+    <Prompt
+      setModalOpen={setModalOpen}
+      handleYes={handleDeleteAll}
+      promptMessage={'Are you sure you want to delete all of your pie data?'}
+    />
   ) : (
     <Prompt
       setModalOpen={setModalOpen}
-      handleYes={handleDelete}
-      promptMessage={promptMessage}
+      handleYes={handleDeleteSingle}
+      promptMessage="Are you sure you want to delete this pie?"
     />
   );
 
@@ -32,7 +46,7 @@ const AlterPieList = ({ setStoragePies, removeAllPies, buttonText }) => {
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
       >
-        <View>{child}</View>
+        {child}
       </MyModal>
     </View>
   );
