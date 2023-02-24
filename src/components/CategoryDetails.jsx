@@ -19,7 +19,7 @@ const CategoryDetails = ({ expenses, category, pie, updatePie }) => {
 
   const removeExpense = (expenseToRemove) => {
     const updatedCategory = pie.expenses[category].filter(
-      (expense) => expense.item !== expenseToRemove.item
+      (expense) => expense.id !== expenseToRemove.id
     );
 
     // If this item is the final item within the category, remove category

@@ -16,7 +16,7 @@ const Pie = ({ data, updatePie, removePie }) => {
   };
 
   const handlePieUpdate = (pie) => {
-    setCategory('');
+    Object.keys(expenses).length === 0 && setCategory('');
     updatePie(pie);
   };
 

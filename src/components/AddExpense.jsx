@@ -55,15 +55,16 @@ const ExpenseForm = ({ onSubmit, onCancel }) => {
 const AddExpense = ({ pie, updatePie, setForm, remainingIncome }) => {
   const onSubmit = (values) => {
     const parsedData = {
+      id: Math.round(1000 * Math.random()),
       item: values.item,
       cost: parseNumber(values.cost),
       category: values.category,
     };
 
-    const addItem = ({ item, cost, category }) => {
+    const addItem = ({ id, item, cost, category }) => {
       Object.keys(pie.expenses).includes(category)
-        ? pie.expenses[category].push({ item, cost })
-        : (pie.expenses[category] = [{ item, cost }]);
+        ? pie.expenses[category].push({ id, item, cost })
+        : (pie.expenses[category] = [{ id, item, cost }]);
     };
 
     addItem(parsedData);
