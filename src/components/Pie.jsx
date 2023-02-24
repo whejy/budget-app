@@ -11,34 +11,38 @@ const Pie = ({ data, updatePie, removePie }) => {
   const [category, setCategory] = useState('');
   const { expenses, income } = data;
 
+  const handlePieUpdate = (pie) => {
+    !Object.keys(expenses).includes(category) && setCategory('');
+    updatePie(pie);
+  };
+
   const handleDelete = () => {
     removePie(data);
   };
 
-  const handlePieUpdate = (pie) => {
-    Object.keys(expenses).length === 0 && setCategory('');
-    updatePie(pie);
+  const formatPieData = () => {
+    let pieData = [];
+    const remainingIncome = pieData.reduce((acc, curr) => acc - curr.y, income);
+
+    for (const category in expenses) {
+      expenses[category].total = expenses[category].reduce(
+        (acc, curr) => acc + curr.cost,
+        0
+      );
+      pieData.push({ x: category, y: expenses[category].total });
+    }
+
+    pieData
+      .sort((a, b) => b.y - a.y)
+      .push({
+        x: 'Income',
+        y: remainingIncome,
+      });
+
+    return { pieData, remainingIncome };
   };
 
-  let pieData = [];
-
-  // Get total expense for each category and format data for Pie component
-  for (const category in expenses) {
-    expenses[category].total = expenses[category].reduce(
-      (acc, curr) => acc + curr.cost,
-      0
-    );
-    pieData.push({ x: category, y: expenses[category].total });
-  }
-
-  const remainingIncome = pieData.reduce((acc, curr) => acc - curr.y, income);
-
-  pieData
-    .sort((a, b) => b.y - a.y)
-    .push({
-      x: 'Income',
-      y: remainingIncome,
-    });
+  const { pieData, remainingIncome } = formatPieData();
 
   const events = [
     {
