@@ -30,13 +30,13 @@ const AlterPieList = ({
       handleYes={handleDeleteAll}
       promptMessage={'Are you sure you want to delete all of your pie data?'}
     />
-  ) : (
+  ) : removePie ? (
     <Prompt
       setModalOpen={setModalOpen}
       handleYes={handleDeleteSingle}
       promptMessage="Are you sure you want to delete this pie?"
     />
-  );
+  ) : null;
 
   return (
     <View>

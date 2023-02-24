@@ -1,9 +1,9 @@
+import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View, Text } from 'react-native';
 import Pie from './Pie';
-import { useEffect, useState } from 'react';
+import AlterPieList from './AlterPieList';
 import PieStorage from '../../utils/pieStorage';
 import pieStorage from '../../utils/pieStorage';
-import AlterPieList from './AlterPieList';
 
 const styles = StyleSheet.create({
   separator: {

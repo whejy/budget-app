@@ -15,6 +15,11 @@ const Pie = ({ data, updatePie, removePie }) => {
     removePie(data);
   };
 
+  const handlePieUpdate = (pie) => {
+    setCategory('');
+    updatePie(pie);
+  };
+
   let pieData = [];
 
   // Get total expense for each category and format data for Pie component
@@ -26,12 +31,13 @@ const Pie = ({ data, updatePie, removePie }) => {
     pieData.push({ x: category, y: expenses[category].total });
   }
 
-  // Calculate remaining income
+  const remainingIncome = pieData.reduce((acc, curr) => acc - curr.y, income);
+
   pieData
     .sort((a, b) => b.y - a.y)
     .push({
       x: 'Income',
-      y: pieData.reduce((acc, curr) => acc - curr.y, income),
+      y: remainingIncome,
     });
 
   const events = [
@@ -100,7 +106,9 @@ const Pie = ({ data, updatePie, removePie }) => {
         // colorScale={['tomato', 'orange', 'gold', 'cyan', 'navy']}
         data={pieData}
         events={events}
-        labels={({ datum }) => `${datum.x} \n$${datum.y}`}
+        labels={({ datum }) =>
+          `${datum.x} \n$${datum.y.toLocaleString('en-US')}`
+        }
         style={{
           labels: { fontSize: 16 },
           parent: { border: '1px solid #ccc', paddingBottom: 0 },
@@ -113,12 +121,16 @@ const Pie = ({ data, updatePie, removePie }) => {
         <CategoryDetails
           category={category}
           pie={data}
-          updatePie={updatePie}
+          updatePie={handlePieUpdate}
           expenses={expenses[category]}
         />
       )}
       <FormToggle buttonText={'Add Expense'}>
-        <AddExpense updatePie={updatePie} pie={data} />
+        <AddExpense
+          updatePie={updatePie}
+          pie={data}
+          remainingIncome={remainingIncome}
+        />
       </FormToggle>
     </View>
   );

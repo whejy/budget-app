@@ -2,7 +2,11 @@ import { View, Button, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Picker } from '@react-native-picker/picker';
-import { FormikTextInput, FormikSelectInput } from './FormikInputs';
+import {
+  FormikTextInput,
+  FormikSelectInput,
+  FormikNumberInput,
+} from './FormikInputs';
 import { categories } from '../data/categories';
 import { parseNumber } from '../../utils/helpers';
 
@@ -20,17 +24,23 @@ const initialValues = {
   category: 'Shopping',
 };
 
-const validationSchema = yup.object().shape({
-  item: yup.string().required('Item is required'),
-  cost: yup.number().required('Cost is required').positive(),
-  category: yup.string().required('Category is required'),
-});
+const validationSchema = (remainingIncome) => {
+  return yup.object().shape({
+    item: yup.string().required('Item is required'),
+    cost: yup
+      .number()
+      .required('Cost is required')
+      .positive()
+      .max(remainingIncome),
+    category: yup.string().required('Category is required'),
+  });
+};
 
 const ExpenseForm = ({ onSubmit, onCancel }) => {
   return (
     <View style={styles.form}>
       <FormikTextInput name="item" placeholder="Item" />
-      <FormikTextInput name="cost" placeholder="Cost" keyboardType="numeric" />
+      <FormikNumberInput name="cost" placeholder="Cost" />
       <FormikSelectInput name="category">
         {categories.map((category, i) => (
           <Picker.Item key={i} label={category} value={category} />
@@ -42,7 +52,7 @@ const ExpenseForm = ({ onSubmit, onCancel }) => {
   );
 };
 
-const AddExpense = ({ pie, updatePie, setForm }) => {
+const AddExpense = ({ pie, updatePie, setForm, remainingIncome }) => {
   const onSubmit = (values) => {
     const parsedData = {
       item: values.item,
@@ -66,7 +76,7 @@ const AddExpense = ({ pie, updatePie, setForm }) => {
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
-        validationSchema={validationSchema}
+        validationSchema={() => validationSchema(remainingIncome)}
       >
         {({ handleSubmit }) => (
           <ExpenseForm

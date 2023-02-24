@@ -34,21 +34,29 @@ const CategoryDetails = ({ expenses, category, pie, updatePie }) => {
   return (
     <View style={{ alignItems: 'center' }}>
       <Text>{category}</Text>
-      <Button title="Remove Category" onPress={() => removeCategory()} />
-      <FlatList
-        data={expenses}
-        ItemSeparatorComponent={ItemSeparator}
-        keyExtractor={(_, i) => i}
-        numColumns={4}
-        renderItem={({ item }) => (
-          <View>
-            <Text style={{ textAlign: 'center' }}>{item.item}</Text>
-            <Button onPress={() => removeExpense(item)} title="Remove" />
-            <Button onPress={() => editExpense(item)} title="Edit" />
-            <Text style={{ textAlign: 'center' }}>${item.cost}</Text>
-          </View>
-        )}
-      />
+      {expenses ? (
+        <>
+          <Button title="Remove Category" onPress={() => removeCategory()} />
+          <FlatList
+            data={expenses}
+            ItemSeparatorComponent={ItemSeparator}
+            keyExtractor={(_, i) => i}
+            numColumns={4}
+            renderItem={({ item }) => (
+              <View>
+                <Text style={{ textAlign: 'center' }}>{item.item}</Text>
+                <Button onPress={() => removeExpense(item)} title="Remove" />
+                <Button onPress={() => editExpense(item)} title="Edit" />
+                <Text style={{ textAlign: 'center' }}>
+                  ${item.cost.toLocaleString('en-US')}
+                </Text>
+              </View>
+            )}
+          />
+        </>
+      ) : (
+        <Text>Initial ${pie.income.toLocaleString('en-US')}</Text>
+      )}
     </View>
   );
 };

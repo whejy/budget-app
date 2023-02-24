@@ -2,7 +2,7 @@ import { View, Button, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import uuid from 'react-native-uuid';
-import { FormikDateInput, FormikTextInput } from './FormikInputs';
+import { FormikDateInput, FormikNumberInput } from './FormikInputs';
 import { parseNumber, parseDates } from '../../utils/helpers';
 
 const styles = StyleSheet.create({
@@ -29,7 +29,7 @@ const validationSchema = yup.object().shape({
 const PieForm = ({ onSubmit, setModalOpen }) => {
   return (
     <View style={styles.form}>
-      <FormikTextInput
+      <FormikNumberInput
         name="income"
         placeholder="Income"
         keyboardType="numeric"

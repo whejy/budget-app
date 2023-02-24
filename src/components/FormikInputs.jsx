@@ -30,6 +30,33 @@ export const FormikTextInput = ({ name, ...props }) => {
   );
 };
 
+export const FormikNumberInput = ({ name, ...props }) => {
+  const [field, meta, helpers] = useField(name);
+  const showError = meta.touched && meta.error;
+
+  const onChange = (value) => {
+    const numeric = /^[0-9\b]+$/;
+
+    if (value === '' || numeric.test(value)) {
+      helpers.setValue(value);
+    }
+  };
+
+  return (
+    <>
+      <TextInput
+        onChangeText={(value) => onChange(value)}
+        onBlur={() => helpers.setTouched(true)}
+        value={field.value}
+        error={showError}
+        keyboardType="numeric"
+        {...props}
+      />
+      {showError && <Text style={styles.errorText}>{meta.error}</Text>}
+    </>
+  );
+};
+
 export const FormikSelectInput = ({ name, ...props }) => {
   const [field, meta, helpers] = useField(name);
   const showError = meta.touched && meta.error;
@@ -89,7 +116,7 @@ export const FormikDateInput = ({ name, ...props }) => {
         name="startDate"
         // onBlur={() => helpers.setTouched(true)}
         showSoftInputOnFocus={false}
-        placeholder="YYYY-DD-MM"
+        placeholder="Period beginning"
         onPressIn={() => openModal('startDate')}
         onClick={() => openModal('startDate')}
       />
@@ -101,7 +128,7 @@ export const FormikDateInput = ({ name, ...props }) => {
         name="endDate"
         // onBlur={() => helpers.setTouched(true)}
         showSoftInputOnFocus={false}
-        placeholder="YYYY-DD-MM"
+        placeholder="Period ending"
         onPressIn={() => openModal('endDate')}
         onClick={() => openModal('endDate')}
       />
