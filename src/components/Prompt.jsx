@@ -1,11 +1,11 @@
 import { View, Text, Button } from 'react-native';
 
-const Prompt = ({ handleYes, setModalOpen, promptMessage }) => {
+const Prompt = ({ handleYes, handleNo, message }) => {
   return (
     <View>
-      <Text>{promptMessage}</Text>
+      <Text>{message}</Text>
       <Button title="Yes" onPress={handleYes} />
-      <Button title="Cancel" onPress={() => setModalOpen(false)} />
+      <Button title="Cancel" onPress={handleNo} />
     </View>
   );
 };

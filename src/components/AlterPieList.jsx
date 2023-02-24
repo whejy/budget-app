@@ -12,13 +12,17 @@ const AlterPieList = ({
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleDeleteAll = () => {
+  const closeModal = () => {
     setModalOpen(false);
+  };
+
+  const handleDeleteAll = () => {
+    closeModal();
     removeAllPies();
   };
 
   const handleDeleteSingle = () => {
-    setModalOpen(false);
+    closeModal();
     removePie();
   };
 
@@ -26,15 +30,15 @@ const AlterPieList = ({
     <AddPie setModalOpen={setModalOpen} updateList={setStoragePies} />
   ) : removeAllPies ? (
     <Prompt
-      setModalOpen={setModalOpen}
       handleYes={handleDeleteAll}
-      promptMessage={'Are you sure you want to delete all of your pie data?'}
+      handleNo={closeModal}
+      message="Are you sure you want to delete all of your pie data?"
     />
   ) : removePie ? (
     <Prompt
-      setModalOpen={setModalOpen}
       handleYes={handleDeleteSingle}
-      promptMessage="Are you sure you want to delete this pie?"
+      handleNo={closeModal}
+      message="Are you sure you want to delete this pie?"
     />
   ) : null;
 
