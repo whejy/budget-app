@@ -119,8 +119,10 @@ const Pie = ({ data, updatePie, removePie }) => {
         <Dates start={data.dates.startDate} end={data.dates.endDate} />
       </Text>
       <VictoryPie
-        // theme={VictoryTheme.material}
-        // colorScale={['tomato', 'orange', 'gold', 'cyan', 'navy']}
+        animate={{
+          animationWhitelist: ['style', 'data', 'size'],
+          duration: 2000,
+        }}
         data={pieData}
         events={events}
         labels={({ datum }) =>
@@ -129,14 +131,17 @@ const Pie = ({ data, updatePie, removePie }) => {
         style={{
           data: {
             fill: ({ datum }) => datum.fill,
+            boxShadow: '5px 5px 15px 5px #000000',
           },
           labels: { fontSize: 16 },
-          parent: { border: '1px solid #ccc', paddingBottom: 0 },
+          parent: {
+            border: '1px solid #ccc',
+            paddingBottom: 0,
+          },
         }}
         labelComponent={<VictoryLabel textAnchor={'middle'} />}
       />
       <AlterPieList buttonText="Remove Pie" removePie={handleDelete} />
-      {/* <Button title="Remove Pie" onPress={() => removePie(data)} /> */}
       {category?.length > 0 && (
         <CategoryDetails
           category={category}

@@ -12,7 +12,7 @@ class PieStorage {
 
   async setPies(newPie) {
     const currentPies = await this.getPies();
-    const updatedPies = [...currentPies, newPie];
+    const updatedPies = [newPie, ...currentPies];
     try {
       await AsyncStorage.setItem(
         `${this.namespace}:pies`,
