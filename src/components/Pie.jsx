@@ -104,7 +104,7 @@ const Pie = ({ data, updatePie, removePie }) => {
   ];
 
   return (
-    <View>
+    <View style={styles.container}>
       <Text style={{ textAlign: 'center' }}>
         <Dates start={data.dates.startDate} end={data.dates.endDate} />
       </Text>
@@ -129,15 +129,6 @@ const Pie = ({ data, updatePie, removePie }) => {
         }}
         labelComponent={<VictoryLabel textAnchor={'middle'} />}
       />
-      <View style={styles.buttons}>
-        <AlterPies buttonText="Delete Pie" removePie={handleDelete} />
-        <AlterPies
-          buttonText="Add Expense"
-          updatePie={updatePie}
-          pie={data}
-          remainingIncome={remainingIncome}
-        />
-      </View>
       {category?.length > 0 && (
         <CategoryDetails
           category={category}
@@ -146,11 +137,25 @@ const Pie = ({ data, updatePie, removePie }) => {
           expenses={expenses[category]}
         />
       )}
+      <View style={styles.buttons}>
+        <AlterPies
+          buttonText="Add Expense"
+          updatePie={updatePie}
+          pie={data}
+          remainingIncome={remainingIncome}
+        />
+        <AlterPies buttonText="Delete Pie" removePie={handleDelete} />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
   buttons: {
     display: 'flex',
     flexDirection: 'row',

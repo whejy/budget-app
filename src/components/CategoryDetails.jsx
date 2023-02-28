@@ -1,10 +1,13 @@
-import { Text, FlatList, View, StyleSheet, Button } from 'react-native';
+import {
+  Text,
+  FlatList,
+  View,
+  StyleSheet,
+  Button,
+  Pressable,
+} from 'react-native';
+import { Subheading } from './Text';
 
-const styles = StyleSheet.create({
-  separator: {
-    height: 10,
-  },
-});
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const CategoryDetails = ({ expenses, category, pie, updatePie }) => {
@@ -32,11 +35,17 @@ const CategoryDetails = ({ expenses, category, pie, updatePie }) => {
 
   expenses?.sort((a, b) => b.cost - a.cost);
   return (
-    <View style={{ alignItems: 'center' }}>
-      <Text>{category}</Text>
+    <View style={styles.container}>
       {expenses ? (
         <>
-          <Button title="Remove Category" onPress={() => removeCategory()} />
+          <View style={styles.categoryTitleContainer}>
+            <Text style={styles.hidden}>X</Text>
+            <Subheading style={styles.categoryTitle}>{category}</Subheading>
+            <Pressable onPress={() => removeCategory()}>
+              <Text style={styles.delete}>X</Text>
+            </Pressable>
+            {/* <Button title="Delete Category" onPress={() => removeCategory()} /> */}
+          </View>
           <FlatList
             data={expenses}
             ItemSeparatorComponent={ItemSeparator}
@@ -45,7 +54,7 @@ const CategoryDetails = ({ expenses, category, pie, updatePie }) => {
             renderItem={({ item }) => (
               <View>
                 <Text style={{ textAlign: 'center' }}>{item.item}</Text>
-                <Button onPress={() => removeExpense(item)} title="Remove" />
+                <Button onPress={() => removeExpense(item)} title="Delete" />
                 <Button onPress={() => editExpense(item)} title="Edit" />
                 <Text style={{ textAlign: 'center' }}>
                   ${item.cost.toLocaleString('en-US')}
@@ -55,10 +64,38 @@ const CategoryDetails = ({ expenses, category, pie, updatePie }) => {
           />
         </>
       ) : (
-        <Text>Initial ${pie.income.toLocaleString('en-US')}</Text>
+        <Text>
+          You started this period with ${pie.income.toLocaleString('en-US')}
+        </Text>
       )}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  separator: {
+    height: 10,
+  },
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  categoryTitleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  hidden: {
+    opacity: 0,
+    height: 0,
+  },
+  categoryTitle: { paddingHorizontal: 10 },
+  delete: {
+    fontWeight: 'bold',
+    fontSize: 22,
+    color: 'red',
+  },
+});
 
 export default CategoryDetails;

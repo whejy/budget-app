@@ -87,7 +87,7 @@ const AddExpense = ({ pie, updatePie, setModalOpen, remainingIncome }) => {
 const styles = StyleSheet.create({
   buttons: {
     display: 'flex',
-    flexDirection: 'row-reverse',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -15,6 +15,9 @@ const styles = StyleSheet.create({
   colorPrimary: {
     color: theme.colors.primary,
   },
+  colorDates: {
+    color: theme.colors.dateText,
+  },
   fontSizeSubheading: {
     fontSize: theme.fontSizes.subheading,
   },
@@ -34,6 +37,7 @@ const Text = ({ color, fontSize, fontWeight, style, ...props }) => {
     styles.text,
     color === 'textSecondary' && styles.colorTextSecondary,
     color === 'primary' && styles.colorPrimary,
+    color === 'dates' && styles.colorDates,
     fontSize === 'subheading' && styles.fontSizeSubheading,
     fontSize === 'heading' && styles.fontSizeHeading,
     fontWeight === 'bold' && styles.fontWeightBold,
@@ -60,7 +64,7 @@ export const Subheading = ({ ...props }) => {
 };
 
 export const DatesText = ({ ...props }) => {
-  return <Text fontSize="subheading" fontWeight="italic" {...props} />;
+  return <Text fontSize="subheading" color="dates" {...props} />;
 };
 
 export default Text;

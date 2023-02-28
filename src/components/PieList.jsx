@@ -4,21 +4,6 @@ import Pie from './Pie';
 import AlterPies from './AlterPies';
 import PieStorage from '../../utils/pieStorage';
 
-const styles = StyleSheet.create({
-  separator: {
-    height: 50,
-  },
-  container: {
-    backgroundColor: 'white',
-  },
-  buttons: {
-    display: 'flex',
-    flexDirection: 'row-reverse',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
-
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const PieList = () => {
@@ -83,5 +68,20 @@ const PieList = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  separator: {
+    height: 50,
+  },
+  container: {
+    backgroundColor: 'white',
+  },
+  buttons: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default PieList;

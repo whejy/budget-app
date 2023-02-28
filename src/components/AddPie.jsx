@@ -5,14 +5,6 @@ import uuid from 'react-native-uuid';
 import { FormikDateInput, FormikNumberInput } from './FormikInputs';
 import { parseNumber, parseDates } from '../../utils/helpers';
 
-const styles = StyleSheet.create({
-  form: {
-    display: 'flex',
-    backgroundColor: 'white',
-    padding: 15,
-  },
-});
-
 const initialValues = {
   income: '',
   dates: { startDate: '', endDate: '' },
@@ -37,8 +29,10 @@ const PieForm = ({ onSubmit, setModalOpen }) => {
         onBlur={null}
       />
       <FormikDateInput name="dates" />
-      <Button title="Add Pie" onPress={onSubmit} />
-      <Button title="Cancel" onPress={() => setModalOpen(false)} />
+      <View style={styles.buttons}>
+        <Button title="Add Pie" onPress={onSubmit} />
+        <Button title="Cancel" onPress={() => setModalOpen(false)} />
+      </View>
     </View>
   );
 };
@@ -76,5 +70,19 @@ const AddPie = ({ updateList, setModalOpen }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  buttons: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  form: {
+    display: 'flex',
+    backgroundColor: 'white',
+    padding: 15,
+  },
+});
 
 export default AddPie;
