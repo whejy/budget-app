@@ -1,13 +1,21 @@
 import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View, Text } from 'react-native';
 import Pie from './Pie';
-import AlterPieList from './AlterPieList';
+import AlterPies from './AlterPies';
 import PieStorage from '../../utils/pieStorage';
-import pieStorage from '../../utils/pieStorage';
 
 const styles = StyleSheet.create({
   separator: {
-    height: 10,
+    height: 50,
+  },
+  container: {
+    backgroundColor: 'white',
+  },
+  buttons: {
+    display: 'flex',
+    flexDirection: 'row-reverse',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
@@ -32,12 +40,12 @@ const PieList = () => {
   }
 
   async function removeAllPies() {
-    await pieStorage.removePies();
+    await PieStorage.removePies();
     return setPies([]);
   }
 
   async function removePie(pie) {
-    const updatedPies = await pieStorage.removePie(pie);
+    const updatedPies = await PieStorage.removePie(pie);
     return setPies(updatedPies);
   }
 
@@ -46,14 +54,15 @@ const PieList = () => {
   }, []);
 
   return (
-    <View style={{ paddingBottom: 350 }}>
-      <AlterPieList buttonText="New Pie" setStoragePies={setStoragePies} />
+    <View style={styles.container}>
+      <View style={styles.buttons}>
+        <AlterPies buttonText="New Pie" setStoragePies={setStoragePies} />
+        {pies.length > 0 && (
+          <AlterPies buttonText="Delete Pies" removeAllPies={removeAllPies} />
+        )}
+      </View>
       {pies.length > 0 ? (
         <View>
-          <AlterPieList
-            buttonText="Remove Pies"
-            removeAllPies={removeAllPies}
-          />
           <FlatList
             data={pies}
             ItemSeparatorComponent={ItemSeparator}

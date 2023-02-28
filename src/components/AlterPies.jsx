@@ -3,11 +3,15 @@ import { useState } from 'react';
 import MyModal from './Modal';
 import AddPie from './AddPie';
 import Prompt from './Prompt';
+import AddExpense from './AddExpense';
 
-const AlterPieList = ({
+const AlterPies = ({
   setStoragePies,
   removeAllPies,
   removePie,
+  updatePie,
+  pie,
+  remainingIncome,
   buttonText,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -40,6 +44,13 @@ const AlterPieList = ({
       handleNo={closeModal}
       message="Are you sure you want to delete this pie?"
     />
+  ) : updatePie ? (
+    <AddExpense
+      updatePie={updatePie}
+      pie={pie}
+      remainingIncome={remainingIncome}
+      setModalOpen={setModalOpen}
+    />
   ) : null;
 
   return (
@@ -56,4 +67,4 @@ const AlterPieList = ({
   );
 };
 
-export default AlterPieList;
+export default AlterPies;

@@ -1,18 +1,10 @@
 import { VictoryPie, VictoryLabel } from 'victory-native';
 import React, { useState } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 import CategoryDetails from './CategoryDetails';
-import FormToggle from './FormToggle';
-import AddExpense from './AddExpense';
 import Dates from './Dates';
-import AlterPieList from './AlterPieList';
+import AlterPies from './AlterPies';
 import theme from '../../theme';
-
-// const styles = StyleSheet.create({
-//   separator: {
-//     height: 10,
-//   },
-// });
 
 const Pie = ({ data, updatePie, removePie }) => {
   const [category, setCategory] = useState('');
@@ -44,13 +36,11 @@ const Pie = ({ data, updatePie, removePie }) => {
 
     const remainingIncome = pieData.reduce((acc, curr) => acc - curr.y, income);
 
-    pieData
-      .sort((a, b) => b.y - a.y)
-      .push({
-        x: 'Income',
-        y: remainingIncome,
-        fill: theme.colors.pieData.Income,
-      });
+    pieData.push({
+      x: 'Income',
+      y: remainingIncome,
+      fill: theme.colors.pieData.Income,
+    });
 
     return { pieData, remainingIncome };
   };
@@ -120,7 +110,6 @@ const Pie = ({ data, updatePie, removePie }) => {
       </Text>
       <VictoryPie
         animate={{
-          animationWhitelist: ['style', 'data', 'size'],
           duration: 2000,
         }}
         data={pieData}
@@ -131,7 +120,6 @@ const Pie = ({ data, updatePie, removePie }) => {
         style={{
           data: {
             fill: ({ datum }) => datum.fill,
-            boxShadow: '5px 5px 15px 5px #000000',
           },
           labels: { fontSize: 16 },
           parent: {
@@ -141,7 +129,15 @@ const Pie = ({ data, updatePie, removePie }) => {
         }}
         labelComponent={<VictoryLabel textAnchor={'middle'} />}
       />
-      <AlterPieList buttonText="Remove Pie" removePie={handleDelete} />
+      <View style={styles.buttons}>
+        <AlterPies buttonText="Delete Pie" removePie={handleDelete} />
+        <AlterPies
+          buttonText="Add Expense"
+          updatePie={updatePie}
+          pie={data}
+          remainingIncome={remainingIncome}
+        />
+      </View>
       {category?.length > 0 && (
         <CategoryDetails
           category={category}
@@ -150,15 +146,17 @@ const Pie = ({ data, updatePie, removePie }) => {
           expenses={expenses[category]}
         />
       )}
-      <FormToggle buttonText={'Add Expense'}>
-        <AddExpense
-          updatePie={updatePie}
-          pie={data}
-          remainingIncome={remainingIncome}
-        />
-      </FormToggle>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  buttons: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
 
 export default Pie;

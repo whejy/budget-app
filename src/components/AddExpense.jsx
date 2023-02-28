@@ -10,14 +10,6 @@ import {
 import { categories } from '../data/categories';
 import { parseNumber } from '../../utils/helpers';
 
-const styles = StyleSheet.create({
-  form: {
-    display: 'flex',
-    backgroundColor: 'white',
-    padding: 15,
-  },
-});
-
 const initialValues = {
   item: '',
   cost: '',
@@ -46,13 +38,15 @@ const ExpenseForm = ({ onSubmit, onCancel }) => {
           <Picker.Item key={i} label={category} value={category} />
         ))}
       </FormikSelectInput>
-      <Button title="Add Expense" onPress={onSubmit} />
-      <Button title="Cancel" onPress={onCancel} />
+      <View style={styles.buttons}>
+        <Button title="Add Expense" onPress={onSubmit} />
+        <Button title="Cancel" onPress={onCancel} />
+      </View>
     </View>
   );
 };
 
-const AddExpense = ({ pie, updatePie, setForm, remainingIncome }) => {
+const AddExpense = ({ pie, updatePie, setModalOpen, remainingIncome }) => {
   const onSubmit = (values) => {
     const parsedData = {
       id: Math.round(1000 * Math.random()),
@@ -68,7 +62,7 @@ const AddExpense = ({ pie, updatePie, setForm, remainingIncome }) => {
     };
 
     addItem(parsedData);
-    setForm(false);
+    setModalOpen(false);
     return updatePie(pie);
   };
 
@@ -82,12 +76,26 @@ const AddExpense = ({ pie, updatePie, setForm, remainingIncome }) => {
         {({ handleSubmit }) => (
           <ExpenseForm
             onSubmit={handleSubmit}
-            onCancel={() => setForm(false)}
+            onCancel={() => setModalOpen(false)}
           />
         )}
       </Formik>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  buttons: {
+    display: 'flex',
+    flexDirection: 'row-reverse',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  form: {
+    display: 'flex',
+    backgroundColor: 'white',
+    padding: 15,
+  },
+});
 
 export default AddExpense;
