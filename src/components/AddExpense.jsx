@@ -28,7 +28,7 @@ const validationSchema = (remainingIncome) => {
   });
 };
 
-const ExpenseForm = ({ onSubmit, onCancel }) => {
+export const ExpenseForm = ({ onSubmit, onCancel }) => {
   return (
     <View style={styles.form}>
       <FormikTextInput name="item" placeholder="Item" />

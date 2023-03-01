@@ -121,10 +121,7 @@ const Pie = ({ data, updatePie, removePie }) => {
           data: {
             fill: ({ datum }) => datum.fill,
           },
-          labels: { fontSize: 16 },
-          parent: {
-            border: '1px solid #ccc',
-          },
+          labels: { fontSize: 16, padding: 10 },
         }}
         labelComponent={<VictoryLabel textAnchor={'middle'} />}
       />

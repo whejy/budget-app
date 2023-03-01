@@ -1,12 +1,52 @@
 import { Text, FlatList, View, StyleSheet, Pressable } from 'react-native';
+import { useState } from 'react';
+import MyModal from './Modal';
+import EditExpense from './EditExpense';
 import { Subheading } from './Text';
 
 const ItemSeparator = () => <View style={styles.separator} />;
+
+const EditExpenses = ({ item, updateExpense, removeExpense, category }) => {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  return (
+    <>
+      <Pressable style={styles.itemDetails} onPress={() => setModalOpen(true)}>
+        <Text style={{ textAlign: 'center' }}>{item.item}</Text>
+        <Text>${item.cost.toLocaleString('en-US')}</Text>
+      </Pressable>
+      <MyModal
+        animation="fade"
+        modalOpen={modalOpen}
+        setModalOpen={setModalOpen}
+      >
+        <EditExpense
+          item={item}
+          updateExpense={updateExpense}
+          removeExpense={removeExpense}
+          setModalOpen={setModalOpen}
+          category={category}
+        />
+      </MyModal>
+    </>
+  );
+};
 
 const CategoryDetails = ({ expenses, category, pie, updatePie }) => {
   const removeCategory = () => {
     delete pie.expenses[category];
     updatePie(pie);
+  };
+
+  const handleRemove = (expenseToRemove) => {
+    const updatedPie = removeExpense(expenseToRemove);
+    updatePie(updatedPie);
+  };
+
+  const handleUpdate = (expenseToUpdate) => {
+    const { updatedItem, updatedCategory } = expenseToUpdate;
+    const pie = removeExpense(updatedItem);
+    updateExpense({ pie, updatedItem, updatedCategory });
   };
 
   const removeExpense = (expenseToRemove) => {
@@ -19,6 +59,18 @@ const CategoryDetails = ({ expenses, category, pie, updatePie }) => {
       ? (pie.expenses[category] = updatedCategory)
       : delete pie.expenses[category];
 
+    return pie;
+  };
+
+  const updateExpense = (data) => {
+    const { pie, updatedItem, updatedCategory } = data;
+
+    const addItem = ({ id, item, cost, category }) => {
+      Object.keys(pie.expenses).includes(category)
+        ? pie.expenses[category].push({ id, item, cost })
+        : (pie.expenses[category] = [{ id, item, cost }]);
+    };
+    addItem({ ...updatedItem, category: updatedCategory });
     updatePie(pie);
   };
 
@@ -42,13 +94,12 @@ const CategoryDetails = ({ expenses, category, pie, updatePie }) => {
             numColumns={4}
             columnWrapperStyle={styles.itemContainer}
             renderItem={({ item }) => (
-              <Pressable
-                style={styles.itemDetails}
-                onPress={() => removeExpense(item)}
-              >
-                <Text style={{ textAlign: 'center' }}>{item.item}</Text>
-                <Text>${item.cost.toLocaleString('en-US')}</Text>
-              </Pressable>
+              <EditExpenses
+                updateExpense={handleUpdate}
+                removeExpense={handleRemove}
+                item={item}
+                category={category}
+              />
             )}
           />
         </>
