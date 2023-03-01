@@ -1,20 +1,9 @@
-import {
-  Text,
-  FlatList,
-  View,
-  StyleSheet,
-  Button,
-  Pressable,
-} from 'react-native';
+import { Text, FlatList, View, StyleSheet, Pressable } from 'react-native';
 import { Subheading } from './Text';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const CategoryDetails = ({ expenses, category, pie, updatePie }) => {
-  const editExpense = (item) => {
-    console.log(item);
-  };
-
   const removeCategory = () => {
     delete pie.expenses[category];
     updatePie(pie);
@@ -38,7 +27,7 @@ const CategoryDetails = ({ expenses, category, pie, updatePie }) => {
     <View style={styles.container}>
       {expenses ? (
         <>
-          <View style={styles.categoryTitleContainer}>
+          <View style={styles.categoryContainer}>
             <Text style={styles.hidden}>X</Text>
             <Subheading style={styles.categoryTitle}>{category}</Subheading>
             <Pressable onPress={() => removeCategory()}>
@@ -51,15 +40,15 @@ const CategoryDetails = ({ expenses, category, pie, updatePie }) => {
             ItemSeparatorComponent={ItemSeparator}
             keyExtractor={(_, i) => i}
             numColumns={4}
+            columnWrapperStyle={styles.itemContainer}
             renderItem={({ item }) => (
-              <View>
+              <Pressable
+                style={styles.itemDetails}
+                onPress={() => removeExpense(item)}
+              >
                 <Text style={{ textAlign: 'center' }}>{item.item}</Text>
-                <Button onPress={() => removeExpense(item)} title="Delete" />
-                <Button onPress={() => editExpense(item)} title="Edit" />
-                <Text style={{ textAlign: 'center' }}>
-                  ${item.cost.toLocaleString('en-US')}
-                </Text>
-              </View>
+                <Text>${item.cost.toLocaleString('en-US')}</Text>
+              </Pressable>
             )}
           />
         </>
@@ -81,18 +70,28 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  categoryTitleContainer: {
+  categoryContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    paddingVertical: 10,
+  },
+  itemContainer: {
+    paddingBottom: 10,
+  },
+  itemDetails: {
+    width: 80,
+    paddingVertical: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   hidden: {
     opacity: 0,
     height: 0,
   },
-  categoryTitle: { paddingHorizontal: 10 },
+  categoryTitle: {
+    paddingHorizontal: 10,
+  },
   delete: {
-    fontWeight: 'bold',
     fontSize: 22,
     color: 'red',
   },

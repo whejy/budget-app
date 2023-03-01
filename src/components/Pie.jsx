@@ -124,7 +124,6 @@ const Pie = ({ data, updatePie, removePie }) => {
           labels: { fontSize: 16 },
           parent: {
             border: '1px solid #ccc',
-            paddingBottom: 0,
           },
         }}
         labelComponent={<VictoryLabel textAnchor={'middle'} />}

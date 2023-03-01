@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     height: 50,
   },
   container: {
-    backgroundColor: 'white',
+    display: 'flex',
   },
   buttons: {
     display: 'flex',
