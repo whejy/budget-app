@@ -1,16 +1,39 @@
-import { StyleSheet, Button } from 'react-native';
+import { TextInput as NativeTextInput, StyleSheet, Button } from 'react-native';
 import { useState } from 'react';
+import { Picker } from '@react-native-picker/picker';
+import { Calendar } from 'react-native-calendars';
 import { useField } from 'formik';
-import { TextInput, SelectInput } from './InputTypes';
+import theme from '../../theme';
 import MyModal from './Modal';
 import Text from './Text';
-import { Calendar } from 'react-native-calendars';
 
 const styles = StyleSheet.create({
+  input: {
+    borderColor: theme.colors.textSecondary,
+    borderWidth: 1,
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 5,
+  },
+  error: {
+    borderColor: theme.colors.error,
+  },
   errorText: {
     marginTop: 5,
   },
 });
+
+const TextInput = ({ style, error, ...props }) => {
+  const textInputStyle = [styles.input, error && styles.error, style];
+
+  return <NativeTextInput style={textInputStyle} {...props} />;
+};
+
+const SelectInput = ({ style, error, ...props }) => {
+  const selectInputStyle = [styles.input, error && styles.error, style];
+
+  return <Picker style={selectInputStyle} {...props} />;
+};
 
 export const FormikTextInput = ({ name, ...props }) => {
   const [field, meta, helpers] = useField(name);

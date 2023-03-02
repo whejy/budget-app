@@ -1,12 +1,10 @@
 import { View, Button } from 'react-native';
 import { useState } from 'react';
 import MyModal from './Modal';
-import AddPie from './AddPie';
 import Prompt from './Prompt';
 import AddExpense from './AddExpense';
 
 const AlterPies = ({
-  setStoragePies,
   removeAllPies,
   removePie,
   updatePie,
@@ -30,9 +28,7 @@ const AlterPies = ({
     removePie();
   };
 
-  const child = setStoragePies ? (
-    <AddPie setModalOpen={setModalOpen} updateList={setStoragePies} />
-  ) : removeAllPies ? (
+  const child = removeAllPies ? (
     <Prompt
       handleYes={handleDeleteAll}
       handleNo={closeModal}

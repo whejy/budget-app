@@ -1,13 +1,16 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View, Text } from 'react-native';
+import { FlatList, StyleSheet, View, Text, Button } from 'react-native';
 import Pie from './Pie';
-import AlterPies from './AlterPies';
+// import AlterPies from './AlterPies';
 import PieStorage from '../../utils/pieStorage';
+import AddPieModal from '../Modals/AddPieModal';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const PieList = () => {
   const [pies, setPies] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
 
   async function getStoragePies() {
     const initialPies = await PieStorage.getPies();
@@ -34,17 +37,26 @@ const PieList = () => {
     return setPies(updatedPies);
   }
 
+  const closeModal = () => setModalOpen(false);
+
   useEffect(() => {
     getStoragePies();
   }, []);
 
   return (
     <View style={styles.container}>
+      <AddPieModal
+        onClose={closeModal}
+        modalOpen={modalOpen}
+        updateList={setStoragePies}
+      />
       <View style={styles.buttons}>
-        <AlterPies buttonText="New Pie" setStoragePies={setStoragePies} />
-        {pies.length > 0 && (
+        <Button title="New Pie" onPress={() => setModalOpen(true)} />
+        {pies.length > 0 && <Button title="Delete Pies" />}
+        {/* <AlterPies buttonText="New Pie" setStoragePies={setStoragePies} /> */}
+        {/* {pies.length > 0 && (
           <AlterPies buttonText="Delete Pies" removeAllPies={removeAllPies} />
-        )}
+        )} */}
       </View>
       {pies.length > 0 ? (
         <View>

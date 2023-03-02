@@ -1,14 +1,22 @@
+/* eslint-disable no-unused-vars */
 import { VictoryPie, VictoryLabel } from 'victory-native';
 import React, { useState } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Button } from 'react-native';
 import CategoryDetails from './CategoryDetails';
 import Dates from './Dates';
 import AlterPies from './AlterPies';
 import theme from '../../theme';
+import AddExpenseModal from '../Modals/AddExpenseModal';
 
 const Pie = ({ data, updatePie, removePie }) => {
   const [category, setCategory] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
+
   const { expenses, income } = data;
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   const handlePieUpdate = (pie) => {
     !Object.keys(expenses).includes(category) && setCategory('');
@@ -133,14 +141,23 @@ const Pie = ({ data, updatePie, removePie }) => {
           expenses={expenses[category]}
         />
       )}
+      <AddExpenseModal
+        onClose={closeModal}
+        modalOpen={modalOpen}
+        updatePie={updatePie}
+        pie={data}
+        remainingIncome={remainingIncome}
+      />
       <View style={styles.buttons}>
-        <AlterPies
+        <Button title="Add Expense" onPress={() => setModalOpen(true)} />
+        {/* <AlterPies
           buttonText="Add Expense"
           updatePie={updatePie}
           pie={data}
           remainingIncome={remainingIncome}
-        />
-        <AlterPies buttonText="Delete Pie" removePie={handleDelete} />
+        /> */}
+        <Button title="Delete Pie" />
+        {/* <AlterPies buttonText="Delete Pie" removePie={handleDelete} /> */}
       </View>
     </View>
   );

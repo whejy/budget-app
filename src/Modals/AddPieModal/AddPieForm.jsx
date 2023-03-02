@@ -2,8 +2,11 @@ import { View, Button, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import uuid from 'react-native-uuid';
-import { FormikDateInput, FormikNumberInput } from './FormikInputs';
-import { parseNumber, parseDates } from '../../utils/helpers';
+import {
+  FormikDateInput,
+  FormikNumberInput,
+} from '../../components/FormikInputs';
+import { parseNumber, parseDates } from '../../../utils/helpers';
 
 const initialValues = {
   income: '',
@@ -18,7 +21,7 @@ const validationSchema = yup.object().shape({
   }),
 });
 
-const PieForm = ({ onSubmit, setModalOpen }) => {
+const FormFields = ({ onSubmit, closeModal }) => {
   return (
     <View style={styles.form}>
       <FormikNumberInput
@@ -31,13 +34,13 @@ const PieForm = ({ onSubmit, setModalOpen }) => {
       <FormikDateInput name="dates" />
       <View style={styles.buttons}>
         <Button title="Add Pie" onPress={onSubmit} />
-        <Button title="Cancel" onPress={() => setModalOpen(false)} />
+        <Button title="Cancel" onPress={closeModal} />
       </View>
     </View>
   );
 };
 
-const AddPie = ({ updateList, setModalOpen }) => {
+const AddPieForm = ({ updateList, closeModal }) => {
   const onSubmit = (values) => {
     class Pie {
       constructor({ dates, income }) {
@@ -53,7 +56,7 @@ const AddPie = ({ updateList, setModalOpen }) => {
       income: parseNumber(values.income),
     };
 
-    setModalOpen(false);
+    closeModal();
     return updateList(new Pie(parsedData));
   };
   return (
@@ -64,7 +67,7 @@ const AddPie = ({ updateList, setModalOpen }) => {
         validationSchema={validationSchema}
       >
         {({ handleSubmit }) => (
-          <PieForm setModalOpen={setModalOpen} onSubmit={handleSubmit} />
+          <FormFields closeModal={closeModal} onSubmit={handleSubmit} />
         )}
       </Formik>
     </View>
@@ -85,4 +88,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddPie;
+export default AddPieForm;
