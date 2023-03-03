@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View, Text, Button } from 'react-native';
+import { FlatList, StyleSheet, View, Button } from 'react-native';
 import Pie from './Pie';
 import Prompt from '../Modals/Prompt';
 import PieStorage from '../../utils/pieStorage';
 import AddPieModal from '../Modals/AddPieModal';
+import { Subheading } from './Text';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
@@ -84,7 +85,7 @@ const PieList = () => {
           keyExtractor={(_, i) => i}
         />
       ) : (
-        <Text>Add your first pie!</Text>
+        <Subheading style={styles.emptyList}>Add your first pie!</Subheading>
       )}
     </View>
   );
@@ -97,6 +98,9 @@ const styles = StyleSheet.create({
   pieList: {
     paddingTop: 20,
     paddingBottom: 200,
+  },
+  emptyList: {
+    textAlign: 'center',
   },
   buttons: {
     display: 'flex',
