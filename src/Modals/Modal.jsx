@@ -3,20 +3,19 @@ import { Modal, StyleSheet, Pressable, View } from 'react-native';
 
 const MyModal = ({ modalOpen, onClose, animation, children }) => {
   return (
-    <View style={styles.centeredView}>
-      <Modal
-        animationType={animation}
-        transparent={true}
-        visible={modalOpen}
-        onRequestClose={onClose}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Pressable>{children}</Pressable>
-          </View>
+    <Modal
+      style={styles.centeredView}
+      animationType={animation}
+      transparent={true}
+      visible={modalOpen}
+      onRequestClose={onClose}
+    >
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <Pressable>{children}</Pressable>
         </View>
-      </Modal>
-    </View>
+      </View>
+    </Modal>
   );
 };
 

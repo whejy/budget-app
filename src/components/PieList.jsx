@@ -97,12 +97,14 @@ const styles = StyleSheet.create({
   },
   container: {
     display: 'flex',
+    paddingBottom: 210,
   },
   buttons: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingVertical: 10,
   },
 });
 

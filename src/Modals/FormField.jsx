@@ -7,22 +7,6 @@ import theme from '../../theme';
 import MyModal from '../Modals/Modal';
 import Text from '../components/Text';
 
-const styles = StyleSheet.create({
-  input: {
-    borderColor: theme.colors.textSecondary,
-    borderWidth: 1,
-    padding: 10,
-    marginVertical: 5,
-    borderRadius: 5,
-  },
-  error: {
-    borderColor: theme.colors.error,
-  },
-  errorText: {
-    marginTop: 5,
-  },
-});
-
 const TextInput = ({ style, error, ...props }) => {
   const textInputStyle = [styles.input, error && styles.error, style];
   return <NativeTextInput style={textInputStyle} {...props} />;
@@ -89,6 +73,8 @@ export const FormikSelectInput = ({ name, ...props }) => {
         onBlur={() => helpers.setTouched(true)}
         selectedValue={field.value}
         error={showError}
+        borderWidth={0}
+        style={{ borderWidth: 0 }}
         {...props}
       />
       {showError && <Text style={styles.errorText}>{meta.error}</Text>}
@@ -174,3 +160,19 @@ export const FormikDateInput = ({ name, ...props }) => {
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  input: {
+    borderColor: theme.colors.textSecondary,
+    borderWidth: 1,
+    padding: 10,
+    marginVertical: 5,
+    borderRadius: 5,
+  },
+  error: {
+    borderColor: theme.colors.error,
+  },
+  errorText: {
+    marginTop: 5,
+  },
+});
