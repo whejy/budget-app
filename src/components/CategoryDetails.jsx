@@ -47,15 +47,15 @@ const CategoryDetails = ({
     updatePie(pie);
   };
 
-  const handleRemove = (expenseToRemove) => {
+  const handleRemoveExpense = (expenseToRemove) => {
     const updatedPie = removeExpense(expenseToRemove);
     updatePie(updatedPie);
   };
 
-  const handleUpdate = (expenseToUpdate) => {
-    const { updatedItem, updatedCategory } = expenseToUpdate;
-    const pie = removeExpense(updatedItem);
-    updateExpense({ pie, updatedItem, updatedCategory });
+  const handleUpdateExpense = (expenseToUpdate) => {
+    const { updatedItem, newCategory } = expenseToUpdate;
+    const updatedPie = removeExpense(updatedItem);
+    addExpense({ updatedPie, updatedItem, newCategory });
   };
 
   const removeExpense = (expenseToRemove) => {
@@ -71,15 +71,15 @@ const CategoryDetails = ({
     return pie;
   };
 
-  const updateExpense = (data) => {
-    const { pie, updatedItem, updatedCategory } = data;
+  const addExpense = (data) => {
+    const { updatedPie, updatedItem, newCategory } = data;
 
     const addItem = ({ id, item, cost, category }) => {
-      Object.keys(pie.expenses).includes(category)
-        ? pie.expenses[category].push({ id, item, cost })
-        : (pie.expenses[category] = [{ id, item, cost }]);
+      Object.keys(updatedPie.expenses).includes(category)
+        ? updatedPie.expenses[category].push({ id, item, cost })
+        : (updatedPie.expenses[category] = [{ id, item, cost }]);
     };
-    addItem({ ...updatedItem, category: updatedCategory });
+    addItem({ ...updatedItem, category: newCategory });
     updatePie(pie);
   };
 
@@ -94,7 +94,6 @@ const CategoryDetails = ({
             <Pressable onPress={() => removeCategory()}>
               <Text style={styles.delete}>X</Text>
             </Pressable>
-            {/* <Button title="Delete Category" onPress={() => removeCategory()} /> */}
           </View>
           <FlatList
             data={expenses}
@@ -104,8 +103,8 @@ const CategoryDetails = ({
             columnWrapperStyle={styles.itemContainer}
             renderItem={({ item }) => (
               <EditExpenses
-                updateExpense={handleUpdate}
-                removeExpense={handleRemove}
+                updateExpense={handleUpdateExpense}
+                removeExpense={handleRemoveExpense}
                 item={item}
                 category={category}
                 remainingIncome={remainingIncome}

@@ -10,18 +10,6 @@ import {
   FormikNumberInput,
 } from '../FormField';
 
-const validationSchema = (remainingIncome) => {
-  return yup.object().shape({
-    item: yup.string().required('Item is required'),
-    cost: yup
-      .number()
-      .required('Cost is required')
-      .positive()
-      .max(remainingIncome),
-    category: yup.string().required('Category is required'),
-  });
-};
-
 const FormFields = ({ onSubmit, onCancel }) => {
   return (
     <View style={styles.form}>
@@ -51,6 +39,18 @@ const AddExpenseForm = ({
     item: '',
     cost: '',
     category: (selectedCategory !== 'Income' && selectedCategory) || 'Shopping',
+  };
+
+  const validationSchema = () => {
+    return yup.object().shape({
+      item: yup.string().required('Item is required'),
+      cost: yup
+        .number()
+        .required('Cost is required')
+        .positive()
+        .max(remainingIncome),
+      category: yup.string().required('Category is required'),
+    });
   };
 
   const onSubmit = (values) => {

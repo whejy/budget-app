@@ -61,14 +61,16 @@ const EditExpenseForm = ({
   };
 
   const onSubmit = (values) => {
-    const updatedCategory = values.category;
-    const updatedItem = {
-      id: item.id,
-      item: values.item,
-      cost: parseNumber(values.cost),
-    };
     closeModal();
-    return updateExpense({ updatedItem, updatedCategory });
+    if (values !== initialValues) {
+      const newCategory = values.category;
+      const updatedItem = {
+        id: item.id,
+        item: values.item,
+        cost: parseNumber(values.cost),
+      };
+      return updateExpense({ updatedItem, newCategory });
+    }
   };
 
   return (

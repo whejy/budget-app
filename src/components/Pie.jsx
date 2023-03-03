@@ -1,6 +1,6 @@
 import { VictoryPie, VictoryLabel } from 'victory-native';
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Button } from 'react-native';
 import CategoryDetails from './CategoryDetails';
 import Dates from './Dates';
 import Prompt from '../Modals/Prompt';
@@ -60,30 +60,6 @@ const Pie = ({ data, updatePie, removePie }) => {
     {
       target: 'data',
       eventHandlers: {
-        onClick: () => {
-          return [
-            {
-              eventKey: 'all',
-              mutation: () => null,
-            },
-
-            {
-              mutation: (props) => {
-                setCategory(props.datum.x);
-                return props.datum.x === category
-                  ? setCategory(null)
-                  : {
-                      style: {
-                        ...props.style,
-                        stroke: props.style.fill,
-                        fillOpacity: 0.6,
-                        strokeWidth: 4,
-                      },
-                    };
-              },
-            },
-          ];
-        },
         onPressIn: () => {
           return [
             {
@@ -114,9 +90,7 @@ const Pie = ({ data, updatePie, removePie }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={{ textAlign: 'center' }}>
-        <Dates start={data.dates.startDate} end={data.dates.endDate} />
-      </Text>
+      <Dates start={data.dates.startDate} end={data.dates.endDate} />
       <VictoryPie
         animate={{
           duration: 2000,
