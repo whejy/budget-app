@@ -50,7 +50,7 @@ const PieList = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View>
       <AddPieModal
         onClose={toggleModal}
         modalOpen={modalOpen}
@@ -69,21 +69,20 @@ const PieList = () => {
         )}
       </View>
       {pies.length > 0 ? (
-        <View>
-          <FlatList
-            data={pies}
-            ItemSeparatorComponent={ItemSeparator}
-            renderItem={({ item }) => (
-              <Pie
-                item={item}
-                data={item}
-                removePie={removePie}
-                updatePie={updateStoragePie}
-              />
-            )}
-            keyExtractor={(_, i) => i}
-          />
-        </View>
+        <FlatList
+          contentContainerStyle={styles.pieList}
+          data={pies}
+          ItemSeparatorComponent={ItemSeparator}
+          renderItem={({ item }) => (
+            <Pie
+              item={item}
+              data={item}
+              removePie={removePie}
+              updatePie={updateStoragePie}
+            />
+          )}
+          keyExtractor={(_, i) => i}
+        />
       ) : (
         <Text>Add your first pie!</Text>
       )}
@@ -95,16 +94,17 @@ const styles = StyleSheet.create({
   separator: {
     height: 50,
   },
-  container: {
-    display: 'flex',
-    paddingBottom: 210,
+  pieList: {
+    paddingTop: 20,
+    paddingBottom: 200,
   },
   buttons: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingTop: 10,
+    paddingBottom: 20,
   },
 });
 
