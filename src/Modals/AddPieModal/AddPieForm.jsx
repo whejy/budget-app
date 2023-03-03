@@ -2,10 +2,7 @@ import { View, Button, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import uuid from 'react-native-uuid';
-import {
-  FormikDateInput,
-  FormikNumberInput,
-} from '../../components/FormikInputs';
+import { FormikDateInput, FormikNumberInput } from '../FormField';
 import { parseNumber, parseDates } from '../../../utils/helpers';
 
 const initialValues = {

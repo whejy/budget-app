@@ -6,9 +6,9 @@ import {
   FormikTextInput,
   FormikSelectInput,
   FormikNumberInput,
-} from './FormikInputs';
-import { categories } from '../data/categories';
-import { parseNumber } from '../../utils/helpers';
+} from '../FormField';
+import { categories } from '../../data/categories';
+import { parseNumber } from '../../../utils/helpers';
 
 const validationSchema = yup.object().shape({
   item: yup.string().required('Item is required'),
@@ -16,7 +16,7 @@ const validationSchema = yup.object().shape({
   category: yup.string().required('Category is required'),
 });
 
-const ExpenseForm = ({ onSubmit, onCancel, onDelete }) => {
+const FormFields = ({ onSubmit, onCancel, onDelete }) => {
   return (
     <View style={styles.form}>
       <FormikTextInput name="item" placeholder="Item" />
@@ -35,21 +35,17 @@ const ExpenseForm = ({ onSubmit, onCancel, onDelete }) => {
   );
 };
 
-const EditExpense = ({
+const EditExpenseForm = ({
   updateExpense,
   removeExpense,
   item,
-  setModalOpen,
+  closeModal,
   category,
 }) => {
   const initialValues = {
     item: item.item,
     cost: String(item.cost),
     category: category,
-  };
-
-  const closeModal = () => {
-    setModalOpen(false);
   };
 
   const onDelete = () => {
@@ -91,7 +87,7 @@ const EditExpense = ({
         validationSchema={validationSchema}
       >
         {({ handleSubmit }) => (
-          <ExpenseForm
+          <FormFields
             onSubmit={handleSubmit}
             onDelete={onDelete}
             onCancel={closeModal}
@@ -116,4 +112,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default EditExpense;
+export default EditExpenseForm;

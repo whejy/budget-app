@@ -1,8 +1,7 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View, Text, Button } from 'react-native';
 import Pie from './Pie';
-// import AlterPies from './AlterPies';
+import Prompt from '../Modals/Prompt';
 import PieStorage from '../../utils/pieStorage';
 import AddPieModal from '../Modals/AddPieModal';
 
@@ -11,6 +10,10 @@ const ItemSeparator = () => <View style={styles.separator} />;
 const PieList = () => {
   const [pies, setPies] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
+  const [promptOpen, setPromptOpen] = useState(false);
+
+  const toggleModal = () => setModalOpen(!modalOpen);
+  const togglePrompt = () => setPromptOpen(!promptOpen);
 
   async function getStoragePies() {
     const initialPies = await PieStorage.getPies();
@@ -37,7 +40,10 @@ const PieList = () => {
     return setPies(updatedPies);
   }
 
-  const closeModal = () => setModalOpen(false);
+  const handleDeleteAll = () => {
+    togglePrompt();
+    removeAllPies();
+  };
 
   useEffect(() => {
     getStoragePies();
@@ -46,17 +52,21 @@ const PieList = () => {
   return (
     <View style={styles.container}>
       <AddPieModal
-        onClose={closeModal}
+        onClose={toggleModal}
         modalOpen={modalOpen}
         updateList={setStoragePies}
       />
+      <Prompt
+        modalOpen={promptOpen}
+        onClose={togglePrompt}
+        handleYes={handleDeleteAll}
+        message="Are you sure you want to delete all of your pie data?"
+      />
       <View style={styles.buttons}>
-        <Button title="New Pie" onPress={() => setModalOpen(true)} />
-        {pies.length > 0 && <Button title="Delete Pies" />}
-        {/* <AlterPies buttonText="New Pie" setStoragePies={setStoragePies} /> */}
-        {/* {pies.length > 0 && (
-          <AlterPies buttonText="Delete Pies" removeAllPies={removeAllPies} />
-        )} */}
+        <Button title="New Pie" onPress={toggleModal} />
+        {pies.length > 0 && (
+          <Button title="Delete Pies" onPress={togglePrompt} />
+        )}
       </View>
       {pies.length > 0 ? (
         <View>

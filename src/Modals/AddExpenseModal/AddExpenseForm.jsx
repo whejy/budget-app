@@ -6,7 +6,7 @@ import {
   FormikTextInput,
   FormikSelectInput,
   FormikNumberInput,
-} from '../../components/FormikInputs';
+} from '../FormField';
 import { categories } from '../../data/categories';
 import { parseNumber } from '../../../utils/helpers';
 

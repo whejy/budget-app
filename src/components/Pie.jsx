@@ -1,30 +1,30 @@
-/* eslint-disable no-unused-vars */
 import { VictoryPie, VictoryLabel } from 'victory-native';
 import React, { useState } from 'react';
 import { Text, View, StyleSheet, Button } from 'react-native';
 import CategoryDetails from './CategoryDetails';
 import Dates from './Dates';
-import AlterPies from './AlterPies';
+import Prompt from '../Modals/Prompt';
 import theme from '../../theme';
 import AddExpenseModal from '../Modals/AddExpenseModal';
 
 const Pie = ({ data, updatePie, removePie }) => {
   const [category, setCategory] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
+  const [promptOpen, setPromptOpen] = useState(false);
 
   const { expenses, income } = data;
 
-  const closeModal = () => {
-    setModalOpen(false);
+  const toggleModal = () => setModalOpen(!modalOpen);
+  const togglePrompt = () => setPromptOpen(!promptOpen);
+
+  const handleDeletePie = () => {
+    togglePrompt();
+    removePie(data);
   };
 
   const handlePieUpdate = (pie) => {
     !Object.keys(expenses).includes(category) && setCategory('');
     updatePie(pie);
-  };
-
-  const handleDelete = () => {
-    removePie(data);
   };
 
   const formatPieData = () => {
@@ -142,22 +142,21 @@ const Pie = ({ data, updatePie, removePie }) => {
         />
       )}
       <AddExpenseModal
-        onClose={closeModal}
         modalOpen={modalOpen}
+        onClose={toggleModal}
         updatePie={updatePie}
         pie={data}
         remainingIncome={remainingIncome}
       />
+      <Prompt
+        modalOpen={promptOpen}
+        onClose={togglePrompt}
+        handleYes={handleDeletePie}
+        message="Are you sure you want to delete this pie?"
+      />
       <View style={styles.buttons}>
-        <Button title="Add Expense" onPress={() => setModalOpen(true)} />
-        {/* <AlterPies
-          buttonText="Add Expense"
-          updatePie={updatePie}
-          pie={data}
-          remainingIncome={remainingIncome}
-        /> */}
-        <Button title="Delete Pie" />
-        {/* <AlterPies buttonText="Delete Pie" removePie={handleDelete} /> */}
+        <Button title="Add Expense" onPress={toggleModal} />
+        <Button title="Delete Pie" onPress={togglePrompt} />
       </View>
     </View>
   );

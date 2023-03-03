@@ -1,33 +1,29 @@
 import { Text, FlatList, View, StyleSheet, Pressable } from 'react-native';
 import { useState } from 'react';
-import MyModal from './Modal';
-import EditExpense from './EditExpense';
 import { Subheading } from './Text';
+import EditExpenseModal from '../Modals/EditExpense/index.jsx';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const EditExpenses = ({ item, updateExpense, removeExpense, category }) => {
+const EditExpenses = ({ updateExpense, removeExpense, item, category }) => {
   const [modalOpen, setModalOpen] = useState(false);
+
+  const toggleModal = () => setModalOpen(!modalOpen);
 
   return (
     <>
-      <Pressable style={styles.itemDetails} onPress={() => setModalOpen(true)}>
+      <Pressable style={styles.itemDetails} onPress={toggleModal}>
         <Text style={{ textAlign: 'center' }}>{item.item}</Text>
         <Text>${item.cost.toLocaleString('en-US')}</Text>
       </Pressable>
-      <MyModal
-        animation="fade"
+      <EditExpenseModal
         modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-      >
-        <EditExpense
-          item={item}
-          updateExpense={updateExpense}
-          removeExpense={removeExpense}
-          setModalOpen={setModalOpen}
-          category={category}
-        />
-      </MyModal>
+        closeModal={toggleModal}
+        updateExpense={updateExpense}
+        removeExpense={removeExpense}
+        item={item}
+        category={category}
+      />
     </>
   );
 };
