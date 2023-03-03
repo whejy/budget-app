@@ -5,7 +5,13 @@ import EditExpenseModal from '../Modals/EditExpense/index.jsx';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const EditExpenses = ({ updateExpense, removeExpense, item, category }) => {
+const EditExpenses = ({
+  updateExpense,
+  removeExpense,
+  item,
+  category,
+  remainingIncome,
+}) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const toggleModal = () => setModalOpen(!modalOpen);
@@ -18,17 +24,24 @@ const EditExpenses = ({ updateExpense, removeExpense, item, category }) => {
       </Pressable>
       <EditExpenseModal
         modalOpen={modalOpen}
-        closeModal={toggleModal}
+        onClose={toggleModal}
         updateExpense={updateExpense}
         removeExpense={removeExpense}
         item={item}
         category={category}
+        remainingIncome={remainingIncome}
       />
     </>
   );
 };
 
-const CategoryDetails = ({ expenses, category, pie, updatePie }) => {
+const CategoryDetails = ({
+  expenses,
+  category,
+  pie,
+  updatePie,
+  remainingIncome,
+}) => {
   const removeCategory = () => {
     delete pie.expenses[category];
     updatePie(pie);
@@ -95,6 +108,7 @@ const CategoryDetails = ({ expenses, category, pie, updatePie }) => {
                 removeExpense={handleRemove}
                 item={item}
                 category={category}
+                remainingIncome={remainingIncome}
               />
             )}
           />
@@ -122,9 +136,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
   },
-  itemContainer: {
-    paddingBottom: 10,
-  },
+  itemContainer: {},
   itemDetails: {
     width: 80,
     paddingVertical: 5,

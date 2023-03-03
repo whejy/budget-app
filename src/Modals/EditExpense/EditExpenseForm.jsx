@@ -2,19 +2,13 @@ import { View, Button, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Picker } from '@react-native-picker/picker';
+import { categories } from '../../data/categories';
+import { parseNumber } from '../../../utils/helpers';
 import {
   FormikTextInput,
   FormikSelectInput,
   FormikNumberInput,
 } from '../FormField';
-import { categories } from '../../data/categories';
-import { parseNumber } from '../../../utils/helpers';
-
-const validationSchema = yup.object().shape({
-  item: yup.string().required('Item is required'),
-  cost: yup.number().required('Cost is required').positive(),
-  category: yup.string().required('Category is required'),
-});
 
 const FormFields = ({ onSubmit, onCancel, onDelete }) => {
   return (
@@ -41,11 +35,24 @@ const EditExpenseForm = ({
   item,
   closeModal,
   category,
+  remainingIncome,
 }) => {
   const initialValues = {
     item: item.item,
     cost: String(item.cost),
     category: category,
+  };
+
+  const validationSchema = () => {
+    return yup.object().shape({
+      item: yup.string().required('Item is required'),
+      cost: yup
+        .number()
+        .required('Cost is required')
+        .positive()
+        .max(remainingIncome + item.cost),
+      category: yup.string().required('Category is required'),
+    });
   };
 
   const onDelete = () => {
@@ -54,29 +61,14 @@ const EditExpenseForm = ({
   };
 
   const onSubmit = (values) => {
+    const updatedCategory = values.category;
     const updatedItem = {
       id: item.id,
       item: values.item,
       cost: parseNumber(values.cost),
     };
-    const updatedCategory = values.category;
+    closeModal();
     return updateExpense({ updatedItem, updatedCategory });
-    // const parsedData = {
-    //   id: Math.round(1000 * Math.random()),
-    //   item: values.item,
-    //   cost: parseNumber(values.cost),
-    //   category: values.category,
-    // };
-
-    // const addItem = ({ id, item, cost, category }) => {
-    //   Object.keys(pie.expenses).includes(category)
-    //     ? pie.expenses[category].push({ id, item, cost })
-    //     : (pie.expenses[category] = [{ id, item, cost }]);
-    // };
-
-    // addItem(parsedData);
-    // setModalOpen(false);
-    // return updatePie(pie);
   };
 
   return (
@@ -84,7 +76,7 @@ const EditExpenseForm = ({
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
-        validationSchema={validationSchema}
+        validationSchema={() => validationSchema()}
       >
         {({ handleSubmit }) => (
           <FormFields

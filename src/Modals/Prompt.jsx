@@ -4,12 +4,10 @@ import MyModal from './Modal';
 const Prompt = ({ modalOpen, onClose, handleYes, message }) => {
   return (
     <MyModal animation="fade" modalOpen={modalOpen} onClose={onClose}>
-      <View>
-        <Text style={styles.message}>{message}</Text>
-        <View style={styles.buttons}>
-          <Button title="Yes" onPress={handleYes} />
-          <Button title="Cancel" onPress={onClose} />
-        </View>
+      <Text style={styles.message}>{message}</Text>
+      <View style={styles.buttons}>
+        <Button title="Delete" color="red" onPress={handleYes} />
+        <Button title="Cancel" onPress={onClose} />
       </View>
     </MyModal>
   );

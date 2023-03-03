@@ -9,6 +9,7 @@ const EditExpenseModal = ({
   removeExpense,
   item,
   category,
+  remainingIncome,
 }) => {
   return (
     <MyModal animation="fade" modalOpen={modalOpen} onClose={onClose}>
@@ -19,6 +20,7 @@ const EditExpenseModal = ({
         removeExpense={removeExpense}
         item={item}
         category={category}
+        remainingIncome={remainingIncome}
       />
     </MyModal>
   );

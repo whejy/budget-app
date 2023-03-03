@@ -2,13 +2,13 @@ import { View, Button, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { Picker } from '@react-native-picker/picker';
+import { categories } from '../../data/categories';
+import { parseNumber } from '../../../utils/helpers';
 import {
   FormikTextInput,
   FormikSelectInput,
   FormikNumberInput,
 } from '../FormField';
-import { categories } from '../../data/categories';
-import { parseNumber } from '../../../utils/helpers';
 
 const initialValues = {
   item: '',
@@ -61,8 +61,8 @@ const AddExpenseForm = ({ pie, updatePie, closeModal, remainingIncome }) => {
         : (pie.expenses[category] = [{ id, item, cost }]);
     };
 
-    addItem(parsedData);
     closeModal();
+    addItem(parsedData);
     return updatePie(pie);
   };
 

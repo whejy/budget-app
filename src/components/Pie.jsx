@@ -44,11 +44,12 @@ const Pie = ({ data, updatePie, removePie }) => {
 
     const remainingIncome = pieData.reduce((acc, curr) => acc - curr.y, income);
 
-    pieData.push({
-      x: 'Income',
-      y: remainingIncome,
-      fill: theme.colors.pieData.Income,
-    });
+    remainingIncome > 0 &&
+      pieData.push({
+        x: 'Income',
+        y: remainingIncome,
+        fill: theme.colors.pieData.Income,
+      });
 
     return { pieData, remainingIncome };
   };
@@ -139,8 +140,15 @@ const Pie = ({ data, updatePie, removePie }) => {
           pie={data}
           updatePie={handlePieUpdate}
           expenses={expenses[category]}
+          remainingIncome={remainingIncome}
         />
       )}
+      <View style={styles.buttons}>
+        {remainingIncome > 0 && (
+          <Button title="Add Expense" onPress={toggleModal} />
+        )}
+        <Button title="Delete Pie" onPress={togglePrompt} />
+      </View>
       <AddExpenseModal
         modalOpen={modalOpen}
         onClose={toggleModal}
@@ -154,10 +162,6 @@ const Pie = ({ data, updatePie, removePie }) => {
         handleYes={handleDeletePie}
         message="Are you sure you want to delete this pie?"
       />
-      <View style={styles.buttons}>
-        <Button title="Add Expense" onPress={toggleModal} />
-        <Button title="Delete Pie" onPress={togglePrompt} />
-      </View>
     </View>
   );
 };
@@ -171,7 +175,6 @@ const styles = StyleSheet.create({
   buttons: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
     alignItems: 'center',
   },
 });
