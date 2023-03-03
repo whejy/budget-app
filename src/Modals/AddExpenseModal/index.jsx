@@ -8,6 +8,7 @@ const AddExpenseModal = ({
   updatePie,
   pie,
   remainingIncome,
+  selectedCategory,
 }) => {
   return (
     <MyModal animation="fade" modalOpen={modalOpen} onClose={onClose}>
@@ -16,6 +17,7 @@ const AddExpenseModal = ({
         pie={pie}
         remainingIncome={remainingIncome}
         closeModal={onClose}
+        selectedCategory={selectedCategory}
       />
     </MyModal>
   );

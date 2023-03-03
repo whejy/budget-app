@@ -155,6 +155,7 @@ const Pie = ({ data, updatePie, removePie }) => {
         updatePie={updatePie}
         pie={data}
         remainingIncome={remainingIncome}
+        selectedCategory={category}
       />
       <Prompt
         modalOpen={promptOpen}

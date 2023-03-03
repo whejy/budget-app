@@ -10,12 +10,6 @@ import {
   FormikNumberInput,
 } from '../FormField';
 
-const initialValues = {
-  item: '',
-  cost: '',
-  category: 'Shopping',
-};
-
 const validationSchema = (remainingIncome) => {
   return yup.object().shape({
     item: yup.string().required('Item is required'),
@@ -46,7 +40,19 @@ const FormFields = ({ onSubmit, onCancel }) => {
   );
 };
 
-const AddExpenseForm = ({ pie, updatePie, closeModal, remainingIncome }) => {
+const AddExpenseForm = ({
+  pie,
+  updatePie,
+  closeModal,
+  remainingIncome,
+  selectedCategory,
+}) => {
+  const initialValues = {
+    item: '',
+    cost: '',
+    category: (selectedCategory !== 'Income' && selectedCategory) || 'Shopping',
+  };
+
   const onSubmit = (values) => {
     const parsedData = {
       id: Math.round(1000 * Math.random()),
