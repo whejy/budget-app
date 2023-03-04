@@ -4,11 +4,9 @@ import * as yup from 'yup';
 import { Picker } from '@react-native-picker/picker';
 import { categories } from '../../data/categories';
 import { parseNumber } from '../../../utils/helpers';
-import {
-  FormikTextInput,
-  FormikSelectInput,
-  FormikNumberInput,
-} from '../FormField';
+import FormikTextInput from '../../components/FormikTextInput';
+import FormikSelectInput from '../../components/FormikSelectInput';
+import FormikNumberInput from '../../components/FormikNumberInput';
 
 const FormFields = ({ onSubmit, onCancel, onDelete }) => {
   return (

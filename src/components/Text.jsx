@@ -30,6 +30,9 @@ const styles = StyleSheet.create({
   fontStyleItalic: {
     fontStyle: 'italic',
   },
+  errorText: {
+    marginTop: 5,
+  },
 });
 
 const Text = ({ color, fontSize, fontWeight, style, ...props }) => {
@@ -61,6 +64,10 @@ export const Heading = ({ ...props }) => {
 
 export const Subheading = ({ ...props }) => {
   return <Text fontSize="subheading" {...props} />;
+};
+
+export const ErrorText = ({ ...props }) => {
+  return <Text style={styles.errorText} {...props} />;
 };
 
 export const DatesText = ({ ...props }) => {
