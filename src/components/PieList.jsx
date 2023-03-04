@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, View, Button } from 'react-native';
 import Pie from './Pie';
 import Prompt from '../Modals/Prompt';
 import PieStorage from '../../utils/pieStorage';
-import AddPieModal from '../Modals/AddPieModal';
+import AddPie from '../Modals/AddPieModal';
 import { Subheading } from './Text';
 
 const ItemSeparator = () => <View style={styles.separator} />;
@@ -52,7 +52,7 @@ const PieList = () => {
 
   return (
     <View>
-      <AddPieModal
+      <AddPie
         onClose={toggleModal}
         modalOpen={modalOpen}
         updateList={setStoragePies}

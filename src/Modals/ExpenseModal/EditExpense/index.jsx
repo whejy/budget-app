@@ -1,8 +1,8 @@
 import React from 'react';
-import MyModal from '../Modal';
+import MyModal from '../../Modal';
 import EditExpenseForm from './EditExpenseForm';
 
-const EditExpenseModal = ({
+const EditExpense = ({
   modalOpen,
   onClose,
   updateExpense,
@@ -26,4 +26,4 @@ const EditExpenseModal = ({
   );
 };
 
-export default EditExpenseModal;
+export default EditExpense;

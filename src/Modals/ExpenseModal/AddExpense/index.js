@@ -1,8 +1,8 @@
 import React from 'react';
+import MyModal from '../../Modal';
 import AddExpenseForm from './AddExpenseForm';
-import MyModal from '../Modal';
 
-const AddExpenseModal = ({
+const AddExpense = ({
   modalOpen,
   onClose,
   updatePie,
@@ -23,4 +23,4 @@ const AddExpenseModal = ({
   );
 };
 
-export default AddExpenseModal;
+export default AddExpense;

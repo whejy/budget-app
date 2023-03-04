@@ -5,7 +5,7 @@ import CategoryDetails from './CategoryDetails';
 import Dates from './Dates';
 import Prompt from '../Modals/Prompt';
 import theme from '../../theme';
-import AddExpenseModal from '../Modals/AddExpenseModal';
+import AddExpense from '../Modals/ExpenseModal/AddExpense';
 
 const Pie = ({ data, updatePie, removePie }) => {
   const [category, setCategory] = useState('');
@@ -123,7 +123,7 @@ const Pie = ({ data, updatePie, removePie }) => {
         )}
         <Button title="Delete Pie" onPress={togglePrompt} />
       </View>
-      <AddExpenseModal
+      <AddExpense
         modalOpen={modalOpen}
         onClose={toggleModal}
         updatePie={updatePie}

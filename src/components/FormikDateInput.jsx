@@ -45,7 +45,6 @@ const FormikDateInput = ({ name, ...props }) => {
       <TextInput
         value={field.value.startDate}
         name="startDate"
-        // onBlur={() => helpers.setTouched(true)}
         showSoftInputOnFocus={false}
         placeholder="Period beginning"
         onPressIn={() => openModal('startDate')}
@@ -55,7 +54,6 @@ const FormikDateInput = ({ name, ...props }) => {
       <TextInput
         value={field.value.endDate}
         name="endDate"
-        // onBlur={() => helpers.setTouched(true)}
         showSoftInputOnFocus={false}
         placeholder="Period ending"
         onPressIn={() => openModal('endDate')}

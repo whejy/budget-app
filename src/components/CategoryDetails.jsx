@@ -1,7 +1,7 @@
 import { Text, FlatList, View, StyleSheet, Pressable } from 'react-native';
 import { useState } from 'react';
 import { Subheading } from './Text';
-import EditExpenseModal from '../Modals/EditExpense/index.jsx';
+import EditExpense from '../Modals/ExpenseModal/EditExpense';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
@@ -22,7 +22,7 @@ const EditExpenses = ({
         <Text style={{ textAlign: 'center' }}>{item.item}</Text>
         <Text>${item.cost.toLocaleString('en-US')}</Text>
       </Pressable>
-      <EditExpenseModal
+      <EditExpense
         modalOpen={modalOpen}
         onClose={toggleModal}
         updateExpense={updateExpense}
