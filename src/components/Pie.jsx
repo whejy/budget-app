@@ -7,7 +7,7 @@ import Prompt from '../Modals/Prompt';
 import theme from '../../theme';
 import AddExpense from '../Modals/ExpenseModal/AddExpense';
 
-const Pie = ({ data, updatePie, removePie }) => {
+const Pie = ({ data, savePie, removePie }) => {
   const [category, setCategory] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
@@ -24,7 +24,7 @@ const Pie = ({ data, updatePie, removePie }) => {
 
   const handlePieUpdate = (pie) => {
     !Object.keys(expenses).includes(category) && setCategory('');
-    updatePie(pie);
+    savePie(pie);
   };
 
   const formatPieData = () => {
@@ -112,7 +112,7 @@ const Pie = ({ data, updatePie, removePie }) => {
         <CategoryDetails
           category={category}
           pie={data}
-          updatePie={handlePieUpdate}
+          savePie={handlePieUpdate}
           expenses={expenses[category]}
           remainingIncome={remainingIncome}
         />
@@ -126,7 +126,7 @@ const Pie = ({ data, updatePie, removePie }) => {
       <AddExpense
         modalOpen={modalOpen}
         onClose={toggleModal}
-        updatePie={updatePie}
+        savePie={savePie}
         pie={data}
         remainingIncome={remainingIncome}
         selectedCategory={category}

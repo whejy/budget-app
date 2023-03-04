@@ -5,13 +5,7 @@ import EditExpense from '../Modals/ExpenseModal/EditExpense';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const EditExpenses = ({
-  updateExpense,
-  removeExpense,
-  item,
-  category,
-  remainingIncome,
-}) => {
+const EditExpenses = ({ item, category, pie, savePie, remainingIncome }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const toggleModal = () => setModalOpen(!modalOpen);
@@ -25,11 +19,11 @@ const EditExpenses = ({
       <EditExpense
         modalOpen={modalOpen}
         onClose={toggleModal}
-        updateExpense={updateExpense}
-        removeExpense={removeExpense}
         item={item}
         category={category}
         remainingIncome={remainingIncome}
+        pie={pie}
+        savePie={savePie}
       />
     </>
   );
@@ -39,48 +33,12 @@ const CategoryDetails = ({
   expenses,
   category,
   pie,
-  updatePie,
+  savePie,
   remainingIncome,
 }) => {
   const removeCategory = () => {
     delete pie.expenses[category];
-    updatePie(pie);
-  };
-
-  const handleRemoveExpense = (expenseToRemove) => {
-    const updatedPie = removeExpense(expenseToRemove);
-    updatePie(updatedPie);
-  };
-
-  const handleUpdateExpense = (expenseToUpdate) => {
-    const { updatedItem, newCategory } = expenseToUpdate;
-    const updatedPie = removeExpense(updatedItem);
-    addExpense({ updatedPie, updatedItem, newCategory });
-  };
-
-  const removeExpense = (expenseToRemove) => {
-    const updatedCategory = pie.expenses[category].filter(
-      (expense) => expense.id !== expenseToRemove.id
-    );
-
-    // If this item is the final item within the category, remove category
-    updatedCategory.length > 0
-      ? (pie.expenses[category] = updatedCategory)
-      : delete pie.expenses[category];
-
-    return pie;
-  };
-
-  const addExpense = (data) => {
-    const { updatedPie, updatedItem, newCategory } = data;
-
-    const addItem = ({ id, item, cost, category }) => {
-      Object.keys(updatedPie.expenses).includes(category)
-        ? updatedPie.expenses[category].push({ id, item, cost })
-        : (updatedPie.expenses[category] = [{ id, item, cost }]);
-    };
-    addItem({ ...updatedItem, category: newCategory });
-    updatePie(pie);
+    savePie(pie);
   };
 
   expenses?.sort((a, b) => b.cost - a.cost);
@@ -103,11 +61,11 @@ const CategoryDetails = ({
             columnWrapperStyle={styles.itemContainer}
             renderItem={({ item }) => (
               <EditExpenses
-                updateExpense={handleUpdateExpense}
-                removeExpense={handleRemoveExpense}
+                savePie={savePie}
                 item={item}
                 category={category}
                 remainingIncome={remainingIncome}
+                pie={pie}
               />
             )}
           />

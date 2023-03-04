@@ -5,7 +5,7 @@ import AddExpenseForm from './AddExpenseForm';
 const AddExpense = ({
   modalOpen,
   onClose,
-  updatePie,
+  savePie,
   pie,
   remainingIncome,
   selectedCategory,
@@ -13,7 +13,7 @@ const AddExpense = ({
   return (
     <MyModal animation="fade" modalOpen={modalOpen} onClose={onClose}>
       <AddExpenseForm
-        updatePie={updatePie}
+        savePie={savePie}
         pie={pie}
         remainingIncome={remainingIncome}
         closeModal={onClose}

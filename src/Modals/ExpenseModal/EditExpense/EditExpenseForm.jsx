@@ -2,35 +2,64 @@ import { View, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import FormFields from '../FormFields';
 import { parseNumber } from '../../../../utils/helpers';
-import { getInitialValues, getValidationSchema } from '../helpers';
+import { addExpense, getInitialValues, getValidationSchema } from '../helpers';
 
 const EditExpenseForm = ({
-  updateExpense,
-  removeExpense,
+  pie,
   item,
-  closeModal,
   category,
   remainingIncome,
+  savePie,
+  closeModal,
 }) => {
   const initialValues = getInitialValues(category, item);
   const validationSchema = getValidationSchema(remainingIncome, item.cost);
 
+  const updateExpense = (updatedItem) => {
+    const updatedPie = removeExpense(updatedItem);
+    return updatedPie;
+  };
+
+  const removeExpense = (expenseToRemove) => {
+    const updatedCategory = pie.expenses[category].filter(
+      (expense) => expense.id !== expenseToRemove.id
+    );
+
+    // If this item is the final item within the category, remove category
+    updatedCategory.length > 0
+      ? (pie.expenses[category] = updatedCategory)
+      : delete pie.expenses[category];
+
+    return pie;
+  };
+
   const onDelete = () => {
+    const updatedPie = removeExpense(item);
     closeModal();
-    removeExpense(item);
+    savePie(updatedPie);
   };
 
   const onSubmit = (values) => {
-    closeModal();
     if (values !== initialValues) {
       const newCategory = values.category;
+
       const updatedItem = {
         id: item.id,
         item: values.item,
         cost: parseNumber(values.cost),
       };
-      return updateExpense({ updatedItem, newCategory });
+
+      const pie = updateExpense(updatedItem);
+
+      const updatedPie = addExpense({
+        pie,
+        ...updatedItem,
+        category: newCategory,
+      });
+
+      return savePie(updatedPie);
     }
+    closeModal();
   };
 
   return (

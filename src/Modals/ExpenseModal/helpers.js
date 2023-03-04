@@ -21,7 +21,7 @@ export const getValidationSchema = (remainingIncome, itemCost = 0) => {
   });
 };
 
-export const addItem = ({ id, item, cost, category, pie }) => {
+export const addExpense = ({ id, item, cost, category, pie }) => {
   Object.keys(pie.expenses).includes(category)
     ? pie.expenses[category].push({ id, item, cost })
     : (pie.expenses[category] = [{ id, item, cost }]);

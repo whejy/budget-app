@@ -5,22 +5,22 @@ import EditExpenseForm from './EditExpenseForm';
 const EditExpense = ({
   modalOpen,
   onClose,
-  updateExpense,
-  removeExpense,
   item,
+  pie,
   category,
   remainingIncome,
+  savePie,
 }) => {
   return (
     <MyModal animation="fade" modalOpen={modalOpen} onClose={onClose}>
       <EditExpenseForm
         modalOpen={modalOpen}
         closeModal={onClose}
-        updateExpense={updateExpense}
-        removeExpense={removeExpense}
         item={item}
         category={category}
+        pie={pie}
         remainingIncome={remainingIncome}
+        savePie={savePie}
       />
     </MyModal>
   );

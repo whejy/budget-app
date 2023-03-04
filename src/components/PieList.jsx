@@ -79,7 +79,7 @@ const PieList = () => {
               item={item}
               data={item}
               removePie={removePie}
-              updatePie={updateStoragePie}
+              savePie={updateStoragePie}
             />
           )}
           keyExtractor={(_, i) => i}
