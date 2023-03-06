@@ -48,7 +48,7 @@ const EditExpenseForm = ({
 
       const updatedPieComplete = addExpense({
         ...updatedItem,
-        updatedPiePartial,
+        pie: updatedPiePartial,
         category: newCategory,
       });
 

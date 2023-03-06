@@ -1,11 +1,12 @@
 import { VictoryPie, VictoryLabel } from 'victory-native';
 import React, { useState } from 'react';
-import { View, StyleSheet, Button } from 'react-native';
+import { View, StyleSheet, Pressable } from 'react-native';
 import CategoryDetails from './CategoryDetails';
 import Dates from './Dates';
 import Prompt from '../Modals/Prompt';
 import theme from '../../theme';
 import AddExpense from '../Modals/ExpenseModal/AddExpense';
+import { Icon } from '@rneui/themed';
 
 const Pie = ({ data, savePie, removePie }) => {
   const [category, setCategory] = useState('');
@@ -119,9 +120,20 @@ const Pie = ({ data, savePie, removePie }) => {
       )}
       <View style={styles.buttons}>
         {remainingIncome > 0 && (
-          <Button title="Add Expense" onPress={toggleModal} />
+          <Pressable onPress={toggleModal}>
+            <Icon
+              color="green"
+              {...styles.button}
+              name="edit"
+              type="material"
+            />
+          </Pressable>
         )}
-        <Button title="Delete Pie" onPress={togglePrompt} />
+        {/* <Button title="Add Expense" onPress={toggleModal} /> */}
+        {/* <Button title="Delete Pie" onPress={togglePrompt} /> */}
+        <Pressable onPress={togglePrompt}>
+          <Icon color="red" {...styles.button} name="delete" type="material" />
+        </Pressable>
       </View>
       <AddExpense
         modalOpen={modalOpen}
@@ -148,9 +160,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttons: {
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  button: {
+    size: '25',
   },
 });
 

@@ -2,6 +2,7 @@ import { Text, FlatList, View, StyleSheet, Pressable } from 'react-native';
 import { useState } from 'react';
 import { Subheading } from './Text';
 import EditExpense from '../Modals/ExpenseModal/EditExpense';
+import { Icon } from '@rneui/themed';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
@@ -50,7 +51,7 @@ const CategoryDetails = ({
             <Text style={styles.hidden}>X</Text>
             <Subheading style={styles.categoryTitle}>{category}</Subheading>
             <Pressable onPress={() => removeCategory()}>
-              <Text style={styles.delete}>X</Text>
+              <Icon color="red" size="20" name="backspace" type="material" />
             </Pressable>
           </View>
           <FlatList
@@ -89,11 +90,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   categoryContainer: {
+    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 10,
   },
-  itemContainer: {},
   itemDetails: {
     width: 80,
     paddingVertical: 5,
@@ -106,10 +107,6 @@ const styles = StyleSheet.create({
   },
   categoryTitle: {
     paddingHorizontal: 10,
-  },
-  delete: {
-    fontSize: 22,
-    color: 'red',
   },
 });
 
