@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { useField } from 'formik';
 import { TextInput } from './Inputs';
-import Text from './Text';
+import Text from '../components/Text';
 
 const FormikTextInput = ({ name, ...props }) => {
   const [field, meta, helpers] = useField(name);

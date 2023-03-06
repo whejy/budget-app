@@ -1,9 +1,9 @@
 import { View, Button, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { categories } from '../../data/categories';
-import FormikTextInput from '../../components/FormikTextInput';
-import FormikSelectInput from '../../components/FormikSelectInput';
-import FormikNumberInput from '../../components/FormikNumberInput';
+import FormikTextInput from '../../Formik/FormikTextInput';
+import FormikSelectInput from '../../Formik/FormikSelectInput';
+import FormikNumberInput from '../../Formik/FormikNumberInput';
 
 const FormFields = ({ onSubmit, onCancel, onDelete }) => {
   const buttons = onDelete ? (

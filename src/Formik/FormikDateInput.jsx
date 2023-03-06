@@ -4,7 +4,7 @@ import { Calendar } from 'react-native-calendars';
 import { useField } from 'formik';
 import { TextInput } from './Inputs';
 import MyModal from '../Modals/Modal';
-import { ErrorText } from './Text';
+import { ErrorText } from '../components/Text';
 
 const FormikDateInput = ({ name, ...props }) => {
   const [field, meta, helpers] = useField(name);

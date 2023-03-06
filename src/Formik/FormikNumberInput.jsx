@@ -1,6 +1,6 @@
 import { useField } from 'formik';
 import { TextInput } from './Inputs';
-import { ErrorText } from './Text';
+import { ErrorText } from '../components/Text';
 
 const FormikNumberInput = ({ name, ...props }) => {
   const [field, meta, helpers] = useField(name);
