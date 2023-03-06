@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 const isNumber = (number) => {
   return typeof number === 'number' || number instanceof Number;
 };
@@ -13,6 +12,13 @@ export const parseNumber = (number) => {
     throw new Error('Incorrect or missing number');
   }
   return parsedNumber;
+};
+
+export const parseString = (text) => {
+  if (!text || !isString(text)) {
+    throw new Error('Incorrect or missing string');
+  }
+  return text;
 };
 
 export const parseDates = (dates) => {

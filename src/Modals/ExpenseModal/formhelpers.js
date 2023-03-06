@@ -28,3 +28,16 @@ export const addExpense = ({ id, item, cost, category, pie }) => {
 
   return pie;
 };
+
+export const removeExpense = ({ item, category, pie }) => {
+  const updatedCategory = pie.expenses[category].filter(
+    (expense) => expense.id !== item.id
+  );
+
+  // If this item is the final item within the category, remove category
+  updatedCategory.length > 0
+    ? (pie.expenses[category] = updatedCategory)
+    : delete pie.expenses[category];
+
+  return pie;
+};

@@ -1,8 +1,12 @@
 import { View, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import FormFields from '../FormFields';
-import { parseNumber } from '../../../../utils/helpers';
-import { addExpense, getInitialValues, getValidationSchema } from '../helpers';
+import { parseNumber, parseString } from '../../../../utils/helpers';
+import {
+  addExpense,
+  getInitialValues,
+  getValidationSchema,
+} from '../formhelpers';
 
 const AddExpenseForm = ({
   pie,
@@ -15,14 +19,15 @@ const AddExpenseForm = ({
   const validationSchema = getValidationSchema(remainingIncome);
 
   const onSubmit = (values) => {
-    closeModal();
+    const id = Math.round(1000 * Math.random());
     const parsedData = {
-      id: Math.round(1000 * Math.random()),
-      item: values.item,
+      id: id,
+      item: parseString(values.item),
       cost: parseNumber(values.cost),
       category: values.category,
       pie: pie,
     };
+    closeModal();
     const updatedPie = addExpense(parsedData);
     return savePie(updatedPie);
   };

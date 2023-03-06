@@ -17,8 +17,8 @@ const EditExpense = ({
         modalOpen={modalOpen}
         closeModal={onClose}
         item={item}
-        category={category}
-        pie={pie}
+        initialCategory={category}
+        initialPie={pie}
         remainingIncome={remainingIncome}
         savePie={savePie}
       />

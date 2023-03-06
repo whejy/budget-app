@@ -1,42 +1,33 @@
 import { View, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import FormFields from '../FormFields';
-import { parseNumber } from '../../../../utils/helpers';
-import { addExpense, getInitialValues, getValidationSchema } from '../helpers';
+import { parseNumber, parseString } from '../../../../utils/helpers';
+import {
+  addExpense,
+  removeExpense,
+  getInitialValues,
+  getValidationSchema,
+} from '../formhelpers';
 
 const EditExpenseForm = ({
-  pie,
   item,
-  category,
+  initialPie,
+  initialCategory,
   remainingIncome,
   savePie,
   closeModal,
 }) => {
-  const initialValues = getInitialValues(category, item);
+  const initialValues = getInitialValues(initialCategory, item);
   const validationSchema = getValidationSchema(remainingIncome, item.cost);
 
-  const updateExpense = (updatedItem) => {
-    const updatedPie = removeExpense(updatedItem);
-    return updatedPie;
-  };
-
-  const removeExpense = (expenseToRemove) => {
-    const updatedCategory = pie.expenses[category].filter(
-      (expense) => expense.id !== expenseToRemove.id
-    );
-
-    // If this item is the final item within the category, remove category
-    updatedCategory.length > 0
-      ? (pie.expenses[category] = updatedCategory)
-      : delete pie.expenses[category];
-
-    return pie;
-  };
-
   const onDelete = () => {
-    const updatedPie = removeExpense(item);
-    closeModal();
+    const updatedPie = removeExpense({
+      item,
+      pie: initialPie,
+      category: initialCategory,
+    });
     savePie(updatedPie);
+    closeModal();
   };
 
   const onSubmit = (values) => {
@@ -45,19 +36,23 @@ const EditExpenseForm = ({
 
       const updatedItem = {
         id: item.id,
-        item: values.item,
+        item: parseString(values.item),
         cost: parseNumber(values.cost),
       };
 
-      const pie = updateExpense(updatedItem);
+      const updatedPiePartial = removeExpense({
+        item: updatedItem,
+        pie: initialPie,
+        category: initialCategory,
+      });
 
-      const updatedPie = addExpense({
-        pie,
+      const updatedPieComplete = addExpense({
         ...updatedItem,
+        updatedPiePartial,
         category: newCategory,
       });
 
-      return savePie(updatedPie);
+      savePie(updatedPieComplete);
     }
     closeModal();
   };
