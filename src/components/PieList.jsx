@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, View, Button } from 'react-native';
+import { FlatList, StyleSheet, View, Pressable } from 'react-native';
 import Pie from './Pie';
 import Prompt from '../Modals/Prompt';
 import PieStorage from '../../utils/pieStorage';
 import AddPie from '../Modals/AddPieModal';
 import { Subheading } from './Text';
+import { Icon } from '@rneui/themed';
+import theme from '../../theme';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
@@ -64,9 +66,21 @@ const PieList = () => {
         message="Are you sure you want to delete all of your pie data?"
       />
       <View style={styles.buttons}>
-        <Button title="New Pie" onPress={toggleModal} />
+        <Pressable onPress={toggleModal}>
+          <Icon
+            {...styles.addButton}
+            name="add-circle-outline"
+            type="material"
+          />
+        </Pressable>
         {pies.length > 0 && (
-          <Button title="Delete Pies" onPress={togglePrompt} />
+          <Pressable onPress={togglePrompt}>
+            <Icon
+              {...styles.deleteButton}
+              name="remove-circle-outline"
+              type="material"
+            />
+          </Pressable>
         )}
       </View>
       {pies.length > 0 ? (
@@ -109,6 +123,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 10,
     paddingBottom: 20,
+  },
+  addButton: {
+    size: theme.iconSize.size + 5,
+    color: theme.colors.editButton,
+    paddingHorizontal: 22,
+  },
+  deleteButton: {
+    size: theme.iconSize.size + 5,
+    color: theme.colors.deleteButton,
+    paddingHorizontal: 22,
   },
 });
 

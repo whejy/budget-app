@@ -6,25 +6,27 @@ const FormikNumberInput = ({ name, ...props }) => {
   const [field, meta, helpers] = useField(name);
   const showError = meta.touched && meta.error;
 
-  const onChange = (value) => {
-    const numeric = /^[0-9\b]+$/;
+  const errorToShow = showError && 'Cost must be a number';
 
-    if (value === '' || numeric.test(value)) {
-      helpers.setValue(value);
-    }
-  };
+  // const onChange = (value) => {
+  //   const numeric = /^[0-9\b]+$/;
+
+  //   if (value === '' || numeric.test(value)) {
+  //     helpers.setValue(value);
+  //   }
+  // };
 
   return (
     <>
       <TextInput
-        onChangeText={(value) => onChange(value)}
+        onChangeText={(value) => helpers.setValue(value)}
         onBlur={() => helpers.setTouched(true)}
         value={field.value}
         error={showError}
         keyboardType="numeric"
         {...props}
       />
-      {showError && <ErrorText>{meta.error}</ErrorText>}
+      {showError && <ErrorText>{errorToShow}</ErrorText>}
     </>
   );
 };

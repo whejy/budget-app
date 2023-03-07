@@ -121,25 +121,11 @@ const Pie = ({ data, savePie, removePie }) => {
       <View style={styles.buttons}>
         {remainingIncome > 0 && (
           <Pressable onPress={toggleModal}>
-            <Icon
-              color="green"
-              {...styles.button}
-              {...styles.editButton}
-              name="edit"
-              type="material"
-            />
+            <Icon {...styles.editButton} name="edit" type="material" />
           </Pressable>
         )}
-        {/* <Button title="Add Expense" onPress={toggleModal} /> */}
-        {/* <Button title="Delete Pie" onPress={togglePrompt} /> */}
         <Pressable onPress={togglePrompt}>
-          <Icon
-            color="red"
-            {...styles.button}
-            {...styles.deleteButton}
-            name="delete"
-            type="material"
-          />
+          <Icon {...styles.deleteButton} name="delete" type="material" />
         </Pressable>
       </View>
       <AddExpense
@@ -170,15 +156,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  button: {
+  editButton: {
+    color: theme.colors.editButton,
     size: theme.iconSize.size,
     paddingHorizontal: 25,
   },
-  editButton: {
-    color: theme.colors.editButton,
-  },
   deleteButton: {
     color: theme.colors.deleteButton,
+    size: theme.iconSize.size,
+    paddingHorizontal: 25,
   },
 });
 

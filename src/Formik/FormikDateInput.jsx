@@ -5,6 +5,7 @@ import { useField } from 'formik';
 import { TextInput } from './Inputs';
 import MyModal from '../Modals/Modal';
 import { ErrorText } from '../components/Text';
+import theme from '../../theme';
 
 const FormikDateInput = ({ name, ...props }) => {
   const [field, meta, helpers] = useField(name);
@@ -13,11 +14,15 @@ const FormikDateInput = ({ name, ...props }) => {
   const showError = meta.touched && meta.error;
 
   const markedDates = {
-    [field.value.startDate]: { selected: true, marked: true },
+    [field.value.startDate]: {
+      selected: true,
+      marked: true,
+      selectedColor: theme.colors.editButton,
+    },
     [field.value.endDate]: {
       selected: true,
       marked: true,
-      selectedColor: 'green',
+      selectedColor: theme.colors.deleteButton,
     },
   };
 

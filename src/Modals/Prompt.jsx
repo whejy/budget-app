@@ -6,7 +6,7 @@ const Prompt = ({ modalOpen, onClose, handleYes, message }) => {
     <MyModal animation="fade" modalOpen={modalOpen} onClose={onClose}>
       <Text style={styles.message}>{message}</Text>
       <View style={styles.buttons}>
-        <Button title="Delete" color="red" onPress={handleYes} />
+        <Button title="Delete" onPress={handleYes} color="red" />
         <Button title="Cancel" onPress={onClose} />
       </View>
     </MyModal>
