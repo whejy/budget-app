@@ -56,7 +56,7 @@ export const Heading = ({ ...props }) => {
     <Text
       fontSize="heading"
       fontWeight="bold"
-      style={{ color: 'white', paddingBottom: 25 }}
+      style={{ color: 'white' }}
       {...props}
     />
   );

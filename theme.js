@@ -20,14 +20,10 @@ const theme = {
     textSecondary: '#586069',
     dateText: '#cccccc',
     error: '#d73a4a',
-    primary: '#0366d6',
     appBar: '#24292e',
+    primary: sliceColors.Personal,
+    secondary: sliceColors.Entertainment,
     pieData: sliceColors,
-    editButton: sliceColors.Personal,
-    deleteButton: sliceColors.Entertainment,
-  },
-  iconSize: {
-    size: 30,
   },
   fontSizes: {
     body: 14,

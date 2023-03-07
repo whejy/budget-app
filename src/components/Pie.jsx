@@ -6,7 +6,8 @@ import Dates from './Dates';
 import Prompt from '../Modals/Prompt';
 import theme from '../../theme';
 import AddExpense from '../Modals/ExpenseModal/AddExpense';
-import { Icon } from '@rneui/themed';
+import { PrimaryIcon, SecondaryIcon } from './Icon';
+// import { Icon } from '@rneui/themed';
 
 const Pie = ({ data, savePie, removePie }) => {
   const [category, setCategory] = useState('');
@@ -118,14 +119,14 @@ const Pie = ({ data, savePie, removePie }) => {
           remainingIncome={remainingIncome}
         />
       )}
-      <View style={styles.buttons}>
+      <View style={styles.buttonContainer}>
         {remainingIncome > 0 && (
           <Pressable onPress={toggleModal}>
-            <Icon {...styles.editButton} name="edit" type="material" />
+            <PrimaryIcon {...styles.button} name="edit" type="material" />
           </Pressable>
         )}
         <Pressable onPress={togglePrompt}>
-          <Icon {...styles.deleteButton} name="delete" type="material" />
+          <SecondaryIcon {...styles.button} name="delete" type="material" />
         </Pressable>
       </View>
       <AddExpense
@@ -152,18 +153,11 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
-  buttons: {
+  buttonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  editButton: {
-    color: theme.colors.editButton,
-    size: theme.iconSize.size,
-    paddingHorizontal: 25,
-  },
-  deleteButton: {
-    color: theme.colors.deleteButton,
-    size: theme.iconSize.size,
+  button: {
     paddingHorizontal: 25,
   },
 });

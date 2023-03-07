@@ -17,12 +17,12 @@ const FormikDateInput = ({ name, ...props }) => {
     [field.value.startDate]: {
       selected: true,
       marked: true,
-      selectedColor: theme.colors.editButton,
+      selectedColor: theme.colors.primary,
     },
     [field.value.endDate]: {
       selected: true,
       marked: true,
-      selectedColor: theme.colors.deleteButton,
+      selectedColor: theme.colors.secondary,
     },
   };
 

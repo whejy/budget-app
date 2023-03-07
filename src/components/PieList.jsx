@@ -5,8 +5,7 @@ import Prompt from '../Modals/Prompt';
 import PieStorage from '../../utils/pieStorage';
 import AddPie from '../Modals/AddPieModal';
 import { Subheading } from './Text';
-import { Icon } from '@rneui/themed';
-import theme from '../../theme';
+import { PrimaryIcon, SecondaryIcon } from './Icon';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
@@ -65,20 +64,20 @@ const PieList = () => {
         handleYes={handleDeleteAll}
         message="Are you sure you want to delete all of your pie data?"
       />
-      <View style={styles.buttons}>
+      <View style={styles.buttonContainer}>
         <Pressable onPress={toggleModal}>
-          <Icon
-            {...styles.addButton}
+          <PrimaryIcon
             name="add-circle-outline"
             type="material"
+            {...styles.button}
           />
         </Pressable>
         {pies.length > 0 && (
           <Pressable onPress={togglePrompt}>
-            <Icon
-              {...styles.deleteButton}
+            <SecondaryIcon
               name="remove-circle-outline"
               type="material"
+              {...styles.button}
             />
           </Pressable>
         )}
@@ -116,23 +115,17 @@ const styles = StyleSheet.create({
   emptyList: {
     textAlign: 'center',
   },
-  buttons: {
+  buttonContainer: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 10,
+    paddingTop: 20,
     paddingBottom: 20,
   },
-  addButton: {
-    size: theme.iconSize.size + 5,
-    color: theme.colors.editButton,
-    paddingHorizontal: 22,
-  },
-  deleteButton: {
-    size: theme.iconSize.size + 5,
-    color: theme.colors.deleteButton,
-    paddingHorizontal: 22,
+  button: {
+    size: 38,
+    paddingHorizontal: 20,
   },
 });
 
