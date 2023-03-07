@@ -23,6 +23,11 @@ const theme = {
     primary: '#0366d6',
     appBar: '#24292e',
     pieData: sliceColors,
+    editButton: sliceColors.Personal,
+    deleteButton: sliceColors.Entertainment,
+  },
+  iconSize: {
+    size: 30,
   },
   fontSizes: {
     body: 14,

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Subheading } from './Text';
 import EditExpense from '../Modals/ExpenseModal/EditExpense';
 import { Icon } from '@rneui/themed';
+import theme from '../../theme';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
@@ -51,7 +52,11 @@ const CategoryDetails = ({
             <Text style={styles.hidden}>X</Text>
             <Subheading style={styles.categoryTitle}>{category}</Subheading>
             <Pressable onPress={() => removeCategory()}>
-              <Icon color="red" size="20" name="backspace" type="material" />
+              <Icon
+                name="backspace"
+                type="material"
+                {...styles.deleteCategoryIcon}
+              />
             </Pressable>
           </View>
           <FlatList
@@ -59,7 +64,6 @@ const CategoryDetails = ({
             ItemSeparatorComponent={ItemSeparator}
             keyExtractor={(_, i) => i}
             numColumns={4}
-            columnWrapperStyle={styles.itemContainer}
             renderItem={({ item }) => (
               <EditExpenses
                 savePie={savePie}
@@ -88,12 +92,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    paddingBottom: 20,
   },
   categoryContainer: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 10,
+    paddingBottom: 20,
   },
   itemDetails: {
     width: 80,
@@ -107,6 +112,10 @@ const styles = StyleSheet.create({
   },
   categoryTitle: {
     paddingHorizontal: 10,
+  },
+  deleteCategoryIcon: {
+    size: theme.iconSize.size,
+    color: theme.colors.deleteButton,
   },
 });
 
