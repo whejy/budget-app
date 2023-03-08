@@ -1,5 +1,5 @@
 import { Text, FlatList, View, StyleSheet, Pressable } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Subheading } from './Text';
 import EditExpense from '../Modals/ExpenseModal/EditExpense';
 import { SecondaryIcon } from './Icon';
@@ -36,7 +36,12 @@ const CategoryDetails = ({
   pie,
   savePie,
   remainingIncome,
+  getItemLayout,
 }) => {
+  useEffect(() => {
+    getItemLayout({ x: null, y: null, width: null, height: 0 });
+  }, [category === '']);
+
   const removeCategory = () => {
     delete pie.expenses[category];
     savePie(pie);
@@ -44,7 +49,16 @@ const CategoryDetails = ({
 
   expenses?.sort((a, b) => b.cost - a.cost);
   return (
-    <View style={styles.container}>
+    <View
+      onLayout={(event) => {
+        var { x, y, width, height } = event.nativeEvent.layout;
+        if (category === 'Income') {
+          height = 0;
+        }
+        getItemLayout({ x, y, width, height });
+      }}
+      style={styles.container}
+    >
       {expenses ? (
         <>
           <View style={styles.categoryContainer}>

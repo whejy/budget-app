@@ -7,12 +7,15 @@ import Prompt from '../Modals/Prompt';
 import theme from '../../theme';
 import AddExpense from '../Modals/ExpenseModal/AddExpense';
 import { PrimaryIcon, SecondaryIcon } from './Icon';
-// import { Icon } from '@rneui/themed';
 
-const Pie = ({ data, savePie, removePie }) => {
+const Pie = ({ data, savePie, removePie, handleNavigate, index }) => {
   const [category, setCategory] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
+
+  const getItemLayout = ({ x, y, width, height }) => {
+    handleNavigate({ x, y, width, height, index });
+  };
 
   const { expenses, income } = data;
 
@@ -73,7 +76,7 @@ const Pie = ({ data, savePie, removePie }) => {
               mutation: (props) => {
                 setCategory(props.datum.x);
                 return props.datum.x === category
-                  ? setCategory(null)
+                  ? setCategory('')
                   : {
                       style: {
                         ...props.style,
@@ -110,15 +113,15 @@ const Pie = ({ data, savePie, removePie }) => {
         }}
         labelComponent={<VictoryLabel textAnchor={'middle'} />}
       />
-      {category?.length > 0 && (
-        <CategoryDetails
-          category={category}
-          pie={data}
-          savePie={handlePieUpdate}
-          expenses={expenses[category]}
-          remainingIncome={remainingIncome}
-        />
-      )}
+
+      <CategoryDetails
+        category={category}
+        pie={data}
+        savePie={handlePieUpdate}
+        expenses={expenses[category]}
+        remainingIncome={remainingIncome}
+        getItemLayout={getItemLayout}
+      />
       <View style={styles.buttonContainer}>
         {remainingIncome > 0 && (
           <Pressable onPress={toggleModal}>
