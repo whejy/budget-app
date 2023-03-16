@@ -39,7 +39,7 @@ const CategoryDetails = ({
   getItemLayout,
 }) => {
   useEffect(() => {
-    getItemLayout({ x: null, y: null, width: null, height: 0 });
+    getItemLayout({ height: 0 });
   }, [category === '']);
 
   const removeCategory = () => {
@@ -51,11 +51,11 @@ const CategoryDetails = ({
   return (
     <View
       onLayout={(event) => {
-        var { x, y, width, height } = event.nativeEvent.layout;
+        let { height } = event.nativeEvent.layout;
         if (category === 'Income') {
           height = 0;
         }
-        getItemLayout({ x, y, width, height });
+        getItemLayout({ height });
       }}
       style={styles.container}
     >

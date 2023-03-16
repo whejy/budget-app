@@ -13,8 +13,8 @@ const Pie = ({ data, savePie, removePie, handleNavigate, index }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
 
-  const getItemLayout = ({ x, y, width, height }) => {
-    handleNavigate({ x, y, width, height, index });
+  const getItemLayout = ({ height }) => {
+    handleNavigate({ height, index });
   };
 
   const { expenses, income } = data;
@@ -97,14 +97,15 @@ const Pie = ({ data, savePie, removePie, handleNavigate, index }) => {
     <View style={styles.container}>
       <Dates start={data.dates.startDate} end={data.dates.endDate} />
       <VictoryPie
-        animate={{
-          duration: 2000,
-        }}
+        // animate={{
+        //   duration: 2000,
+        // }}
         data={pieData}
         events={events}
-        labels={({ datum }) =>
-          `${datum.x} \n$${datum.y.toLocaleString('en-US')}`
-        }
+        labels={({ datum }) => {
+          console.log(datum.y);
+          return `${datum.x} \n$${datum.y.toLocaleString('en-US')}`;
+        }}
         style={{
           data: {
             fill: ({ datum }) => datum.fill,

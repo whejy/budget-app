@@ -16,7 +16,7 @@ const PieList = () => {
   const [promptOpen, setPromptOpen] = useState(false);
   const flatListRef = useRef();
 
-  const handleNavigate = ({ x, y, width, height, index }) => {
+  const handleNavigate = ({ height, index }) => {
     flatListRef.current.scrollToIndex({
       animated: true,
       index: index,
