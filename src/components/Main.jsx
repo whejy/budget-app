@@ -1,4 +1,5 @@
 import Constants from 'expo-constants';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import AppBar from './AppBar';
 import PieList from './PieList';

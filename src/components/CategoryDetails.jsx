@@ -40,7 +40,7 @@ const CategoryDetails = ({
 }) => {
   useEffect(() => {
     getItemLayout({ height: 0 });
-  }, [category === '']);
+  }, [category === '' || category === 'Income']);
 
   const removeCategory = () => {
     delete pie.expenses[category];
@@ -53,13 +53,17 @@ const CategoryDetails = ({
       onLayout={(event) => {
         let { height } = event.nativeEvent.layout;
         if (category === 'Income') {
-          height = 0;
+          height = 30;
         }
         getItemLayout({ height });
       }}
       style={styles.container}
     >
-      {expenses ? (
+      {category === 'Income' ? (
+        <Text>
+          You started this period with ${pie.income.toLocaleString('en-US')}
+        </Text>
+      ) : category === '' ? null : (
         <>
           <View style={styles.categoryContainer}>
             <Text style={styles.hidden}>X</Text>
@@ -84,10 +88,6 @@ const CategoryDetails = ({
             )}
           />
         </>
-      ) : (
-        <Text>
-          You started this period with ${pie.income.toLocaleString('en-US')}
-        </Text>
       )}
     </View>
   );

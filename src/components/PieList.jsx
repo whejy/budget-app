@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState, useRef } from 'react';
 import { FlatList, StyleSheet, View, Pressable } from 'react-native';
 import Pie from './Pie';
@@ -16,20 +15,9 @@ const PieList = () => {
   const [promptOpen, setPromptOpen] = useState(false);
   const flatListRef = useRef();
 
-  const handleNavigate = ({ height, index }) => {
-    flatListRef.current.scrollToIndex({
-      animated: true,
-      index: index,
-      viewPosition: 0,
-      viewOffset: 40 - height,
-    });
-  };
-
-  // const getItemLayout = (data, index) => ({
-  //   length: 50,
-  //   offset: 50 * index,
-  //   index,
-  // });
+  useEffect(() => {
+    getStoragePies();
+  }, []);
 
   const toggleModal = () => setModalOpen(!modalOpen);
   const togglePrompt = () => setPromptOpen(!promptOpen);
@@ -64,9 +52,14 @@ const PieList = () => {
     removeAllPies();
   };
 
-  useEffect(() => {
-    getStoragePies();
-  }, []);
+  const handleNavigate = ({ height, index }) => {
+    flatListRef.current.scrollToIndex({
+      animated: true,
+      index: index,
+      viewPosition: 0,
+      viewOffset: 40 - height,
+    });
+  };
 
   return (
     <View>

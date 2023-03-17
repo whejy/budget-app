@@ -97,15 +97,11 @@ const Pie = ({ data, savePie, removePie, handleNavigate, index }) => {
     <View style={styles.container}>
       <Dates start={data.dates.startDate} end={data.dates.endDate} />
       <VictoryPie
-        // animate={{
-        //   duration: 2000,
-        // }}
         data={pieData}
         events={events}
-        labels={({ datum }) => {
-          console.log(datum.y);
-          return `${datum.x} \n$${datum.y.toLocaleString('en-US')}`;
-        }}
+        labels={({ datum }) =>
+          `${datum.x} \n$${datum.y.toLocaleString('en-US')}`
+        }
         style={{
           data: {
             fill: ({ datum }) => datum.fill,
