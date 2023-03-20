@@ -1,6 +1,6 @@
 import { VictoryPie, VictoryLabel } from 'victory-native';
 import React, { useState } from 'react';
-import { View, StyleSheet, Pressable } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import CategoryDetails from './CategoryDetails';
 import Dates from './Dates';
 import Prompt from '../Modals/Prompt';
@@ -121,13 +121,13 @@ const Pie = ({ data, savePie, removePie, handleNavigate, index }) => {
       />
       <View style={styles.buttonContainer}>
         {remainingIncome > 0 && (
-          <Pressable onPress={toggleModal}>
+          <TouchableOpacity onPress={toggleModal}>
             <PrimaryIcon {...styles.button} name="edit" type="material" />
-          </Pressable>
+          </TouchableOpacity>
         )}
-        <Pressable onPress={togglePrompt}>
+        <TouchableOpacity onPress={togglePrompt}>
           <SecondaryIcon {...styles.button} name="delete" type="material" />
-        </Pressable>
+        </TouchableOpacity>
       </View>
       <AddExpense
         modalOpen={modalOpen}

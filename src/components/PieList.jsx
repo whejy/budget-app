@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { FlatList, StyleSheet, View, Pressable } from 'react-native';
+import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
 import Pie from './Pie';
 import Prompt from '../Modals/Prompt';
 import PieStorage from '../../utils/pieStorage';
@@ -55,7 +55,7 @@ const PieList = () => {
   };
 
   const handleNavigate = ({ height, index }) => {
-    flatListRef.current.scrollToIndex({
+    flatListRef.current?.scrollToIndex({
       animated: true,
       index: index,
       viewPosition: 0,
@@ -81,21 +81,21 @@ const PieList = () => {
         message="Are you sure you want to delete all of your pie data?"
       />
       <View style={styles.buttonContainer}>
-        <Pressable onPress={toggleModal}>
+        <TouchableOpacity onPress={toggleModal}>
           <PrimaryIcon
             name="add-circle-outline"
             type="material"
             {...styles.button}
           />
-        </Pressable>
+        </TouchableOpacity>
         {pies.length > 0 && (
-          <Pressable onPress={togglePrompt}>
+          <TouchableOpacity onPress={togglePrompt}>
             <SecondaryIcon
               name="remove-circle-outline"
               type="material"
               {...styles.button}
             />
-          </Pressable>
+          </TouchableOpacity>
         )}
       </View>
       {pies.length > 0 ? (
