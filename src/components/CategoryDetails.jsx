@@ -1,5 +1,5 @@
 import { Text, FlatList, View, StyleSheet, Pressable } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Subheading } from './Text';
 import EditExpense from '../Modals/ExpenseModal/EditExpense';
 import { SecondaryIcon } from './Icon';
@@ -38,10 +38,6 @@ const CategoryDetails = ({
   remainingIncome,
   getItemLayout,
 }) => {
-  useEffect(() => {
-    getItemLayout({ height: 0 });
-  }, [category === '' || category === 'Income']);
-
   const removeCategory = () => {
     delete pie.expenses[category];
     savePie(pie);

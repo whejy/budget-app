@@ -24,12 +24,14 @@ const PieList = () => {
 
   async function getStoragePies() {
     const initialPies = await PieStorage.getPies();
-    return setPies(initialPies);
+    setPies(initialPies);
+    return resetNavigate();
   }
 
   async function setStoragePies(newPie) {
     const updatedPies = await PieStorage.setPies(newPie);
-    return setPies(updatedPies);
+    setPies(updatedPies);
+    return resetNavigate();
   }
 
   async function updateStoragePie(updatedPie) {
@@ -59,6 +61,10 @@ const PieList = () => {
       viewPosition: 0,
       viewOffset: 40 - height,
     });
+  };
+
+  const resetNavigate = () => {
+    return handleNavigate({ height: 40, index: 0 });
   };
 
   return (
@@ -96,9 +102,9 @@ const PieList = () => {
         <FlatList
           contentContainerStyle={styles.pieList}
           ref={flatListRef}
-          onScrollToIndexFailed={({ index, averageItemLength }) => {
+          onScrollToIndexFailed={() => {
             flatListRef.current?.scrollToOffset({
-              offset: index * averageItemLength,
+              offset: 0,
               animated: true,
             });
           }}
