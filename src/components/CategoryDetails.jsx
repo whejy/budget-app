@@ -43,18 +43,14 @@ const CategoryDetails = ({
     savePie(pie);
   };
 
+  const onLayout = (event) => {
+    const { height } = event.nativeEvent.layout;
+    return getItemLayout({ height });
+  };
+
   expenses?.sort((a, b) => b.cost - a.cost);
   return (
-    <View
-      onLayout={(event) => {
-        let { height } = event.nativeEvent.layout;
-        if (category === 'Income') {
-          height = 30;
-        }
-        getItemLayout({ height });
-      }}
-      style={styles.container}
-    >
+    <View onLayout={onLayout} style={styles.container}>
       {category === 'Income' ? (
         <Text>
           You started this period with ${pie.income.toLocaleString('en-US')}

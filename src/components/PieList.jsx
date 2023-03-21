@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState, useRef } from 'react';
 import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
 import Pie from './Pie';
@@ -13,25 +14,32 @@ const PieList = () => {
   const [pies, setPies] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
+  const [category, setCategory] = useState();
   const flatListRef = useRef();
 
   useEffect(() => {
     getStoragePies();
   }, []);
 
+  useEffect(() => {
+    const categories = pies.reduce((acc, curr, index) => {
+      return [...acc, { index: index, activeCategory: '' }];
+    }, []);
+    setCategory(categories);
+  }, [pies]);
+
   const toggleModal = () => setModalOpen(!modalOpen);
   const togglePrompt = () => setPromptOpen(!promptOpen);
 
   async function getStoragePies() {
     const initialPies = await PieStorage.getPies();
-    setPies(initialPies);
-    return resetNavigate();
+    return setPies(initialPies);
   }
 
   async function setStoragePies(newPie) {
     const updatedPies = await PieStorage.setPies(newPie);
-    setPies(updatedPies);
-    return resetNavigate();
+    resetNavigate();
+    return setPies(updatedPies);
   }
 
   async function updateStoragePie(updatedPie) {
@@ -54,7 +62,19 @@ const PieList = () => {
     removeAllPies();
   };
 
+  const updateCategory = ({ index, activeCategory }) => {
+    const updatedCategories = category.map((pie) =>
+      pie.index !== index
+        ? pie
+        : activeCategory === pie.activeCategory
+        ? { ...pie, activeCategory: '' }
+        : { ...pie, activeCategory: activeCategory }
+    );
+    setCategory(updatedCategories);
+  };
+
   const handleNavigate = ({ height, index }) => {
+    console.log('called');
     flatListRef.current?.scrollToIndex({
       animated: true,
       index: index,
@@ -103,6 +123,7 @@ const PieList = () => {
           contentContainerStyle={styles.pieList}
           ref={flatListRef}
           onScrollToIndexFailed={() => {
+            console.log('failed');
             flatListRef.current?.scrollToOffset({
               offset: 0,
               animated: true,
@@ -118,6 +139,8 @@ const PieList = () => {
               handleNavigate={handleNavigate}
               removePie={removePie}
               savePie={updateStoragePie}
+              updateCategory={updateCategory}
+              activeCategory={category.filter((pie) => pie.index === index)[0]}
             />
           )}
           keyExtractor={(_, i) => i}

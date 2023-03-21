@@ -8,19 +8,30 @@ import theme from '../../theme';
 import AddExpense from '../Modals/ExpenseModal/AddExpense';
 import { PrimaryIcon, SecondaryIcon } from './Icon';
 
-const Pie = ({ data, savePie, removePie, handleNavigate, index }) => {
-  const [category, setCategory] = useState('');
+const Pie = ({
+  data,
+  savePie,
+  removePie,
+  handleNavigate,
+  index,
+  updateCategory,
+  activeCategory,
+}) => {
+  // const [category, setCategory] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
 
-  const getItemLayout = ({ height }) => {
-    handleNavigate({ height, index });
-  };
-
   const { expenses, income } = data;
+
+  const category = activeCategory?.activeCategory;
 
   const toggleModal = () => setModalOpen(!modalOpen);
   const togglePrompt = () => setPromptOpen(!promptOpen);
+
+  const getItemLayout = ({ height }) => {
+    category === 'Income' ? (height = 20) : height;
+    return handleNavigate({ height, index });
+  };
 
   const handleDeletePie = () => {
     togglePrompt();
@@ -28,7 +39,8 @@ const Pie = ({ data, savePie, removePie, handleNavigate, index }) => {
   };
 
   const handlePieUpdate = (pie) => {
-    !Object.keys(expenses).includes(category) && setCategory('');
+    !Object.keys(expenses).includes(category) &&
+      updateCategory({ index, activeCategory: '' });
     savePie(pie);
   };
 
@@ -74,17 +86,17 @@ const Pie = ({ data, savePie, removePie, handleNavigate, index }) => {
 
             {
               mutation: (props) => {
-                setCategory(props.datum.x);
-                return props.datum.x === category
-                  ? setCategory('')
-                  : {
-                      style: {
-                        ...props.style,
-                        stroke: props.style.fill,
-                        fillOpacity: 0.6,
-                        strokeWidth: 4,
-                      },
-                    };
+                updateCategory({ index, activeCategory: props.datum.x });
+                if (props.datum.x !== category) {
+                  return {
+                    style: {
+                      ...props.style,
+                      stroke: props.style.fill,
+                      fillOpacity: 0.6,
+                      strokeWidth: 4,
+                    },
+                  };
+                }
               },
             },
           ];
@@ -111,14 +123,16 @@ const Pie = ({ data, savePie, removePie, handleNavigate, index }) => {
         labelComponent={<VictoryLabel textAnchor={'middle'} />}
       />
 
-      <CategoryDetails
-        category={category}
-        pie={data}
-        savePie={handlePieUpdate}
-        expenses={expenses[category]}
-        remainingIncome={remainingIncome}
-        getItemLayout={getItemLayout}
-      />
+      {category?.length > 0 && (
+        <CategoryDetails
+          category={category}
+          pie={data}
+          savePie={handlePieUpdate}
+          expenses={expenses[category]}
+          remainingIncome={remainingIncome}
+          getItemLayout={getItemLayout}
+        />
+      )}
       <View style={styles.buttonContainer}>
         {remainingIncome > 0 && (
           <TouchableOpacity onPress={toggleModal}>
