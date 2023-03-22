@@ -33,6 +33,8 @@ const Pie = ({
     return handleNavigate({ height, index });
   };
 
+  category === '' && getItemLayout({ height: 0 });
+
   const handleDeletePie = () => {
     togglePrompt();
     removePie(data);
@@ -87,16 +89,14 @@ const Pie = ({
             {
               mutation: (props) => {
                 updateCategory({ index, activeCategory: props.datum.x });
-                if (props.datum.x !== category) {
-                  return {
-                    style: {
-                      ...props.style,
-                      stroke: props.style.fill,
-                      fillOpacity: 0.6,
-                      strokeWidth: 4,
-                    },
-                  };
-                }
+                props.datum.x !== category && {
+                  style: {
+                    ...props.style,
+                    stroke: props.style.fill,
+                    fillOpacity: 0.6,
+                    strokeWidth: 4,
+                  },
+                };
               },
             },
           ];
