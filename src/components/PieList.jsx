@@ -14,7 +14,7 @@ const PieList = () => {
   const [pies, setPies] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
-  const [category, setCategory] = useState();
+  const [activeCategories, setActiveCategories] = useState();
   const flatListRef = useRef();
 
   useEffect(() => {
@@ -25,7 +25,7 @@ const PieList = () => {
     const categories = pies.reduce((acc, curr, index) => {
       return [...acc, { index: index, activeCategory: '' }];
     }, []);
-    setCategory(categories);
+    setActiveCategories(categories);
   }, [pies]);
 
   const toggleModal = () => setModalOpen(!modalOpen);
@@ -54,6 +54,7 @@ const PieList = () => {
 
   async function removePie(pie) {
     const updatedPies = await PieStorage.removePie(pie);
+    resetNavigate();
     return setPies(updatedPies);
   }
 
@@ -62,19 +63,18 @@ const PieList = () => {
     removeAllPies();
   };
 
-  const updateCategory = ({ index, activeCategory }) => {
-    const updatedCategories = category.map((pie) =>
+  const updateActiveCategory = ({ index, activeCategory }) => {
+    const updatedCategories = activeCategories.map((pie) =>
       pie.index !== index
         ? pie
         : activeCategory === pie.activeCategory
         ? { ...pie, activeCategory: '' }
-        : { ...pie, activeCategory: activeCategory }
+        : { ...pie, activeCategory }
     );
-    setCategory(updatedCategories);
+    setActiveCategories(updatedCategories);
   };
 
   const handleNavigate = ({ height, index }) => {
-    console.log('called');
     flatListRef.current?.scrollToIndex({
       animated: true,
       index: index,
@@ -123,7 +123,6 @@ const PieList = () => {
           contentContainerStyle={styles.pieList}
           ref={flatListRef}
           onScrollToIndexFailed={() => {
-            console.log('failed');
             flatListRef.current?.scrollToOffset({
               offset: 0,
               animated: true,
@@ -139,8 +138,11 @@ const PieList = () => {
               handleNavigate={handleNavigate}
               removePie={removePie}
               savePie={updateStoragePie}
-              updateCategory={updateCategory}
-              activeCategory={category.filter((pie) => pie.index === index)[0]}
+              updateCategory={updateActiveCategory}
+              category={
+                activeCategories.filter((pie) => pie.index === index)[0]
+                  ?.activeCategory
+              }
             />
           )}
           keyExtractor={(_, i) => i}

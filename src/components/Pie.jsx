@@ -15,15 +15,12 @@ const Pie = ({
   handleNavigate,
   index,
   updateCategory,
-  activeCategory,
+  category,
 }) => {
-  // const [category, setCategory] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
 
   const { expenses, income } = data;
-
-  const category = activeCategory?.activeCategory;
 
   const toggleModal = () => setModalOpen(!modalOpen);
   const togglePrompt = () => setPromptOpen(!promptOpen);
@@ -32,8 +29,6 @@ const Pie = ({
     category === 'Income' ? (height = 20) : height;
     return handleNavigate({ height, index });
   };
-
-  category === '' && getItemLayout({ height: 0 });
 
   const handleDeletePie = () => {
     togglePrompt();
@@ -89,14 +84,16 @@ const Pie = ({
             {
               mutation: (props) => {
                 updateCategory({ index, activeCategory: props.datum.x });
-                props.datum.x !== category && {
-                  style: {
-                    ...props.style,
-                    stroke: props.style.fill,
-                    fillOpacity: 0.6,
-                    strokeWidth: 4,
-                  },
-                };
+                if (props.datum.x !== category) {
+                  return {
+                    style: {
+                      ...props.style,
+                      stroke: props.style.fill,
+                      fillOpacity: 0.6,
+                      strokeWidth: 4,
+                    },
+                  };
+                }
               },
             },
           ];
