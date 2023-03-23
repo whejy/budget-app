@@ -1,4 +1,10 @@
-import { Text, FlatList, View, StyleSheet, Pressable } from 'react-native';
+import {
+  Text,
+  FlatList,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import { useState } from 'react';
 import { Subheading } from './Text';
 import EditExpense from '../Modals/ExpenseModal/EditExpense';
@@ -13,10 +19,10 @@ const EditExpenses = ({ item, category, pie, savePie, remainingIncome }) => {
 
   return (
     <>
-      <Pressable style={styles.itemDetails} onPress={toggleModal}>
+      <TouchableOpacity style={styles.itemDetails} onPress={toggleModal}>
         <Text style={{ textAlign: 'center' }}>{item.item}</Text>
         <Text>${item.cost.toLocaleString('en-US')}</Text>
-      </Pressable>
+      </TouchableOpacity>
       <EditExpense
         modalOpen={modalOpen}
         onClose={toggleModal}
@@ -60,9 +66,9 @@ const CategoryDetails = ({
           <View style={styles.categoryContainer}>
             <Text style={styles.hidden}>X</Text>
             <Subheading style={styles.categoryTitle}>{category}</Subheading>
-            <Pressable onPress={() => removeCategory()}>
+            <TouchableOpacity onPress={() => removeCategory()}>
               <SecondaryIcon name="backspace" type="material" />
-            </Pressable>
+            </TouchableOpacity>
           </View>
           <FlatList
             data={expenses}
