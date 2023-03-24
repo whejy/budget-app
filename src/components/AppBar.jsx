@@ -1,5 +1,6 @@
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Heading } from './Text';
+import FactAlert from './Alert';
 import Constants from 'expo-constants';
 import theme from '../../theme';
 
@@ -7,7 +8,9 @@ const AppBar = () => {
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
-        <Heading>BudgetMe</Heading>
+        <TouchableOpacity onPress={FactAlert}>
+          <Heading>BudgetMe</Heading>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
