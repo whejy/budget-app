@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState, useRef } from 'react';
 import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
 import Pie from './Pie';
@@ -10,18 +9,14 @@ import { PrimaryIcon, SecondaryIcon } from './Icon';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const PieList = () => {
-  const [pies, setPies] = useState([]);
+const PieList = ({ pies, setPies }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
   const [activeCategories, setActiveCategories] = useState();
   const flatListRef = useRef();
 
   useEffect(() => {
-    getStoragePies();
-  }, []);
-
-  useEffect(() => {
+    console.log(pies, 'test');
     const categories = pies.reduce((acc, curr, index) => {
       return [...acc, { index: index, activeCategory: '' }];
     }, []);
@@ -30,11 +25,6 @@ const PieList = () => {
 
   const toggleModal = () => setModalOpen(!modalOpen);
   const togglePrompt = () => setPromptOpen(!promptOpen);
-
-  async function getStoragePies() {
-    const initialPies = await PieStorage.getPies();
-    return setPies(initialPies);
-  }
 
   async function setStoragePies(newPie) {
     const updatedPies = await PieStorage.setPies(newPie);
@@ -148,7 +138,15 @@ const PieList = () => {
           keyExtractor={(_, i) => i}
         />
       ) : (
-        <Subheading style={styles.emptyList}>Add your first pie!</Subheading>
+        <Subheading style={styles.emptyList}>
+          Add your first pie!Add your first pie!Add your first pie!Add your
+          first pie!Add your first pie!Add your first pie!Add your first pie!Add
+          your first pie!Add your first pie!Add your first pie!Add your first
+          pie!Add your first pie!Add your first pie!Add your first pie!Add your
+          first pie!Add your first pie!Add your first pie!Add your first pie!Add
+          your first pie!Add your first pie!Add your first pie!Add your first
+          pie!Add your first pie!Add your first pie!
+        </Subheading>
       )}
     </View>
   );
