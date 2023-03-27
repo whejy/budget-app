@@ -1,18 +1,21 @@
 import { Alert } from 'react-native';
 
-const FactAlert = async ({
-  title = '',
-  message = 'I hope you are enjoying the app!',
-  button = 'Love it',
-}) => {
+const defaultAlert = {
+  title: '',
+  message: 'I hope you are enjoying the app!',
+  button: 'Love it',
+};
+
+const FactAlert = async () => {
+  let { title, message, button } = defaultAlert;
   try {
     const response = await fetch(
       `https://uselessfacts.jsph.pl/api/v2/facts/random`
     );
-    let fact = await response.json();
+    const fact = await response.json();
     message = fact.text;
     title = 'Did you know?';
-    button = 'Interesting...';
+    button = 'OK...';
   } catch (err) {
     console.log(err);
   }
