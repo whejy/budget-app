@@ -1,5 +1,6 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
+import * as SplashScreen from 'expo-splash-screen';
 import Pie from './Pie';
 import Prompt from '../Modals/Prompt';
 import PieStorage from '../../utils/pieStorage';
@@ -9,22 +10,36 @@ import { PrimaryIcon, SecondaryIcon } from './Icon';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const PieList = ({ pies, setPies }) => {
+const PieList = () => {
+  const [appIsReady, setAppIsReady] = useState(false);
+  const [pies, setPies] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
   const [activeCategories, setActiveCategories] = useState();
   const flatListRef = useRef();
 
   useEffect(() => {
-    console.log(pies, 'test');
+    getStoragePies();
+  }, []);
+
+  useEffect(() => {
     const categories = pies.reduce((acc, curr, index) => {
       return [...acc, { index: index, activeCategory: '' }];
     }, []);
     setActiveCategories(categories);
   }, [pies]);
 
-  const toggleModal = () => setModalOpen(!modalOpen);
-  const togglePrompt = () => setPromptOpen(!promptOpen);
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  async function getStoragePies() {
+    const initialPies = await PieStorage.getPies();
+    setAppIsReady(true);
+    return setPies(initialPies);
+  }
 
   async function setStoragePies(newPie) {
     const updatedPies = await PieStorage.setPies(newPie);
@@ -77,8 +92,15 @@ const PieList = ({ pies, setPies }) => {
     return handleNavigate({ height: 40, index: 0 });
   };
 
+  const toggleModal = () => setModalOpen(!modalOpen);
+  const togglePrompt = () => setPromptOpen(!promptOpen);
+
+  if (!appIsReady) {
+    return null;
+  }
+
   return (
-    <View>
+    <View onLayout={onLayoutRootView}>
       <AddPie
         onClose={toggleModal}
         modalOpen={modalOpen}
@@ -138,15 +160,7 @@ const PieList = ({ pies, setPies }) => {
           keyExtractor={(_, i) => i}
         />
       ) : (
-        <Subheading style={styles.emptyList}>
-          Add your first pie!Add your first pie!Add your first pie!Add your
-          first pie!Add your first pie!Add your first pie!Add your first pie!Add
-          your first pie!Add your first pie!Add your first pie!Add your first
-          pie!Add your first pie!Add your first pie!Add your first pie!Add your
-          first pie!Add your first pie!Add your first pie!Add your first pie!Add
-          your first pie!Add your first pie!Add your first pie!Add your first
-          pie!Add your first pie!Add your first pie!
-        </Subheading>
+        <Subheading style={styles.emptyList}>Add your first pie!</Subheading>
       )}
     </View>
   );
