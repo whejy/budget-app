@@ -22,22 +22,10 @@ const PieList = () => {
     getStoragePies();
   }, []);
 
-  useEffect(() => {
-    const categories = pies.reduce((acc, curr, index) => {
-      return [...acc, { index: index, activeCategory: '' }];
-    }, []);
-    setActiveCategories(categories);
-  }, [pies]);
-
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
-      await SplashScreen.hideAsync();
-    }
-  }, [appIsReady]);
-
   async function getStoragePies() {
     const initialPies = await PieStorage.getPies();
     setAppIsReady(true);
+    initialiseCategories(initialPies);
     return setPies(initialPies);
   }
 
@@ -66,6 +54,19 @@ const PieList = () => {
   const handleDeleteAll = () => {
     togglePrompt();
     removeAllPies();
+  };
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  const initialiseCategories = (pies) => {
+    const categories = pies.reduce((acc, curr, index) => {
+      return [...acc, { index: index, activeCategory: '' }];
+    }, []);
+    setActiveCategories(categories);
   };
 
   const updateActiveCategory = ({ index, activeCategory }) => {
@@ -152,7 +153,7 @@ const PieList = () => {
               savePie={updateStoragePie}
               updateCategory={updateActiveCategory}
               category={
-                activeCategories.filter((pie) => pie.index === index)[0]
+                activeCategories?.filter((pie) => pie.index === index)[0]
                   ?.activeCategory
               }
             />
