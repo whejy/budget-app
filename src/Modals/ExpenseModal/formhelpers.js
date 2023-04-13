@@ -14,6 +14,7 @@ export const getValidationSchema = (remainingIncome, itemCost = 0) => {
     item: yup.string().required('Item is required'),
     cost: yup
       .number()
+      .typeError('Cost must be a number')
       .required('Cost is required')
       .positive()
       .max(remainingIncome + itemCost),

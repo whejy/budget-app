@@ -6,10 +6,6 @@ const FormikNumberInput = ({ name, ...props }) => {
   const [field, meta, helpers] = useField(name);
   const showError = meta.touched && meta.error;
 
-  const errorToShow = showError
-    ? showError.includes('NaN') && 'Cost must be a number'
-    : null;
-
   return (
     <>
       <TextInput
@@ -20,7 +16,7 @@ const FormikNumberInput = ({ name, ...props }) => {
         keyboardType="numeric"
         {...props}
       />
-      {showError && <ErrorText>{errorToShow || meta.error}</ErrorText>}
+      {showError && <ErrorText>{meta.error}</ErrorText>}
     </>
   );
 };

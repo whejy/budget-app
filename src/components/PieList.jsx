@@ -22,6 +22,12 @@ const PieList = () => {
     getStoragePies();
   }, []);
 
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
   async function getStoragePies() {
     const initialPies = await PieStorage.getPies();
     setAppIsReady(true);
@@ -55,12 +61,6 @@ const PieList = () => {
     togglePrompt();
     removeAllPies();
   };
-
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
-      await SplashScreen.hideAsync();
-    }
-  }, [appIsReady]);
 
   const initialiseCategories = (pies) => {
     const categories = pies.reduce((acc, curr, index) => {
