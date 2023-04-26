@@ -9,6 +9,7 @@ import { useState } from 'react';
 import { Subheading } from './Text';
 import EditExpense from '../Modals/ExpenseModal/EditExpense';
 import { SecondaryIcon } from './Icon';
+import Prompt from '../Modals/Prompt';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
@@ -44,6 +45,8 @@ const CategoryDetails = ({
   remainingIncome,
   getItemLayout,
 }) => {
+  const [promptOpen, setPromptOpen] = useState(false);
+
   const removeCategory = () => {
     delete pie.expenses[category];
     savePie(pie);
@@ -54,9 +57,17 @@ const CategoryDetails = ({
     return getItemLayout({ height });
   };
 
+  const togglePrompt = () => setPromptOpen(!promptOpen);
+
   expenses?.sort((a, b) => b.cost - a.cost);
   return (
     <View onLayout={onLayout} style={styles.container}>
+      <Prompt
+        modalOpen={promptOpen}
+        onClose={togglePrompt}
+        handleYes={removeCategory}
+        message="Are you sure you want to remove this category?"
+      />
       {category === 'Income' ? (
         <Text>
           You started this period with ${pie.income.toLocaleString('en-US')}
@@ -66,7 +77,7 @@ const CategoryDetails = ({
           <View style={styles.categoryContainer}>
             <Text style={styles.hidden}>X</Text>
             <Subheading style={styles.categoryTitle}>{category}</Subheading>
-            <TouchableOpacity onPress={() => removeCategory()}>
+            <TouchableOpacity onPress={() => togglePrompt()}>
               <SecondaryIcon name="backspace" type="material" />
             </TouchableOpacity>
           </View>

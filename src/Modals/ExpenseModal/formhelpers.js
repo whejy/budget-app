@@ -17,7 +17,10 @@ export const getValidationSchema = (remainingIncome, itemCost = 0) => {
       .typeError('Cost must be a number')
       .required('Cost is required')
       .positive()
-      .max(remainingIncome + itemCost),
+      .max(
+        remainingIncome + itemCost,
+        `Cost cannot be greater than ${remainingIncome + itemCost}`
+      ),
     category: yup.string().required('Category is required'),
   });
 };

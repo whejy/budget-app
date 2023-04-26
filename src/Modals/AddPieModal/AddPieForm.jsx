@@ -35,8 +35,12 @@ const FormFields = ({ onSubmit, closeModal }) => {
       />
       <FormikDateInput name="dates" />
       <View style={styles.buttons}>
-        <Button title="Add Pie" onPress={onSubmit} />
-        <Button title="Cancel" onPress={closeModal} />
+        <View style={styles.test}>
+          <Button title="Add Pie" onPress={onSubmit} />
+        </View>
+        <View style={styles.test}>
+          <Button title="Cancel" onPress={closeModal} />
+        </View>
       </View>
     </View>
   );
@@ -80,9 +84,12 @@ const styles = StyleSheet.create({
   buttons: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: 20,
+  },
+  test: {
+    flexDirection: 'column',
   },
   form: {
     display: 'flex',

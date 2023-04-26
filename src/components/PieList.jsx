@@ -38,6 +38,7 @@ const PieList = () => {
   async function setStoragePies(newPie) {
     const updatedPies = await PieStorage.setPies(newPie);
     resetNavigate();
+    initialiseCategories(updatedPies);
     return setPies(updatedPies);
   }
 
