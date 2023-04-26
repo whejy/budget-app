@@ -1,9 +1,10 @@
-import { View, Button, StyleSheet } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import uuid from 'react-native-uuid';
 import FormikDateInput from '../../Formik/FormikDateInput';
 import FormikNumberInput from '../../Formik/FormikNumberInput';
+import { PrimaryButton, CancelButton } from '../../components/Button';
 import { parseNumber, parseDates } from '../../../utils/helpers';
 
 const initialValues = {
@@ -35,12 +36,9 @@ const FormFields = ({ onSubmit, closeModal }) => {
       />
       <FormikDateInput name="dates" />
       <View style={styles.buttons}>
-        <View style={styles.test}>
-          <Button title="Add Pie" onPress={onSubmit} />
-        </View>
-        <View style={styles.test}>
-          <Button title="Cancel" onPress={closeModal} />
-        </View>
+        <PrimaryButton title="Add Pie" onPress={onSubmit} />
+        {Platform.OS === 'android' && <View style={{ paddingHorizontal: 5 }} />}
+        <CancelButton title="Cancel" onPress={closeModal} />
       </View>
     </View>
   );
@@ -87,9 +85,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingTop: 20,
-  },
-  test: {
-    flexDirection: 'column',
   },
   form: {
     display: 'flex',

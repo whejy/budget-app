@@ -1,7 +1,7 @@
-import { Button } from 'react-native';
 import { useState } from 'react';
 import { Calendar } from 'react-native-calendars';
 import { useField } from 'formik';
+import { CancelButton } from '../components/Button';
 import { TextInput } from './Inputs';
 import MyModal from '../Modals/Modal';
 import { ErrorText } from '../components/Text';
@@ -78,7 +78,7 @@ const FormikDateInput = ({ name, ...props }) => {
           onDayPress={(day) => handlePress(day)}
           markedDates={markedDates}
         />
-        <Button title="Cancel" onPress={() => setModalOpen(false)} />
+        <CancelButton title="Cancel" onPress={() => setModalOpen(false)} />
       </MyModal>
     </>
   );

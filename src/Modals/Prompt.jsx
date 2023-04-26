@@ -1,4 +1,5 @@
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
+import { SecondaryButton, CancelButton } from '../components/Button';
 import MyModal from './Modal';
 
 const Prompt = ({ modalOpen, onClose, handleYes, message }) => {
@@ -6,8 +7,9 @@ const Prompt = ({ modalOpen, onClose, handleYes, message }) => {
     <MyModal animation="fade" modalOpen={modalOpen} onClose={onClose}>
       <Text style={styles.message}>{message}</Text>
       <View style={styles.buttons}>
-        <Button title="Delete" onPress={handleYes} color="red" />
-        <Button title="Cancel" onPress={onClose} />
+        <SecondaryButton title="Delete" onPress={handleYes} />
+        {Platform.OS === 'android' && <View style={{ paddingHorizontal: 5 }} />}
+        <CancelButton title="Cancel" onPress={onClose} />
       </View>
     </MyModal>
   );

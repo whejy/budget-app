@@ -55,6 +55,7 @@ const PieList = () => {
   async function removePie(pie) {
     const updatedPies = await PieStorage.removePie(pie);
     resetNavigate();
+    initialiseCategories(updatedPies);
     return setPies(updatedPies);
   }
 
