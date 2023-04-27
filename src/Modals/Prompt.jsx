@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Platform } from 'react-native';
-import { SecondaryButton, CancelButton } from '../components/Button';
+import { SecondaryButton, PrimaryButton } from '../components/Button';
 import MyModal from './Modal';
 
 const Prompt = ({ modalOpen, onClose, handleYes, message }) => {
@@ -9,7 +9,7 @@ const Prompt = ({ modalOpen, onClose, handleYes, message }) => {
       <View style={styles.buttons}>
         <SecondaryButton title="Delete" onPress={handleYes} />
         {Platform.OS === 'android' && <View style={{ paddingHorizontal: 5 }} />}
-        <CancelButton title="Cancel" onPress={onClose} />
+        <PrimaryButton title="Cancel" onPress={onClose} />
       </View>
     </MyModal>
   );

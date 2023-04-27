@@ -1,11 +1,7 @@
 import { View, Button, StyleSheet, Platform } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { categories } from '../../data/categories';
-import {
-  PrimaryButton,
-  SecondaryButton,
-  CancelButton,
-} from '../../components/Button';
+import { PrimaryButton, SecondaryButton } from '../../components/Button';
 import FormikTextInput from '../../Formik/FormikTextInput';
 import FormikSelectInput from '../../Formik/FormikSelectInput';
 import FormikNumberInput from '../../Formik/FormikNumberInput';
@@ -27,7 +23,7 @@ const FormFields = ({ onSubmit, onCancel, onDelete }) => {
             <View style={{ paddingHorizontal: 2.5 }} />
             <PrimaryButton title="Update" onPress={onSubmit} />
             <View style={{ paddingHorizontal: 2.5 }} />
-            <CancelButton title="Cancel" onPress={onCancel} />
+            <PrimaryButton title="Cancel" onPress={onCancel} />
           </>
         ),
       })}
@@ -36,7 +32,7 @@ const FormFields = ({ onSubmit, onCancel, onDelete }) => {
     <>
       <PrimaryButton title="Add Expense" onPress={onSubmit} />
       {Platform.OS === 'android' && <View style={{ paddingHorizontal: 5 }} />}
-      <CancelButton title="Cancel" onPress={onCancel} />
+      <PrimaryButton title="Cancel" onPress={onCancel} />
     </>
   );
 

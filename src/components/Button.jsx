@@ -14,25 +14,16 @@ export const SecondaryButton = ({ ...props }) => {
   return <AndroidButton {...styles.secondary} {...props} />;
 };
 
-export const CancelButton = ({ ...props }) => {
-  return <AndroidButton {...styles.cancel} {...props} />;
-};
-
 const styles = StyleSheet.create({
   primary: {
     color: Platform.select({
-      android: theme.colors.primary,
+      android: theme.colors.appBar,
     }),
   },
   secondary: {
     color: Platform.select({
       ios: 'red',
       android: theme.colors.secondary,
-    }),
-  },
-  cancel: {
-    color: Platform.select({
-      android: theme.colors.appBar,
     }),
   },
 });

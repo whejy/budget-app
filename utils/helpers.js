@@ -18,7 +18,7 @@ export const parseString = (text) => {
   if (!text || !isString(text)) {
     throw new Error('Incorrect or missing string');
   }
-  return text;
+  return text.trim();
 };
 
 export const parseDates = (dates) => {
