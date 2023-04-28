@@ -9,7 +9,7 @@ const AppBar = () => {
     <View style={styles.container}>
       <ScrollView horizontal>
         <TouchableOpacity onPress={FactAlert}>
-          <Heading>TrackThat</Heading>
+          <Heading>bTrack</Heading>
         </TouchableOpacity>
       </ScrollView>
     </View>
