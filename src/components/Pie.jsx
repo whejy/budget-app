@@ -163,6 +163,11 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    backgroundColor: 'white',
+    borderRadius: 30,
+    elevation: 40,
+    paddingVertical: 16,
+    marginHorizontal: 10,
   },
   buttonContainer: {
     flexDirection: 'row',

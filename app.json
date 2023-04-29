@@ -27,6 +27,10 @@
       },
       "package": "com.whejy.budgetapp"
     },
+    "androidStatusBar": {
+      "translucent": true,
+      "barStyle": "light-content"
+    },
     "web": {
       "favicon": "./assets/favicon.png"
     },

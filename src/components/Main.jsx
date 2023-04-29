@@ -1,4 +1,5 @@
 import { StyleSheet, View } from 'react-native';
+import theme from '../../theme';
 import AppBar from './AppBar';
 import PieList from './PieList';
 
@@ -15,6 +16,7 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     flexShrink: 1,
+    backgroundColor: theme.colors.appBar,
   },
 });
 
