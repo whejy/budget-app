@@ -1,14 +1,16 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import theme from '../../theme';
-import AppBar from './AppBar';
+import { LinearGradient } from 'expo-linear-gradient';
 import PieList from './PieList';
 
 const Main = () => {
   return (
-    <View style={styles.container}>
-      <AppBar />
+    <LinearGradient
+      colors={[theme.colors.primary, theme.colors.secondary]}
+      style={styles.container}
+    >
       <PieList />
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -16,7 +18,6 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     flexShrink: 1,
-    backgroundColor: theme.colors.appBar,
   },
 });
 

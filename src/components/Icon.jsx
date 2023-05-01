@@ -19,11 +19,11 @@ export const SecondaryIcon = ({ ...props }) => {
 
 const styles = StyleSheet.create({
   primary: {
-    color: theme.colors.primary,
+    color: theme.colors.confirm,
     size: 30,
   },
   secondary: {
-    color: theme.colors.secondary,
+    color: theme.colors.cancel,
     size: 30,
   },
 });

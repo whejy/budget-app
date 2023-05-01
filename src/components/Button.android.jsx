@@ -27,10 +27,10 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   primary: {
-    backgroundColor: theme.colors.appBar,
+    backgroundColor: theme.colors.primary,
   },
   secondary: {
-    backgroundColor: theme.colors.secondary,
+    backgroundColor: theme.colors.cancel,
   },
   buttonText: {
     color: 'white',

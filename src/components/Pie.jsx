@@ -26,7 +26,7 @@ const Pie = ({
   const togglePrompt = () => setPromptOpen(!promptOpen);
 
   const getItemLayout = ({ height }) => {
-    category === 'Income' ? (height = 20) : height;
+    category === 'Income' ? (height = 40) : height;
     return handleNavigate({ height, index });
   };
 
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 30,
     elevation: 40,
-    paddingVertical: 16,
+    paddingVertical: 25,
     marginHorizontal: 10,
   },
   buttonContainer: {

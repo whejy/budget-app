@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
+import AppBar from './AppBar';
 import Pie from './Pie';
 import Prompt from '../Modals/Prompt';
 import PieStorage from '../../utils/pieStorage';
@@ -87,7 +88,7 @@ const PieList = () => {
       animated: true,
       index: index,
       viewPosition: 0,
-      viewOffset: 40 - height,
+      viewOffset: 220 - height,
     });
   };
 
@@ -115,55 +116,57 @@ const PieList = () => {
         handleYes={handleDeleteAll}
         message="Are you sure you want to delete all of your pie data?"
       />
-      {pies.length > 0 ? (
-        <>
-          <FlatList
-            contentContainerStyle={styles.pieList}
-            ref={flatListRef}
-            onScrollToIndexFailed={() => {
-              flatListRef.current?.scrollToOffset({
-                offset: 0,
-                animated: true,
-              });
-            }}
-            data={pies}
-            ItemSeparatorComponent={ItemSeparator}
-            renderItem={({ item, index }) => (
-              <Pie
-                item={item}
-                data={item}
-                index={index}
-                handleNavigate={handleNavigate}
-                removePie={removePie}
-                savePie={updateStoragePie}
-                updateCategory={updateActiveCategory}
-                category={
-                  activeCategories?.filter((pie) => pie.index === index)[0]
-                    ?.activeCategory
-                }
-              />
-            )}
-            keyExtractor={(_, i) => i}
-          />
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={toggleModal}>
-              <PrimaryIcon
-                name="add-circle-outline"
+      <View style={styles.buttonContainer}>
+        <View style={styles.buttonGroup}>
+          <TouchableOpacity onPress={toggleModal}>
+            <PrimaryIcon
+              name="add-circle-outline"
+              type="material"
+              {...styles.button}
+            />
+          </TouchableOpacity>
+          {pies.length > 0 && (
+            <TouchableOpacity onPress={togglePrompt}>
+              <SecondaryIcon
+                name="remove-circle-outline"
                 type="material"
                 {...styles.button}
               />
             </TouchableOpacity>
-            {pies.length > 0 && (
-              <TouchableOpacity onPress={togglePrompt}>
-                <SecondaryIcon
-                  name="remove-circle-outline"
-                  type="material"
-                  {...styles.button}
-                />
-              </TouchableOpacity>
-            )}
-          </View>
-        </>
+          )}
+        </View>
+      </View>
+      {pies.length > 0 ? (
+        <FlatList
+          contentContainerStyle={styles.pieList}
+          ref={flatListRef}
+          onScrollToIndexFailed={() => {
+            flatListRef.current?.scrollToOffset({
+              offset: 0,
+              animated: true,
+            });
+          }}
+          data={pies}
+          ListHeaderComponent={<AppBar />}
+          ListHeaderComponentStyle={{ marginBottom: 80 }}
+          ItemSeparatorComponent={ItemSeparator}
+          renderItem={({ item, index }) => (
+            <Pie
+              item={item}
+              data={item}
+              index={index}
+              handleNavigate={handleNavigate}
+              removePie={removePie}
+              savePie={updateStoragePie}
+              updateCategory={updateActiveCategory}
+              category={
+                activeCategories?.filter((pie) => pie.index === index)[0]
+                  ?.activeCategory
+              }
+            />
+          )}
+          keyExtractor={(_, i) => i}
+        />
       ) : (
         <Subheading style={styles.emptyList}>Add your first pie!</Subheading>
       )}
@@ -173,31 +176,33 @@ const PieList = () => {
 
 const styles = StyleSheet.create({
   separator: {
-    height: 10,
+    height: 32,
   },
   pieList: {
     paddingTop: 20,
-    paddingBottom: 220,
-    marginTop: 60,
+    paddingBottom: 40,
   },
   emptyList: {
     textAlign: 'center',
+    top: 200,
   },
   buttonContainer: {
     display: 'flex',
-    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
+    top: 120,
+    left: 100,
+    right: 100,
+    zIndex: 1,
+  },
+  buttonGroup: {
     backgroundColor: 'white',
+    flexDirection: 'row',
+    elevation: 5,
     borderRadius: 20,
     marginTop: 5,
-    marginHorizontal: 10,
     paddingVertical: 10,
-    elevation: 5,
-    top: 0,
-    left: 90,
-    right: 90,
   },
   button: {
     size: 38,

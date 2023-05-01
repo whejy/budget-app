@@ -20,9 +20,10 @@ const theme = {
     textSecondary: '#586069',
     dateText: '#cccccc',
     error: '#d73a4a',
-    appBar: sliceColors.Income,
-    primary: sliceColors.Personal,
-    secondary: sliceColors.Entertainment,
+    primary: sliceColors.Income,
+    secondary: sliceColors.Medical,
+    confirm: sliceColors.Personal,
+    cancel: sliceColors.Entertainment,
     pieData: sliceColors,
   },
   fontSizes: {
