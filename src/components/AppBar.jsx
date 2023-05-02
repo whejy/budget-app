@@ -2,13 +2,14 @@ import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Heading } from './Text';
 import FactAlert from './Alert';
 import Constants from 'expo-constants';
+import theme from '../../theme';
 
 const AppBar = () => {
   return (
     <View style={styles.container}>
       <ScrollView horizontal>
         <TouchableOpacity onPress={FactAlert}>
-          <Heading>TrackThat</Heading>
+          <Heading>TRACKTHAT</Heading>
         </TouchableOpacity>
       </ScrollView>
     </View>
@@ -17,9 +18,17 @@ const AppBar = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Constants.statusBarHeight + 10,
-    paddingBottom: 15,
+    paddingTop: Constants.statusBarHeight,
     alignItems: 'center',
+    backgroundColor: theme.colors.primary,
+    paddingBottom: 5,
+    elevation: 2,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 0.4,
   },
 });
 

@@ -1,21 +1,16 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { FlatList, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
-import AppBar from './AppBar';
 import Pie from './Pie';
-import Prompt from '../Modals/Prompt';
+import HomeButtons from './Buttons';
 import PieStorage from '../../utils/pieStorage';
-import AddPie from '../Modals/AddPieModal';
 import { Subheading } from './Text';
-import { PrimaryIcon, SecondaryIcon } from './Icon';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const PieList = () => {
   const [appIsReady, setAppIsReady] = useState(false);
   const [pies, setPies] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [promptOpen, setPromptOpen] = useState(false);
   const [activeCategories, setActiveCategories] = useState();
   const flatListRef = useRef();
 
@@ -61,7 +56,6 @@ const PieList = () => {
   }
 
   const handleDeleteAll = () => {
-    togglePrompt();
     removeAllPies();
   };
 
@@ -96,46 +90,17 @@ const PieList = () => {
     return handleNavigate({ height: 40, index: 0 });
   };
 
-  const toggleModal = () => setModalOpen(!modalOpen);
-  const togglePrompt = () => setPromptOpen(!promptOpen);
-
   if (!appIsReady) {
     return null;
   }
 
   return (
     <View onLayout={onLayoutRootView}>
-      <AddPie
-        onClose={toggleModal}
-        modalOpen={modalOpen}
-        updateList={setStoragePies}
+      <HomeButtons
+        setStoragePies={setStoragePies}
+        deleteAll={handleDeleteAll}
+        pies={pies}
       />
-      <Prompt
-        modalOpen={promptOpen}
-        onClose={togglePrompt}
-        handleYes={handleDeleteAll}
-        message="Are you sure you want to delete all of your pie data?"
-      />
-      <View style={styles.buttonContainer}>
-        <View style={styles.buttonGroup}>
-          <TouchableOpacity onPress={toggleModal}>
-            <PrimaryIcon
-              name="add-circle-outline"
-              type="material"
-              {...styles.button}
-            />
-          </TouchableOpacity>
-          {pies.length > 0 && (
-            <TouchableOpacity onPress={togglePrompt}>
-              <SecondaryIcon
-                name="remove-circle-outline"
-                type="material"
-                {...styles.button}
-              />
-            </TouchableOpacity>
-          )}
-        </View>
-      </View>
       {pies.length > 0 ? (
         <FlatList
           contentContainerStyle={styles.pieList}
@@ -147,8 +112,6 @@ const PieList = () => {
             });
           }}
           data={pies}
-          ListHeaderComponent={<AppBar />}
-          ListHeaderComponentStyle={{ marginBottom: 80 }}
           ItemSeparatorComponent={ItemSeparator}
           renderItem={({ item, index }) => (
             <Pie
@@ -179,34 +142,12 @@ const styles = StyleSheet.create({
     height: 32,
   },
   pieList: {
-    paddingTop: 20,
-    paddingBottom: 40,
+    paddingTop: 70,
+    paddingBottom: 120,
   },
   emptyList: {
     textAlign: 'center',
-    top: 200,
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    top: 120,
-    left: 100,
-    right: 100,
-    zIndex: 1,
-  },
-  buttonGroup: {
-    backgroundColor: 'white',
-    flexDirection: 'row',
-    elevation: 5,
-    borderRadius: 20,
-    marginTop: 5,
-    paddingVertical: 10,
-  },
-  button: {
-    size: 38,
-    paddingHorizontal: 20,
+    top: 50,
   },
 });
 
