@@ -168,6 +168,12 @@ const styles = StyleSheet.create({
     elevation: 40,
     paddingVertical: 25,
     marginHorizontal: 10,
+    shadowOffset: {
+      width: 0,
+      height: 5,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
   },
   buttonContainer: {
     flexDirection: 'row',
