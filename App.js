@@ -8,7 +8,7 @@ SplashScreen.preventAutoHideAsync();
 const App = () => {
   return (
     <SafeAreaProvider>
-      <StatusBar translucent={true} />
+      <StatusBar translucent={true} backgroundColor="transparent" />
       <Main />
     </SafeAreaProvider>
   );

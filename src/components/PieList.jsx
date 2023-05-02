@@ -82,7 +82,7 @@ const PieList = () => {
       animated: true,
       index: index,
       viewPosition: 0,
-      viewOffset: 220 - height,
+      viewOffset: 120 - height,
     });
   };
 
