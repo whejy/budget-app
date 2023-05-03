@@ -112,6 +112,7 @@ const PieList = () => {
             });
           }}
           data={pies}
+          keyboardShouldPersistTaps="handled"
           ItemSeparatorComponent={ItemSeparator}
           renderItem={({ item, index }) => (
             <Pie

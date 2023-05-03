@@ -29,7 +29,7 @@
     },
     "androidStatusBar": {
       "translucent": true,
-      "barStyle": "light-content"
+      "barStyle": "dark-content"
     },
     "web": {
       "favicon": "./assets/favicon.png"
