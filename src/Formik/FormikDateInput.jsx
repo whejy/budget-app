@@ -17,7 +17,7 @@ const FormikDateInput = ({ name, ...props }) => {
     [field.value.startDate]: {
       selected: true,
       marked: true,
-      selectedColor: theme.colors.primary,
+      selectedColor: theme.colors.confirm,
     },
     [field.value.endDate]: {
       selected: true,
@@ -67,7 +67,7 @@ const FormikDateInput = ({ name, ...props }) => {
       {showError?.endDate && <ErrorText>{meta.error.endDate}</ErrorText>}
 
       <MyModal
-        animation="slide"
+        animation="fade"
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
       >

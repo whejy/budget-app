@@ -6,10 +6,12 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "backgroundColor": "#79c2d0",
+    "primaryColor": "#79c2d0",
     "splash": {
       "image": "./assets/splashscreen.png",
       "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#79c2d0"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -28,7 +30,8 @@
       "package": "com.whejy.budgetapp"
     },
     "androidStatusBar": {
-      "translucent": true,
+      "backgroundColor": "#79c2d0",
+      "translucent": false,
       "barStyle": "dark-content"
     },
     "web": {
