@@ -49,11 +49,14 @@ const Pie = ({
         (acc, curr) => acc + curr.cost,
         0
       );
+
       pieData.push({
         x: category,
         y: expenses[category].total,
         fill: theme.colors.pieData[category],
       });
+
+      pieData.sort((a, b) => a.y - b.y);
     }
 
     const remainingIncome = pieData.reduce((acc, curr) => acc - curr.y, income);
@@ -102,12 +105,28 @@ const Pie = ({
     },
   ];
 
+  // Potential code for resetting category selection between actions
+
+  // const clearSelection = () => {
+  //   setExternalMutations([
+  //     {
+  //       childName: `pie-${index}`,
+  //       target: ['data'],
+  //       eventKey: 'all',
+  //       mutation: () => ({ style: undefined }),
+  //       callBack: () => setExternalMutations(null),
+  //     },
+  //   ]);
+  //   updateCategory({ index, activeCategory: '' });
+  // };
+
   return (
     <View style={styles.container}>
       <Dates start={data.dates.startDate} end={data.dates.endDate} />
       <VictoryPie
         data={pieData}
         events={events}
+        name={`pie-${index}`}
         labels={({ datum }) =>
           `${datum.x} \n$${datum.y.toLocaleString('en-US')}`
         }
@@ -120,7 +139,7 @@ const Pie = ({
         labelComponent={<VictoryLabel textAnchor={'middle'} />}
       />
 
-      {category?.length > 0 && (
+      {category?.length > 0 ? (
         <CategoryDetails
           category={category}
           pie={data}
@@ -129,7 +148,7 @@ const Pie = ({
           remainingIncome={remainingIncome}
           getItemLayout={getItemLayout}
         />
-      )}
+      ) : null}
       <View style={styles.buttonContainer}>
         {remainingIncome > 0 && (
           <TouchableOpacity onPress={toggleModal}>

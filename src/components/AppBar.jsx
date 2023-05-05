@@ -1,4 +1,10 @@
-import { View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import { Heading } from './Text';
 import FactAlert from './Alert';
 import Constants from 'expo-constants';
@@ -18,7 +24,10 @@ const AppBar = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: Constants.statusBarHeight,
+    paddingTop: Platform.select({
+      ios: Constants.statusBarHeight + 5,
+      android: 5,
+    }),
     alignItems: 'center',
     backgroundColor: theme.colors.primary,
     paddingBottom: 5,
