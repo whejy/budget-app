@@ -1,23 +1,15 @@
-import { StyleSheet, View, Platform } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { parseDates } from '../../utils/helpers';
 import { DatesText } from './Text';
 
-const Dates = ({ start, end }) => {
-  const platformDates = Platform.select({
-    ios: (
-      <>
-        <DatesText style={styles.dates}>
-          {start} - {end}
-        </DatesText>
-      </>
-    ),
-    android: (
-      <>
-        <DatesText style={styles.dates}>{start}</DatesText>
-        <DatesText style={styles.dates}>{end}</DatesText>
-      </>
-    ),
-  });
-  return <View style={styles.container}>{platformDates}</View>;
+const Dates = ({ dates }) => {
+  const { startDate, endDate } = parseDates(dates);
+  return (
+    <View style={styles.container}>
+      <DatesText style={styles.dates}>{startDate}</DatesText>
+      <DatesText style={styles.dates}>{endDate}</DatesText>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({

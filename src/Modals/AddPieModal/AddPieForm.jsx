@@ -5,7 +5,7 @@ import uuid from 'react-native-uuid';
 import FormikDateInput from '../../Formik/FormikDateInput';
 import FormikNumberInput from '../../Formik/FormikNumberInput';
 import Button from '../../components/Button';
-import { parseNumber, parseDates } from '../../../utils/helpers';
+import { parseNumber } from '../../../utils/helpers';
 
 const initialValues = {
   income: '',
@@ -55,7 +55,7 @@ const AddPieForm = ({ updateList, closeModal }) => {
     }
 
     const parsedData = {
-      dates: parseDates(values.dates),
+      dates: values.dates,
       income: parseNumber(values.income),
     };
 

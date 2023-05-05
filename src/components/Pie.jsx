@@ -7,6 +7,7 @@ import Prompt from '../Modals/Prompt';
 import theme from '../../theme';
 import AddExpense from '../Modals/ExpenseModal/AddExpense';
 import { PrimaryIcon, SecondaryIcon } from './Icon';
+import Calendar from '../Modals/CalendarModal';
 
 const Pie = ({
   data,
@@ -19,11 +20,13 @@ const Pie = ({
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
+  const [calendarOpen, setCalendarOpen] = useState(false);
 
   const { expenses, income } = data;
 
   const toggleModal = () => setModalOpen(!modalOpen);
   const togglePrompt = () => setPromptOpen(!promptOpen);
+  const toggleCalendar = () => setCalendarOpen(!calendarOpen);
 
   const getItemLayout = ({ height }) => {
     category === 'Income' ? (height = 40) : height;
@@ -120,9 +123,19 @@ const Pie = ({
   //   updateCategory({ index, activeCategory: '' });
   // };
 
+  const openCalendar = () => {
+    toggleCalendar();
+  };
+
   return (
     <View style={styles.container}>
-      <Dates start={data.dates.startDate} end={data.dates.endDate} />
+      <TouchableOpacity onPress={openCalendar}>
+        <Dates
+          dates={data.dates}
+          // start={data.dates.parsed.startDate}
+          // end={data.dates.parsed.endDate}
+        />
+      </TouchableOpacity>
       <VictoryPie
         data={pieData}
         events={events}
@@ -172,6 +185,11 @@ const Pie = ({
         onClose={togglePrompt}
         handleYes={handleDeletePie}
         message="Are you sure you want to delete this pie?"
+      />
+      <Calendar
+        dates={data.dates}
+        modalOpen={calendarOpen}
+        onClose={toggleCalendar}
       />
     </View>
   );
