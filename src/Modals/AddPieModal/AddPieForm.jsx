@@ -31,8 +31,6 @@ const FormFields = ({ onSubmit, closeModal }) => {
         name="income"
         placeholder="Income"
         keyboardType="numeric"
-        autoFocus
-        onBlur={null}
       />
       <FormikDateInput name="dates" />
       <View style={styles.buttons}>
