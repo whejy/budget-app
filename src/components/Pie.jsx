@@ -130,11 +130,7 @@ const Pie = ({
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={openCalendar}>
-        <Dates
-          dates={data.dates}
-          // start={data.dates.parsed.startDate}
-          // end={data.dates.parsed.endDate}
-        />
+        <Dates dates={data.dates} />
       </TouchableOpacity>
       <VictoryPie
         data={pieData}

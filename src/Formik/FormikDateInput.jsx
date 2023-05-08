@@ -1,11 +1,8 @@
 import { useState } from 'react';
-import { Calendar } from 'react-native-calendars';
 import { useField } from 'formik';
-import Button from '../components/Button';
 import { TextInput } from './Inputs';
-import MyModal from '../Modals/Modal';
 import { ErrorText } from '../components/Text';
-import theme from '../../theme';
+import Calendar from '../Modals/CalendarModal';
 
 const FormikDateInput = ({ name, ...props }) => {
   const [field, meta, helpers] = useField(name);
@@ -13,23 +10,12 @@ const FormikDateInput = ({ name, ...props }) => {
   const [inputCaller, setInputCaller] = useState('');
   const showError = meta.touched && meta.error;
 
-  const markedDates = {
-    [field.value.startDate]: {
-      selected: true,
-      marked: true,
-      selectedColor: theme.colors.confirm,
-    },
-    [field.value.endDate]: {
-      selected: true,
-      marked: true,
-      selectedColor: theme.colors.secondary,
-    },
-  };
-
   const openModal = (caller) => {
     setInputCaller(caller);
     setModalOpen(true);
   };
+
+  const toggleModal = () => setModalOpen(!modalOpen);
 
   const handlePress = (day) => {
     switch (inputCaller) {
@@ -42,7 +28,7 @@ const FormikDateInput = ({ name, ...props }) => {
       default:
         helpers.setValue({ startDate: '', endDate: '' });
     }
-    setModalOpen(false);
+    toggleModal();
   };
 
   return (
@@ -66,24 +52,15 @@ const FormikDateInput = ({ name, ...props }) => {
       />
       {showError?.endDate && <ErrorText>{meta.error.endDate}</ErrorText>}
 
-      <MyModal
-        animation="fade"
+      <Calendar
+        dates={field.value}
         modalOpen={modalOpen}
-        setModalOpen={setModalOpen}
-      >
-        <Calendar
-          selectedValue={field.value.startDate}
-          error={showError}
-          {...props}
-          onDayPress={(day) => handlePress(day)}
-          markedDates={markedDates}
-        />
-        <Button
-          title="Cancel"
-          variant="primary"
-          onPress={() => setModalOpen(false)}
-        />
-      </MyModal>
+        onClose={toggleModal}
+        selectedValue={field.value.startDate}
+        error={showError}
+        onDayPress={(day) => handlePress(day)}
+        {...props}
+      />
     </>
   );
 };

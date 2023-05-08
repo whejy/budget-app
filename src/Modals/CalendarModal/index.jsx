@@ -4,7 +4,7 @@ import { Calendar } from 'react-native-calendars';
 import theme from '../../../theme';
 import MyModal from '../Modal';
 
-const CalendarModal = ({ modalOpen, onClose, dates }) => {
+const CalendarModal = ({ modalOpen, onClose, dates, ...props }) => {
   const markedDates = {
     [dates.startDate]: {
       selected: true,
@@ -20,7 +20,7 @@ const CalendarModal = ({ modalOpen, onClose, dates }) => {
 
   return (
     <MyModal animation="fade" modalOpen={modalOpen} onClose={onClose}>
-      <Calendar markedDates={markedDates} />
+      <Calendar markedDates={markedDates} {...props} />
       <Button title="Cancel" variant="primary" onPress={onClose} />
     </MyModal>
   );
