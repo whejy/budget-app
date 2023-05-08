@@ -28,19 +28,15 @@ const Pie = ({
   const togglePrompt = () => setPromptOpen(!promptOpen);
   const toggleCalendar = () => setCalendarOpen(!calendarOpen);
 
-  const getItemLayout = ({ height }) => {
-    category === 'Income' ? (height = 40) : height;
-    return handleNavigate({ height, index });
-  };
-
   const handleDeletePie = () => {
     togglePrompt();
     removePie(data);
   };
 
   const handlePieUpdate = (pie) => {
-    !Object.keys(expenses).includes(category) &&
+    if (!Object.keys(expenses).includes(category)) {
       updateCategory({ index, activeCategory: '' });
+    }
     savePie(pie);
   };
 
@@ -108,20 +104,10 @@ const Pie = ({
     },
   ];
 
-  // Potential code for resetting category selection between actions
-
-  // const clearSelection = () => {
-  //   setExternalMutations([
-  //     {
-  //       childName: `pie-${index}`,
-  //       target: ['data'],
-  //       eventKey: 'all',
-  //       mutation: () => ({ style: undefined }),
-  //       callBack: () => setExternalMutations(null),
-  //     },
-  //   ]);
-  //   updateCategory({ index, activeCategory: '' });
-  // };
+  const getItemLayout = ({ height }) => {
+    category === 'Income' ? (height = 40) : height;
+    return handleNavigate({ height, index });
+  };
 
   const openCalendar = () => {
     toggleCalendar();
@@ -171,7 +157,7 @@ const Pie = ({
       <AddExpense
         modalOpen={modalOpen}
         onClose={toggleModal}
-        savePie={savePie}
+        savePie={handlePieUpdate}
         pie={data}
         remainingIncome={remainingIncome}
         selectedCategory={category}
