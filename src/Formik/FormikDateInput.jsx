@@ -56,7 +56,7 @@ const FormikDateInput = ({ name, ...props }) => {
         dates={field.value}
         modalOpen={modalOpen}
         onClose={toggleModal}
-        selectedValue={field.value.startDate}
+        initialDate={field.value.startDate}
         error={showError}
         onDayPress={(day) => handlePress(day)}
         {...props}

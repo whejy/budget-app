@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 20,
+    paddingBottom: 10,
   },
   itemDetails: {
     width: 80,

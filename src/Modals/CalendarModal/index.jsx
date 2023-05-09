@@ -9,12 +9,12 @@ const CalendarModal = ({ modalOpen, onClose, dates, ...props }) => {
     [dates.startDate]: {
       selected: true,
       marked: true,
-      selectedColor: theme.colors.confirm,
+      selectedColor: theme.colors.primary,
     },
     [dates.endDate]: {
       selected: true,
       marked: true,
-      selectedColor: theme.colors.secondary,
+      selectedColor: theme.colors.cancel,
     },
   };
 

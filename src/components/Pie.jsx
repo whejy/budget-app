@@ -172,6 +172,7 @@ const Pie = ({
         dates={data.dates}
         modalOpen={calendarOpen}
         onClose={toggleCalendar}
+        initialDate={data.dates.startDate}
       />
     </View>
   );
