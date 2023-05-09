@@ -10,7 +10,7 @@ const sliceColors = {
   Other: '#d4ebd0',
   Personal: '#ffb5b5',
   Savings: '#bbe4e9',
-  Shopping: '#c3bef0',
+  Shopping: '#cdc9f0',
   Transport: '#cadefc',
 };
 
