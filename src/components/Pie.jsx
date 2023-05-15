@@ -63,7 +63,7 @@ const Pie = ({
     remainingIncome > 0 &&
       pieData.push({
         x: 'Income',
-        y: remainingIncome,
+        y: Math.round(remainingIncome * 100) / 100,
         fill: theme.colors.pieData.Income,
       });
 
@@ -102,6 +102,20 @@ const Pie = ({
         },
       },
     },
+    {
+      target: 'labels',
+      eventHandlers: {
+        onPressIn: () => {
+          return [
+            {
+              mutation: (props) => {
+                updateCategory({ index, activeCategory: props.datum.x });
+              },
+            },
+          ];
+        },
+      },
+    },
   ];
 
   const getItemLayout = ({ height }) => {
@@ -121,7 +135,6 @@ const Pie = ({
       <VictoryPie
         data={pieData}
         events={events}
-        name={`pie-${index}`}
         labels={({ datum }) =>
           `${datum.x} \n$${datum.y.toLocaleString('en-US')}`
         }
