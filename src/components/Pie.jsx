@@ -102,20 +102,6 @@ const Pie = ({
         },
       },
     },
-    {
-      target: 'labels',
-      eventHandlers: {
-        onPressIn: () => {
-          return [
-            {
-              mutation: (props) => {
-                updateCategory({ index, activeCategory: props.datum.x });
-              },
-            },
-          ];
-        },
-      },
-    },
   ];
 
   const getItemLayout = ({ height }) => {
@@ -142,7 +128,12 @@ const Pie = ({
           data: {
             fill: ({ datum }) => datum.fill,
           },
-          labels: { fontSize: 16, padding: 10 },
+          labels: {
+            fontSize: 16,
+            padding: 10,
+            fill: 'grey',
+            fontFamily: theme.fonts.secondary,
+          },
         }}
         labelComponent={<VictoryLabel textAnchor={'middle'} />}
       />

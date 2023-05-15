@@ -6,8 +6,8 @@ const Dates = ({ dates }) => {
   const { startDate, endDate } = parseDates(dates);
   return (
     <View style={styles.container}>
-      <DatesText style={styles.dates}>{startDate}</DatesText>
-      <DatesText style={styles.dates}>{endDate}</DatesText>
+      <DatesText>{startDate}</DatesText>
+      <DatesText>{endDate}</DatesText>
     </View>
   );
 };
@@ -17,8 +17,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-  },
-  dates: {
     textAlign: 'center',
   },
 });

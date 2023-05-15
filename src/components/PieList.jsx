@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
 import Pie from './Pie';
-import HomeButtons from './Buttons';
+import FloatingButton from './FloatingButton';
 import PieStorage from '../../utils/pieStorage';
 import { Subheading } from './Text';
 
@@ -95,46 +95,49 @@ const PieList = () => {
   }
 
   return (
-    <View onLayout={onLayoutRootView}>
-      <HomeButtons
-        setStoragePies={setStoragePies}
-        deleteAll={handleDeleteAll}
-        pies={pies}
-      />
-      {pies.length > 0 ? (
-        <FlatList
-          contentContainerStyle={styles.pieList}
-          ref={flatListRef}
-          onScrollToIndexFailed={() => {
-            flatListRef.current?.scrollToOffset({
-              offset: 0,
-              animated: true,
-            });
-          }}
-          data={pies}
-          keyboardShouldPersistTaps="handled"
-          ItemSeparatorComponent={ItemSeparator}
-          renderItem={({ item, index }) => (
-            <Pie
-              item={item}
-              data={item}
-              index={index}
-              handleNavigate={handleNavigate}
-              removePie={removePie}
-              savePie={updateStoragePie}
-              updateCategory={updateActiveCategory}
-              category={
-                activeCategories?.filter((pie) => pie.index === index)[0]
-                  ?.activeCategory
-              }
-            />
-          )}
-          keyExtractor={(_, i) => i}
-        />
-      ) : (
-        <Subheading style={styles.emptyList}>Add your first pie!</Subheading>
-      )}
-    </View>
+    <>
+      <View onLayout={onLayoutRootView}>
+        {/* <HomeButtons
+          setStoragePies={setStoragePies}
+          deleteAll={handleDeleteAll}
+          pies={pies}
+        /> */}
+        {pies.length > 0 ? (
+          <FlatList
+            contentContainerStyle={styles.pieList}
+            ref={flatListRef}
+            onScrollToIndexFailed={() => {
+              flatListRef.current?.scrollToOffset({
+                offset: 0,
+                animated: true,
+              });
+            }}
+            data={pies}
+            keyboardShouldPersistTaps="handled"
+            ItemSeparatorComponent={ItemSeparator}
+            renderItem={({ item, index }) => (
+              <Pie
+                item={item}
+                data={item}
+                index={index}
+                handleNavigate={handleNavigate}
+                removePie={removePie}
+                savePie={updateStoragePie}
+                updateCategory={updateActiveCategory}
+                category={
+                  activeCategories?.filter((pie) => pie.index === index)[0]
+                    ?.activeCategory
+                }
+              />
+            )}
+            keyExtractor={(_, i) => i}
+          />
+        ) : (
+          <Subheading style={styles.emptyList}>Add your first pie!</Subheading>
+        )}
+      </View>
+      <FloatingButton setStoragePies={setStoragePies} />
+    </>
   );
 };
 
@@ -143,7 +146,7 @@ const styles = StyleSheet.create({
     height: 32,
   },
   pieList: {
-    paddingTop: 70,
+    paddingTop: 20,
     paddingBottom: 120,
   },
   emptyList: {

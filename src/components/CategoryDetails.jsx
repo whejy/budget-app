@@ -1,11 +1,6 @@
-import {
-  Text,
-  FlatList,
-  View,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
+import Text from './Text';
 import { Subheading } from './Text';
 import EditExpense from '../Modals/ExpenseModal/EditExpense';
 import { SecondaryIcon } from './Icon';
@@ -69,7 +64,7 @@ const CategoryDetails = ({
         message="Are you sure you want to remove this category?"
       />
       {category === 'Income' ? (
-        <Text>
+        <Text style={styles.income}>
           You started this period with ${pie.income.toLocaleString('en-US')}
         </Text>
       ) : category === '' ? null : (
@@ -123,6 +118,9 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  income: {
+    textAlign: 'center',
   },
   hidden: {
     opacity: 0,

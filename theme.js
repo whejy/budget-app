@@ -28,11 +28,16 @@ const theme = {
   fontSizes: {
     body: 14,
     subheading: 20,
-    heading: 24,
+    heading: 36,
   },
   fonts: {
     main: Platform.select({
       android: 'Roboto',
+      ios: 'Arial',
+      default: 'System',
+    }),
+    secondary: Platform.select({
+      android: 'monospace',
       ios: 'Arial',
       default: 'System',
     }),
