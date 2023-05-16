@@ -1,13 +1,13 @@
-import { VictoryPie, VictoryLabel } from 'victory-native';
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { VictoryPie, VictoryLabel } from 'victory-native';
 import CategoryDetails from './CategoryDetails';
 import Dates from './Dates';
 import Prompt from '../Modals/Prompt';
-import theme from '../../theme';
+import Calendar from '../Modals/CalendarModal';
 import AddExpense from '../Modals/ExpenseModal/AddExpense';
 import { PrimaryIcon, SecondaryIcon } from './Icon';
-import Calendar from '../Modals/CalendarModal';
+import theme from '../../theme';
 
 const Pie = ({
   data,

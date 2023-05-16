@@ -9,42 +9,30 @@ const styles = StyleSheet.create({
     fontFamily: theme.fonts.main,
     fontWeight: theme.fontWeights.normal,
   },
-  colorTextSecondary: {
+  textSecondary: {
     color: theme.colors.textSecondary,
   },
-  colorPrimary: {
-    color: theme.colors.primary,
-  },
-  colorDates: {
-    color: theme.colors.dateText,
-  },
-  fontSizeSubheading: {
+  textDates: {
+    color: theme.colors.textSecondary,
     fontSize: theme.fontSizes.subheading,
   },
-  fontSizeHeading: {
+  heading: {
     fontSize: theme.fontSizes.heading,
-  },
-  fontWeightBold: {
     fontWeight: theme.fontWeights.bold,
+    color: 'white',
   },
-  fontStyleItalic: {
-    fontStyle: 'italic',
+  subheading: {
+    fontSize: theme.fontSizes.subheading,
   },
   errorText: {
     marginTop: 5,
   },
 });
 
-const Text = ({ color, fontSize, fontWeight, style, ...props }) => {
+const Text = ({ variant, style, ...props }) => {
   const textStyle = [
     styles.text,
-    color === 'textSecondary' && styles.colorTextSecondary,
-    color === 'primary' && styles.colorPrimary,
-    color === 'dates' && styles.colorDates,
-    fontSize === 'subheading' && styles.fontSizeSubheading,
-    fontSize === 'heading' && styles.fontSizeHeading,
-    fontWeight === 'bold' && styles.fontWeightBold,
-    fontWeight === 'italic' && styles.fontStyleItalic,
+    variant === 'category' && styles.subheading,
     style,
   ];
 
@@ -52,18 +40,11 @@ const Text = ({ color, fontSize, fontWeight, style, ...props }) => {
 };
 
 export const Heading = ({ ...props }) => {
-  return (
-    <Text
-      fontSize="heading"
-      fontWeight="bold"
-      style={{ color: 'white' }}
-      {...props}
-    />
-  );
+  return <Text style={styles.heading} {...props} />;
 };
 
 export const Subheading = ({ ...props }) => {
-  return <Text fontSize="subheading" {...props} />;
+  return <Text variant="category" {...props} />;
 };
 
 export const ErrorText = ({ ...props }) => {
@@ -71,7 +52,7 @@ export const ErrorText = ({ ...props }) => {
 };
 
 export const DatesText = ({ ...props }) => {
-  return <Text fontSize="subheading" color="dates" {...props} />;
+  return <Text style={styles.textDates} {...props} />;
 };
 
 export default Text;

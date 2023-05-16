@@ -17,8 +17,7 @@ const sliceColors = {
 const theme = {
   colors: {
     textPrimary: '#24292e',
-    textSecondary: '#586069',
-    dateText: '#cccccc',
+    textSecondary: '#cccccc',
     error: '#d73a4a',
     primary: sliceColors.Income,
     secondary: sliceColors.Bills,
