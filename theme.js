@@ -22,6 +22,7 @@ const theme = {
     primary: sliceColors.Income,
     secondary: sliceColors.Bills,
     cancel: sliceColors.Entertainment,
+    menu: sliceColors.Gifts,
     pieData: sliceColors,
   },
   fontSizes: {
@@ -46,5 +47,7 @@ const theme = {
     bold: '700',
   },
 };
+
+export const gradient = [theme.colors.primary, theme.colors.secondary];
 
 export default theme;

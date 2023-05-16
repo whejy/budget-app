@@ -1,15 +1,12 @@
 import { StyleSheet } from 'react-native';
-import theme from '../../theme';
 import { LinearGradient } from 'expo-linear-gradient';
+import { gradient } from '../../theme';
 import AppBar from './AppBar';
 import PieList from './PieList';
 
 const Main = () => {
   return (
-    <LinearGradient
-      colors={[theme.colors.primary, theme.colors.secondary]}
-      style={styles.container}
-    >
+    <LinearGradient colors={gradient} style={styles.container}>
       <AppBar />
       <PieList />
     </LinearGradient>
