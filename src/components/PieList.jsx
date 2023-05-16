@@ -1,16 +1,15 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import * as SplashScreen from 'expo-splash-screen';
+import PieStorage from '../../utils/pieStorage';
 import Pie from './Pie';
 import FloatingButton from './FloatingButton';
-import PieStorage from '../../utils/pieStorage';
 import { Subheading } from './Text';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const PieList = () => {
+const PieList = ({ pies, setPies }) => {
   const [appIsReady, setAppIsReady] = useState(false);
-  const [pies, setPies] = useState([]);
   const [activeCategories, setActiveCategories] = useState();
   const flatListRef = useRef();
 
@@ -43,21 +42,12 @@ const PieList = () => {
     return setPies(updatedPies);
   }
 
-  async function removeAllPies() {
-    await PieStorage.removePies();
-    return setPies([]);
-  }
-
   async function removePie(pie) {
     const updatedPies = await PieStorage.removePie(pie);
     resetNavigate();
     initialiseCategories(updatedPies);
     return setPies(updatedPies);
   }
-
-  const handleDeleteAll = () => {
-    removeAllPies();
-  };
 
   const initialiseCategories = (pies) => {
     const categories = pies.reduce((acc, curr, index) => {
@@ -97,11 +87,6 @@ const PieList = () => {
   return (
     <>
       <View onLayout={onLayoutRootView}>
-        {/* <HomeButtons
-          setStoragePies={setStoragePies}
-          deleteAll={handleDeleteAll}
-          pies={pies}
-        /> */}
         {pies.length > 0 ? (
           <FlatList
             contentContainerStyle={styles.pieList}
@@ -151,7 +136,10 @@ const styles = StyleSheet.create({
   },
   emptyList: {
     textAlign: 'center',
-    top: 50,
+    position: 'absolute',
+    left: 50,
+    right: 50,
+    top: 250,
   },
 });
 

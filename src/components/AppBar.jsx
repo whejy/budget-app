@@ -3,14 +3,29 @@ import { Appbar } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
 import { Heading } from './Text';
 import FactAlert from './Alert';
+import Prompt from '../Modals/Prompt';
 import MenuComponent from './Menu';
 import theme from '../../theme';
 
 const APPHEADER = <Heading>trackthat</Heading>;
 
-const AppBar = () => {
-  const [menuVisible, setMenuVisible] = useState(false);
-  const toggleMenu = () => setMenuVisible(!menuVisible);
+const AppBar = ({ pies, removeAllPies }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [promptOpen, setPromptOpen] = useState(false);
+
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const togglePrompt = () => setPromptOpen(!promptOpen);
+
+  const handleDeleteAll = () => {
+    togglePrompt();
+    toggleMenu();
+    removeAllPies();
+  };
+
+  const handleCancel = () => {
+    togglePrompt();
+    toggleMenu();
+  };
 
   return (
     <>
@@ -24,10 +39,18 @@ const AppBar = () => {
               onPress={toggleMenu}
             />
           }
+          pies={pies}
+          togglePrompt={togglePrompt}
           closeMenu={toggleMenu}
-          visible={menuVisible}
+          visible={menuOpen}
         />
       </Appbar.Header>
+      <Prompt
+        modalOpen={promptOpen}
+        onClose={handleCancel}
+        handleYes={handleDeleteAll}
+        message="Are you sure you want to delete all of your pie data?"
+      />
     </>
   );
 };

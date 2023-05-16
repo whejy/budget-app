@@ -2,7 +2,9 @@ import { View, StyleSheet } from 'react-native';
 import { Menu, Divider } from 'react-native-paper';
 import theme from '../../theme';
 
-const MenuComponent = ({ anchor, visible, closeMenu }) => {
+const MenuComponent = ({ anchor, visible, closeMenu, togglePrompt, pies }) => {
+  const eraseAll = pies.length === 0 ? true : false;
+
   return (
     <View style={styles.container}>
       <Menu
@@ -13,7 +15,11 @@ const MenuComponent = ({ anchor, visible, closeMenu }) => {
       >
         <Menu.Item onPress={() => {}} title="Currency" />
         <Divider />
-        <Menu.Item onPress={() => {}} title="Erase Data" />
+        <Menu.Item
+          onPress={togglePrompt}
+          disabled={eraseAll}
+          title="Erase Data"
+        />
       </Menu>
     </View>
   );
