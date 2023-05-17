@@ -4,6 +4,10 @@ import theme from '../../theme';
 import { currencyList } from '../data/currency';
 
 const CurrencyMenu = ({ visible, onPress, onDismiss, anchor }) => {
+  const menuItems = currencyList.map((symbol) => (
+    <Menu.Item key={symbol} onPress={() => onPress(symbol)} title={symbol} />
+  ));
+
   return (
     <View style={styles.container}>
       <Menu
@@ -12,13 +16,7 @@ const CurrencyMenu = ({ visible, onPress, onDismiss, anchor }) => {
         onDismiss={onDismiss}
         anchor={anchor}
       >
-        {currencyList.map((symbol) => (
-          <Menu.Item
-            key={symbol}
-            onPress={() => onPress(symbol)}
-            title={symbol}
-          />
-        ))}
+        {menuItems}
       </Menu>
     </View>
   );

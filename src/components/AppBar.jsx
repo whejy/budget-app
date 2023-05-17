@@ -29,7 +29,7 @@ const AppBar = ({ pies, removeAllPies, currency, setCurrency }) => {
 
   return (
     <>
-      <Appbar.Header style={styles.container}>
+      <Appbar.Header mode="small" style={styles.container}>
         <Appbar.Content title={APPHEADER} onPress={FactAlert} />
         <MenuComponent
           anchor={
