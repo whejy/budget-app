@@ -9,7 +9,7 @@ import theme from '../../theme';
 
 const APPHEADER = <Heading>trackthat</Heading>;
 
-const AppBar = ({ pies, removeAllPies }) => {
+const AppBar = ({ pies, removeAllPies, currency, setCurrency }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
 
@@ -40,6 +40,8 @@ const AppBar = ({ pies, removeAllPies }) => {
             />
           }
           pies={pies}
+          currency={currency}
+          setCurrency={setCurrency}
           togglePrompt={togglePrompt}
           closeMenu={toggleMenu}
           visible={menuOpen}

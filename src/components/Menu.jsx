@@ -1,8 +1,32 @@
+import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Menu, Divider } from 'react-native-paper';
 import theme from '../../theme';
+import CurrencyMenu from './CurrencyMenu';
 
-const MenuComponent = ({ anchor, visible, closeMenu, togglePrompt, pies }) => {
+const MenuComponent = ({
+  anchor,
+  visible,
+  closeMenu,
+  togglePrompt,
+  pies,
+  currency,
+  setCurrency,
+}) => {
+  const [currencyMenuOpen, setCurrencyMenuOpen] = useState(false);
+
+  const toggleCurrencyMenu = () => setCurrencyMenuOpen(!currencyMenuOpen);
+
+  const toggleMenus = () => {
+    toggleCurrencyMenu();
+    closeMenu();
+  };
+
+  const onCurrencyPress = (symbol) => {
+    setCurrency(symbol);
+    toggleMenus();
+  };
+
   const eraseAll = pies.length === 0 ? true : false;
 
   return (
@@ -13,7 +37,14 @@ const MenuComponent = ({ anchor, visible, closeMenu, togglePrompt, pies }) => {
         onDismiss={closeMenu}
         anchor={anchor}
       >
-        <Menu.Item onPress={() => {}} title="Currency" />
+        <CurrencyMenu
+          onPress={onCurrencyPress}
+          onDismiss={toggleCurrencyMenu}
+          visible={currencyMenuOpen}
+          currency={currency}
+          setCurrency={setCurrency}
+          anchor={<Menu.Item onPress={toggleCurrencyMenu} title="Currency" />}
+        />
         <Divider />
         <Menu.Item
           onPress={togglePrompt}

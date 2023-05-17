@@ -8,6 +8,7 @@ import { gradient } from '../../theme';
 
 const Main = () => {
   const [pies, setPies] = useState([]);
+  const [currency, setCurrency] = useState('$');
 
   async function removeAllPies() {
     await PieStorage.removePies();
@@ -16,8 +17,13 @@ const Main = () => {
 
   return (
     <LinearGradient colors={gradient} style={styles.container}>
-      <AppBar pies={pies} removeAllPies={removeAllPies} />
-      <PieList pies={pies} setPies={setPies} />
+      <AppBar
+        pies={pies}
+        currency={currency}
+        setCurrency={setCurrency}
+        removeAllPies={removeAllPies}
+      />
+      <PieList pies={pies} currency={currency} setPies={setPies} />
     </LinearGradient>
   );
 };

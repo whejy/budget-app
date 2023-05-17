@@ -17,6 +17,7 @@ const Pie = ({
   index,
   updateCategory,
   category,
+  currency,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
@@ -122,7 +123,7 @@ const Pie = ({
         data={pieData}
         events={events}
         labels={({ datum }) =>
-          `${datum.x} \n$${datum.y.toLocaleString('en-US')}`
+          `${datum.x} \n${currency}${datum.y.toLocaleString('en-US')}`
         }
         style={{
           data: {
@@ -142,6 +143,7 @@ const Pie = ({
         <CategoryDetails
           category={category}
           pie={data}
+          currency={currency}
           savePie={handlePieUpdate}
           expenses={expenses[category]}
           remainingIncome={remainingIncome}

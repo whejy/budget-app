@@ -8,7 +8,7 @@ import { Subheading } from './Text';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const PieList = ({ pies, setPies }) => {
+const PieList = ({ pies, setPies, currency }) => {
   const [appIsReady, setAppIsReady] = useState(false);
   const [activeCategories, setActiveCategories] = useState();
   const flatListRef = useRef();
@@ -105,6 +105,7 @@ const PieList = ({ pies, setPies }) => {
                 item={item}
                 data={item}
                 index={index}
+                currency={currency}
                 handleNavigate={handleNavigate}
                 removePie={removePie}
                 savePie={updateStoragePie}

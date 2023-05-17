@@ -8,7 +8,14 @@ import Prompt from '../Modals/Prompt';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const EditExpenses = ({ item, category, pie, savePie, remainingIncome }) => {
+const EditExpenses = ({
+  item,
+  category,
+  pie,
+  savePie,
+  remainingIncome,
+  currency,
+}) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const toggleModal = () => setModalOpen(!modalOpen);
@@ -17,7 +24,10 @@ const EditExpenses = ({ item, category, pie, savePie, remainingIncome }) => {
     <>
       <TouchableOpacity style={styles.itemDetails} onPress={toggleModal}>
         <Text style={{ textAlign: 'center' }}>{item.item}</Text>
-        <Text>${item.cost.toLocaleString('en-US')}</Text>
+        <Text>
+          {currency}
+          {item.cost.toLocaleString('en-US')}
+        </Text>
       </TouchableOpacity>
       <EditExpense
         modalOpen={modalOpen}
@@ -39,6 +49,7 @@ const CategoryDetails = ({
   savePie,
   remainingIncome,
   getItemLayout,
+  currency,
 }) => {
   const [promptOpen, setPromptOpen] = useState(false);
 
@@ -65,7 +76,8 @@ const CategoryDetails = ({
       />
       {category === 'Income' ? (
         <Text style={styles.income}>
-          You started this period with ${pie.income.toLocaleString('en-US')}
+          You started this period with {currency}
+          {pie.income.toLocaleString('en-US')}
         </Text>
       ) : category === '' ? null : (
         <>
@@ -88,6 +100,7 @@ const CategoryDetails = ({
                 category={category}
                 remainingIncome={remainingIncome}
                 pie={pie}
+                currency={currency}
               />
             )}
           />
