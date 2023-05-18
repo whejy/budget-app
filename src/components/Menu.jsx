@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import { Menu, Divider } from 'react-native-paper';
 import theme from '../../theme';
 import CurrencyMenu from './CurrencyMenu';
@@ -27,6 +27,12 @@ const MenuComponent = ({
     toggleMenus();
   };
 
+  const selectedCurrency = (
+    <Text>
+      Currency <Text style={styles.selectedCurrency}>{currency}</Text>
+    </Text>
+  );
+
   const eraseAll = pies.length === 0 ? true : false;
 
   return (
@@ -39,11 +45,13 @@ const MenuComponent = ({
       >
         <CurrencyMenu
           onPress={onCurrencyPress}
-          onDismiss={toggleCurrencyMenu}
+          onDismiss={toggleMenus}
           visible={currencyMenuOpen}
           currency={currency}
           setCurrency={setCurrency}
-          anchor={<Menu.Item onPress={toggleCurrencyMenu} title="Currency" />}
+          anchor={
+            <Menu.Item onPress={toggleCurrencyMenu} title={selectedCurrency} />
+          }
         />
         <Divider />
         <Menu.Item
@@ -60,6 +68,9 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  selectedCurrency: {
+    color: 'grey',
   },
 });
 
