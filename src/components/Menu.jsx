@@ -33,8 +33,6 @@ const MenuComponent = ({
     </Text>
   );
 
-  const eraseAll = pies.length === 0 ? true : false;
-
   return (
     <View style={styles.container}>
       <Menu
@@ -56,7 +54,7 @@ const MenuComponent = ({
         <Divider />
         <Menu.Item
           onPress={togglePrompt}
-          disabled={eraseAll}
+          disabled={pies.length === 0}
           title="Erase Data"
         />
       </Menu>
