@@ -72,7 +72,7 @@ const CategoryDetails = ({
         modalOpen={promptOpen}
         onClose={togglePrompt}
         handleYes={removeCategory}
-        message="Are you sure you want to remove this category?"
+        message="Delete this category?"
       />
       {category === 'Income' ? (
         <Text style={styles.income}>

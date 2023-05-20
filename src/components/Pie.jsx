@@ -172,7 +172,7 @@ const Pie = ({
         modalOpen={promptOpen}
         onClose={togglePrompt}
         handleYes={handleDeletePie}
-        message="Are you sure you want to delete this pie?"
+        message="Delete this pie?"
       />
       <Calendar
         dates={data.dates}
