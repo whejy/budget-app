@@ -16,7 +16,13 @@ const FloatingButton = ({ setStoragePies }) => {
         modalOpen={modalOpen}
         updateList={setStoragePies}
       />
-      <FAB icon="plus" color="white" style={styles.fab} onPress={toggleModal} />
+      <FAB
+        icon="plus"
+        mode="elevated"
+        color="white"
+        style={styles.fab}
+        onPress={toggleModal}
+      />
     </>
   );
 };
@@ -25,8 +31,8 @@ const styles = StyleSheet.create({
   fab: {
     position: 'absolute',
     margin: 16,
-    right: 0,
-    bottom: 0,
+    right: 5,
+    bottom: 5,
     backgroundColor: theme.colors.primary,
   },
 });

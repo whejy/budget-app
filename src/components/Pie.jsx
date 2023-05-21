@@ -17,6 +17,7 @@ const Pie = ({
   index,
   updateCategory,
   category,
+  currency,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
@@ -51,7 +52,7 @@ const Pie = ({
 
       pieData.push({
         x: category,
-        y: expenses[category].total,
+        y: Math.round(100 * expenses[category].total) / 100,
         fill: theme.colors.pieData[category],
       });
 
@@ -121,27 +122,21 @@ const Pie = ({
       <VictoryPie
         data={pieData}
         events={events}
-        labels={({ datum }) =>
-          `${datum.x} \n$${datum.y.toLocaleString('en-US')}`
-        }
+        labels={({ datum }) => [datum.x, `${currency}${datum.y}`]}
         style={{
           data: {
             fill: ({ datum }) => datum.fill,
           },
-          labels: {
-            fontSize: 16,
-            padding: 10,
-            fill: 'grey',
-            fontFamily: theme.fonts.secondary,
-          },
+          labels: styles.labels,
         }}
-        labelComponent={<VictoryLabel textAnchor={'middle'} />}
+        labelComponent={<VictoryLabel textAnchor="middle" />}
       />
 
       {category?.length > 0 ? (
         <CategoryDetails
           category={category}
           pie={data}
+          currency={currency}
           savePie={handlePieUpdate}
           expenses={expenses[category]}
           remainingIncome={remainingIncome}
@@ -170,7 +165,7 @@ const Pie = ({
         modalOpen={promptOpen}
         onClose={togglePrompt}
         handleYes={handleDeletePie}
-        message="Are you sure you want to delete this pie?"
+        message="Delete this pie?"
       />
       <Calendar
         dates={data.dates}
@@ -202,6 +197,12 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  labels: {
+    fontSize: 16,
+    padding: 10,
+    fill: 'grey',
+    fontFamily: theme.fonts.secondary,
   },
   button: {
     paddingHorizontal: 25,

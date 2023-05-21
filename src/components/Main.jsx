@@ -1,17 +1,44 @@
+import { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
-import theme from '../../theme';
 import { LinearGradient } from 'expo-linear-gradient';
 import AppBar from './AppBar';
 import PieList from './PieList';
+import PieStorage from '../../utils/pieStorage';
+import CurrencyStorage from '../../utils/currencyStorage';
+import { gradient } from '../../theme';
 
 const Main = () => {
+  const [pies, setPies] = useState([]);
+  const [currency, setCurrency] = useState('');
+
+  useEffect(() => {
+    getStoredCurrency();
+  }, []);
+
+  async function getStoredCurrency() {
+    const storedCurrency = await CurrencyStorage.getCurrency();
+    return setCurrency(storedCurrency);
+  }
+
+  async function setNewCurrency(newCurrency) {
+    const updatedCurrency = await CurrencyStorage.setCurrency(newCurrency);
+    return setCurrency(updatedCurrency);
+  }
+
+  async function removeAllPies() {
+    await PieStorage.removePies();
+    return setPies([]);
+  }
+
   return (
-    <LinearGradient
-      colors={[theme.colors.primary, theme.colors.secondary]}
-      style={styles.container}
-    >
-      <AppBar />
-      <PieList />
+    <LinearGradient colors={gradient} style={styles.container}>
+      <AppBar
+        pies={pies}
+        currency={currency}
+        setCurrency={setNewCurrency}
+        removeAllPies={removeAllPies}
+      />
+      <PieList pies={pies} currency={currency} setPies={setPies} />
     </LinearGradient>
   );
 };

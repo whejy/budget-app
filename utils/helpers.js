@@ -11,7 +11,7 @@ export const parseNumber = (number) => {
   if (!parsedNumber || !isNumber(parsedNumber)) {
     throw new Error('Incorrect or missing number');
   }
-  return parsedNumber;
+  return Math.round(100 * parsedNumber) / 100;
 };
 
 export const parseString = (text) => {

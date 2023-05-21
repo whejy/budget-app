@@ -11,7 +11,7 @@ export const getInitialValues = (selectedCategory, item = null) => {
 
 export const getValidationSchema = (remainingIncome, itemCost = 0) => {
   return yup.object().shape({
-    item: yup.string().required('Item is required'),
+    item: yup.string().required('Description is required'),
     cost: yup
       .number()
       .typeError('Cost must be a number')
