@@ -35,12 +35,7 @@ const MenuComponent = ({
 
   return (
     <View style={styles.container}>
-      <Menu
-        contentStyle={styles.menu}
-        visible={visible}
-        onDismiss={closeMenu}
-        anchor={anchor}
-      >
+      <Menu visible={visible} onDismiss={closeMenu} anchor={anchor}>
         <CurrencyMenu
           onPress={onCurrencyPress}
           onDismiss={toggleMenus}
@@ -48,11 +43,7 @@ const MenuComponent = ({
           currency={currency}
           setCurrency={setCurrency}
           anchor={
-            <Menu.Item
-              onPress={toggleCurrencyMenu}
-              title={selectedCurrency}
-              titleStyle={{ color: 'black' }}
-            />
+            <Menu.Item onPress={toggleCurrencyMenu} title={selectedCurrency} />
           }
         />
         <Divider />

@@ -16,12 +16,7 @@ const CurrencyMenu = ({ visible, onPress, onDismiss, anchor, currency }) => {
 
   return (
     <View style={styles.container}>
-      <Menu
-        contentStyle={styles.currencyMenu}
-        visible={visible}
-        onDismiss={onDismiss}
-        anchor={anchor}
-      >
+      <Menu visible={visible} onDismiss={onDismiss} anchor={anchor}>
         {menuItems}
       </Menu>
     </View>
