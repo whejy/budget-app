@@ -92,7 +92,7 @@ const CategoryDetails = ({
             data={expenses}
             ItemSeparatorComponent={ItemSeparator}
             keyExtractor={(_, i) => i}
-            numColumns={4}
+            numColumns={3}
             renderItem={({ item }) => (
               <EditExpenses
                 savePie={savePie}
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   itemDetails: {
-    width: 80,
+    width: 100,
     paddingVertical: 5,
     alignItems: 'center',
     justifyContent: 'center',

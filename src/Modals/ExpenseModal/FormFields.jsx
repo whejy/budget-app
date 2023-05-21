@@ -22,7 +22,7 @@ const FormFields = ({ onSubmit, onCancel, onDelete }) => {
 
   return (
     <View style={styles.form}>
-      <FormikTextInput name="item" placeholder="Item" />
+      <FormikTextInput name="item" placeholder="Description" />
       <FormikNumberInput name="cost" placeholder="Cost" />
       <FormikSelectInput name="category">
         {categories.map((category, i) => (

@@ -36,7 +36,7 @@ const MenuComponent = ({
   return (
     <View style={styles.container}>
       <Menu
-        contentStyle={{ backgroundColor: theme.colors.menu }}
+        contentStyle={styles.menu}
         visible={visible}
         onDismiss={closeMenu}
         anchor={anchor}
@@ -48,7 +48,11 @@ const MenuComponent = ({
           currency={currency}
           setCurrency={setCurrency}
           anchor={
-            <Menu.Item onPress={toggleCurrencyMenu} title={selectedCurrency} />
+            <Menu.Item
+              onPress={toggleCurrencyMenu}
+              title={selectedCurrency}
+              titleStyle={{ color: 'black' }}
+            />
           }
         />
         <Divider />
@@ -66,6 +70,9 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  menu: {
+    backgroundColor: theme.colors.menu,
   },
   selectedCurrency: {
     color: 'grey',

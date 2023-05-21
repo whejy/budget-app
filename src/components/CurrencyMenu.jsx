@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
   },
   currencyMenu: {
     backgroundColor: theme.colors.menu,
-    color: 'black',
   },
 });
 

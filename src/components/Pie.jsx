@@ -52,7 +52,7 @@ const Pie = ({
 
       pieData.push({
         x: category,
-        y: expenses[category].total,
+        y: Math.round(100 * expenses[category].total) / 100,
         fill: theme.colors.pieData[category],
       });
 
@@ -122,21 +122,14 @@ const Pie = ({
       <VictoryPie
         data={pieData}
         events={events}
-        labels={({ datum }) =>
-          `${datum.x} \n${currency}${datum.y.toLocaleString('en-US')}`
-        }
+        labels={({ datum }) => [datum.x, `${currency}${datum.y}`]}
         style={{
           data: {
             fill: ({ datum }) => datum.fill,
           },
-          labels: {
-            fontSize: 16,
-            padding: 10,
-            fill: 'grey',
-            fontFamily: theme.fonts.secondary,
-          },
+          labels: styles.labels,
         }}
-        labelComponent={<VictoryLabel textAnchor={'middle'} />}
+        labelComponent={<VictoryLabel textAnchor="middle" />}
       />
 
       {category?.length > 0 ? (
@@ -204,6 +197,12 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  labels: {
+    fontSize: 16,
+    padding: 10,
+    fill: 'grey',
+    fontFamily: theme.fonts.secondary,
   },
   button: {
     paddingHorizontal: 25,
