@@ -31,15 +31,17 @@ const Main = () => {
   }
 
   return (
-    <LinearGradient colors={gradient} style={styles.container}>
+    <>
       <AppBar
         pies={pies}
         currency={currency}
         setCurrency={setNewCurrency}
         removeAllPies={removeAllPies}
       />
-      <PieList pies={pies} currency={currency} setPies={setPies} />
-    </LinearGradient>
+      <LinearGradient colors={gradient} style={styles.container}>
+        <PieList pies={pies} currency={currency} setPies={setPies} />
+      </LinearGradient>
+    </>
   );
 };
 

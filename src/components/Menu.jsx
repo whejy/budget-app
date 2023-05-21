@@ -35,7 +35,12 @@ const MenuComponent = ({
 
   return (
     <View style={styles.container}>
-      <Menu visible={visible} onDismiss={closeMenu} anchor={anchor}>
+      <Menu
+        contentStyle={styles.menu}
+        visible={visible}
+        onDismiss={closeMenu}
+        anchor={anchor}
+      >
         <CurrencyMenu
           onPress={onCurrencyPress}
           onDismiss={toggleMenus}

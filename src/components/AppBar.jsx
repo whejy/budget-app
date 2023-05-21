@@ -77,24 +77,11 @@ const AppBar = ({ pies, removeAllPies, currency, setCurrency }) => {
 
 const styles = StyleSheet.create({
   container: {
-    // paddingTop: Platform.select({
-    //   ios: Constants.statusBarHeight + 5,
-    //   android: 5,
-    // }),
     backgroundColor: theme.colors.primary,
   },
   header: {
     alignSelf: 'flex-start',
   },
 });
-
-{
-  /* <View style={styles.container}>
-      <TouchableOpacity onPress={FactAlert}>
-        <Heading>trackthat</Heading>
-      </TouchableOpacity>
-      <MenuComponent />
-    </View> */
-}
 
 export default AppBar;

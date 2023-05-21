@@ -12,7 +12,7 @@ const App = () => {
     <SafeAreaProvider
       style={{ flex: 1, backgroundColor: theme.colors.primary }}
     >
-      <PaperProvider>
+      <PaperProvider theme="light">
         <StatusBar style="dark" translucent={false} />
         <Main />
       </PaperProvider>
