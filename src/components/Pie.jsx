@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
   labels: {
     fontSize: 16,
     padding: 10,
-    fill: 'grey',
+    fill: theme.colors.labels,
     fontFamily: theme.fonts.secondary,
   },
   button: {

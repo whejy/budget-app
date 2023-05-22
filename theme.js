@@ -6,7 +6,9 @@ const sliceColors = {
   Food: '#ffcbcb',
   Gifts: '#f2f2f2',
   Groceries: '#bbe4e9',
+  Housing: '#bbcfde',
   Income: '#79c2d0',
+  Insurance: '#dad6d3',
   Medical: '#CAF5F0',
   Other: '#cbeef8',
   Personal: '#ffb5b5',
@@ -25,6 +27,7 @@ const theme = {
     secondary: sliceColors.Bills,
     cancel: sliceColors.Savings,
     menu: sliceColors.Gifts,
+    labels: '#858C8B',
     pieData: sliceColors,
   },
   fontSizes: {
