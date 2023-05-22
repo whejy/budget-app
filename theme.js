@@ -9,7 +9,7 @@ const sliceColors = {
   Housing: '#bbcfde',
   Income: '#79c2d0',
   Insurance: '#dad6d3',
-  Medical: '#CAF5F0',
+  Medical: '#caf5f0',
   Other: '#cbeef8',
   Personal: '#ffb5b5',
   Savings: '#e6b2c6',

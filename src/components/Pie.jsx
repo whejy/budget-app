@@ -3,10 +3,10 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { VictoryPie, VictoryLabel } from 'victory-native';
 import CategoryDetails from './CategoryDetails';
 import Dates from './Dates';
+import { PrimaryIcon, SecondaryIcon } from './Icon';
 import Prompt from '../Modals/Prompt';
 import Calendar from '../Modals/CalendarModal';
 import AddExpense from '../Modals/ExpenseModal/AddExpense';
-import { PrimaryIcon, SecondaryIcon } from './Icon';
 import theme from '../../theme';
 
 const Pie = ({

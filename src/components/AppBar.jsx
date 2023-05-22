@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Appbar } from 'react-native-paper';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { Heading } from './Text';
 import FactAlert from './Alert';
 import Prompt from '../Modals/Prompt';
 import MenuComponent from './Menu';
+import { Heading } from './Text';
 import theme from '../../theme';
 
 const APPHEADER = <Heading>trackthat</Heading>;
@@ -28,15 +28,11 @@ const AppBar = ({ pies, removeAllPies, currency, setCurrency }) => {
     toggleMenu();
   };
 
-  // Get random fact, ensure cannot request multiple times
   const getFact = () => {
     if (canGetFact) {
-      FactAlert();
       setCanGetFact(false);
+      FactAlert(setCanGetFact);
     }
-    setTimeout(() => {
-      setCanGetFact(true);
-    }, 2000);
   };
 
   const title = (

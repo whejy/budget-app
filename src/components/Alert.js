@@ -6,7 +6,7 @@ const defaultAlert = {
   button: 'Love it',
 };
 
-const FactAlert = async () => {
+const FactAlert = async (setCanGetFact) => {
   let { title, message, button } = defaultAlert;
   try {
     const response = await fetch(
@@ -23,6 +23,7 @@ const FactAlert = async () => {
   return Alert.alert(title, message, [
     {
       text: button,
+      onPress: () => setCanGetFact(true),
     },
   ]);
 };
