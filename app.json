@@ -20,14 +20,16 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.whejy.budgetapp"
     },
     "android": {
+      "package": "com.whejy.budgetapp",
+      "versionCode": 2,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#79c2d0"
-      },
-      "package": "com.whejy.budgetapp"
+      }
     },
     "androidStatusBar": {
       "backgroundColor": "#79c2d0",

@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
   },
   emptyList: {
     textAlign: 'center',
+    fontStyle: 'italic',
     position: 'absolute',
     left: 50,
     right: 50,

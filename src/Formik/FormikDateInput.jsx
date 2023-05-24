@@ -38,6 +38,7 @@ const FormikDateInput = ({ name, ...props }) => {
         name="startDate"
         showSoftInputOnFocus={false}
         placeholder="Period beginning"
+        error={showError?.startDate}
         onPressIn={() => openModal('startDate')}
         onClick={() => openModal('startDate')}
       />
@@ -47,6 +48,7 @@ const FormikDateInput = ({ name, ...props }) => {
         name="endDate"
         showSoftInputOnFocus={false}
         placeholder="Period ending"
+        error={showError?.endDate}
         onPressIn={() => openModal('endDate')}
         onClick={() => openModal('endDate')}
       />
