@@ -3,7 +3,8 @@ import { useState } from 'react';
 import Text from './Text';
 import { Subheading } from './Text';
 import EditExpense from '../Modals/ExpenseModal/EditExpense';
-import { SecondaryIcon } from './Icon';
+import EditPie from '../Modals/PieModal/EditPie';
+import { PrimaryIcon, SecondaryIcon } from './Icon';
 import Prompt from '../Modals/Prompt';
 
 const ItemSeparator = () => <View style={styles.separator} />;
@@ -52,6 +53,7 @@ const CategoryDetails = ({
   currency,
 }) => {
   const [promptOpen, setPromptOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
 
   const removeCategory = () => {
     delete pie.expenses[category];
@@ -64,6 +66,25 @@ const CategoryDetails = ({
   };
 
   const togglePrompt = () => setPromptOpen(!promptOpen);
+  const toggleEdit = () => setEditModalOpen(!editModalOpen);
+
+  const categoryIcons =
+    category === 'Income' ? (
+      <TouchableOpacity onPress={toggleEdit}>
+        <PrimaryIcon name="edit" type="material" />
+      </TouchableOpacity>
+    ) : (
+      <TouchableOpacity onPress={() => togglePrompt()}>
+        <SecondaryIcon name="backspace" type="material" />
+      </TouchableOpacity>
+    );
+
+  const incomeCategory = (
+    <Text style={styles.income}>
+      You started this period with {currency}
+      {pie.income.toLocaleString('en-US')}
+    </Text>
+  );
 
   expenses?.sort((a, b) => b.cost - a.cost);
   return (
@@ -74,25 +95,20 @@ const CategoryDetails = ({
         handleYes={removeCategory}
         message="Delete this category?"
       />
-      {category === 'Income' ? (
-        <Text style={styles.income}>
-          You started this period with {currency}
-          {pie.income.toLocaleString('en-US')}
-        </Text>
-      ) : category === '' ? null : (
+      <EditPie modalOpen={editModalOpen} onClose={toggleEdit} pie={pie} />
+      {category === '' ? null : (
         <>
           <View style={styles.categoryContainer}>
             <Text style={styles.hidden}>X</Text>
             <Subheading style={styles.categoryTitle}>{category}</Subheading>
-            <TouchableOpacity onPress={() => togglePrompt()}>
-              <SecondaryIcon name="backspace" type="material" />
-            </TouchableOpacity>
+            {categoryIcons}
           </View>
           <FlatList
             data={expenses}
             ItemSeparatorComponent={ItemSeparator}
             keyExtractor={(_, i) => i}
             numColumns={3}
+            ListEmptyComponent={incomeCategory}
             renderItem={({ item }) => (
               <EditExpenses
                 savePie={savePie}

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { FAB } from 'react-native-paper';
-import AddPie from '../Modals/AddPieModal';
+import AddPie from '../Modals/PieModal/AddPie';
 import theme from '../../theme';
 
 const FloatingButton = ({ setStoragePies }) => {
