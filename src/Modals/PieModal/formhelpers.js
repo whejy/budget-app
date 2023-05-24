@@ -8,13 +8,17 @@ export const getInitialValues = (pie = null) => {
   return initialValues;
 };
 
-export const getValidationSchema = () => {
+export const getValidationSchema = (totalExpenses = null) => {
   return yup.object().shape({
     income: yup
       .number()
       .typeError('Income must be a number')
       .required('Income is required')
-      .positive(),
+      .positive()
+      .min(
+        totalExpenses && totalExpenses,
+        `Income must be greater than ${totalExpenses}`
+      ),
     dates: yup.object().shape({
       startDate: yup.string().required('Start date is required'),
       endDate: yup.string().required('End date is required'),

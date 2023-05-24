@@ -43,12 +43,15 @@ const Pie = ({
 
   const formatPieData = () => {
     let pieData = [];
+    let totalExpenses = 0;
 
     for (const category in expenses) {
       expenses[category].total = expenses[category].reduce(
         (acc, curr) => acc + curr.cost,
         0
       );
+
+      totalExpenses += expenses[category].total;
 
       pieData.push({
         x: category,
@@ -68,10 +71,10 @@ const Pie = ({
         fill: theme.colors.pieData.Income,
       });
 
-    return { pieData, remainingIncome };
+    return { pieData, remainingIncome, totalExpenses };
   };
 
-  const { pieData, remainingIncome } = formatPieData();
+  const { pieData, remainingIncome, totalExpenses } = formatPieData();
 
   const events = [
     {
@@ -106,7 +109,6 @@ const Pie = ({
   ];
 
   const getItemLayout = ({ height }) => {
-    category === 'Income' ? (height = 40) : height;
     return handleNavigate({ height, index });
   };
 
@@ -140,6 +142,7 @@ const Pie = ({
           savePie={handlePieUpdate}
           expenses={expenses[category]}
           remainingIncome={remainingIncome}
+          totalExpenses={totalExpenses}
           getItemLayout={getItemLayout}
         />
       ) : null}

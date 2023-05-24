@@ -49,6 +49,7 @@ const CategoryDetails = ({
   pie,
   savePie,
   remainingIncome,
+  totalExpenses,
   getItemLayout,
   currency,
 }) => {
@@ -68,10 +69,12 @@ const CategoryDetails = ({
   const togglePrompt = () => setPromptOpen(!promptOpen);
   const toggleEdit = () => setEditModalOpen(!editModalOpen);
 
+  const sortedExpenses = expenses?.sort((a, b) => b.cost - a.cost);
+
   const categoryIcons =
     category === 'Income' ? (
       <TouchableOpacity onPress={toggleEdit}>
-        <PrimaryIcon name="edit" type="material" />
+        <PrimaryIcon name="add-circle" type="material" />
       </TouchableOpacity>
     ) : (
       <TouchableOpacity onPress={() => togglePrompt()}>
@@ -86,7 +89,6 @@ const CategoryDetails = ({
     </Text>
   );
 
-  expenses?.sort((a, b) => b.cost - a.cost);
   return (
     <View onLayout={onLayout} style={styles.container}>
       <Prompt
@@ -95,7 +97,13 @@ const CategoryDetails = ({
         handleYes={removeCategory}
         message="Delete this category?"
       />
-      <EditPie modalOpen={editModalOpen} onClose={toggleEdit} pie={pie} />
+      <EditPie
+        modalOpen={editModalOpen}
+        onClose={toggleEdit}
+        pie={pie}
+        savePie={savePie}
+        totalExpenses={totalExpenses}
+      />
       {category === '' ? null : (
         <>
           <View style={styles.categoryContainer}>
@@ -104,7 +112,7 @@ const CategoryDetails = ({
             {categoryIcons}
           </View>
           <FlatList
-            data={expenses}
+            data={sortedExpenses}
             ItemSeparatorComponent={ItemSeparator}
             keyExtractor={(_, i) => i}
             numColumns={3}

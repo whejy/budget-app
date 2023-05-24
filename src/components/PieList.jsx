@@ -72,7 +72,7 @@ const PieList = ({ pies, setPies, currency }) => {
       animated: true,
       index: index,
       viewPosition: 0,
-      viewOffset: 120 - height,
+      viewOffset: 135 - height,
     });
   };
 
