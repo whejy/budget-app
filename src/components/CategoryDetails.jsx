@@ -4,7 +4,7 @@ import Text from './Text';
 import { Subheading } from './Text';
 import EditExpense from '../Modals/ExpenseModal/EditExpense';
 import EditPie from '../Modals/PieModal/EditPie';
-import { PrimaryIcon, SecondaryIcon } from './Icon';
+import { PieSettingsIcon, SecondaryIcon } from './Icon';
 import Prompt from '../Modals/Prompt';
 
 const ItemSeparator = () => <View style={styles.separator} />;
@@ -24,7 +24,7 @@ const EditExpenses = ({
   return (
     <>
       <TouchableOpacity style={styles.itemDetails} onPress={toggleModal}>
-        <Text style={{ textAlign: 'center' }}>{item.item}</Text>
+        <Text>{item.item}</Text>
         <Text>
           {currency}
           {item.cost.toLocaleString('en-US')}
@@ -45,11 +45,11 @@ const EditExpenses = ({
 
 const CategoryDetails = ({
   expenses,
+  totalExpenses,
   category,
   pie,
   savePie,
   remainingIncome,
-  totalExpenses,
   getItemLayout,
   currency,
 }) => {
@@ -74,7 +74,7 @@ const CategoryDetails = ({
   const categoryIcons =
     category === 'Income' ? (
       <TouchableOpacity onPress={toggleEdit}>
-        <PrimaryIcon name="add-circle" type="material" />
+        <PieSettingsIcon />
       </TouchableOpacity>
     ) : (
       <TouchableOpacity onPress={() => togglePrompt()}>

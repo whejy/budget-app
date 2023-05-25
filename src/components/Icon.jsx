@@ -17,6 +17,12 @@ export const SecondaryIcon = ({ ...props }) => {
   return <Icon {...styles.secondary} {...props} />;
 };
 
+export const PieSettingsIcon = ({ ...props }) => {
+  return (
+    <Icon name="settings" type="material" {...styles.settings} {...props} />
+  );
+};
+
 const styles = StyleSheet.create({
   primary: {
     color: theme.colors.primary,
@@ -25,6 +31,10 @@ const styles = StyleSheet.create({
   secondary: {
     color: theme.colors.cancel,
     size: 34,
+  },
+  settings: {
+    color: 'lightgrey',
+    size: 28,
   },
 });
 

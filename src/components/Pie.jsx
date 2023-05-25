@@ -3,11 +3,12 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { VictoryPie, VictoryLabel } from 'victory-native';
 import CategoryDetails from './CategoryDetails';
 import Dates from './Dates';
-import { PrimaryIcon, SecondaryIcon } from './Icon';
+import { PrimaryIcon, SecondaryIcon, PieSettingsIcon } from './Icon';
 import Prompt from '../Modals/Prompt';
 import Calendar from '../Modals/CalendarModal';
 import AddExpense from '../Modals/ExpenseModal/AddExpense';
 import theme from '../../theme';
+import EditPie from '../Modals/PieModal/EditPie';
 
 const Pie = ({
   data,
@@ -22,12 +23,14 @@ const Pie = ({
   const [modalOpen, setModalOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
 
   const { expenses, income } = data;
 
   const toggleModal = () => setModalOpen(!modalOpen);
   const togglePrompt = () => setPromptOpen(!promptOpen);
   const toggleCalendar = () => setCalendarOpen(!calendarOpen);
+  const toggleEdit = () => setEditModalOpen(!editModalOpen);
 
   const handleDeletePie = () => {
     togglePrompt();
@@ -43,15 +46,12 @@ const Pie = ({
 
   const formatPieData = () => {
     let pieData = [];
-    let totalExpenses = 0;
 
     for (const category in expenses) {
       expenses[category].total = expenses[category].reduce(
         (acc, curr) => acc + curr.cost,
         0
       );
-
-      totalExpenses += expenses[category].total;
 
       pieData.push({
         x: category,
@@ -71,10 +71,11 @@ const Pie = ({
         fill: theme.colors.pieData.Income,
       });
 
-    return { pieData, remainingIncome, totalExpenses };
+    return { pieData, remainingIncome };
   };
 
-  const { pieData, remainingIncome, totalExpenses } = formatPieData();
+  const { pieData, remainingIncome } = formatPieData();
+  const totalExpenses = data.income - remainingIncome;
 
   const events = [
     {
@@ -121,6 +122,9 @@ const Pie = ({
       <TouchableOpacity onPress={openCalendar}>
         <Dates dates={data.dates} />
       </TouchableOpacity>
+      <TouchableOpacity style={styles.pieSettings} onPress={toggleEdit}>
+        <PieSettingsIcon />
+      </TouchableOpacity>
       <VictoryPie
         data={pieData}
         events={events}
@@ -141,8 +145,8 @@ const Pie = ({
           currency={currency}
           savePie={handlePieUpdate}
           expenses={expenses[category]}
-          remainingIncome={remainingIncome}
           totalExpenses={totalExpenses}
+          remainingIncome={remainingIncome}
           getItemLayout={getItemLayout}
         />
       ) : null}
@@ -163,6 +167,13 @@ const Pie = ({
         pie={data}
         remainingIncome={remainingIncome}
         selectedCategory={category}
+      />
+      <EditPie
+        modalOpen={editModalOpen}
+        onClose={toggleEdit}
+        pie={data}
+        savePie={savePie}
+        totalExpenses={totalExpenses}
       />
       <Prompt
         modalOpen={promptOpen}
@@ -206,6 +217,9 @@ const styles = StyleSheet.create({
     padding: 10,
     fill: theme.colors.labels,
     fontFamily: theme.fonts.secondary,
+  },
+  pieSettings: {
+    padding: 10,
   },
   button: {
     paddingHorizontal: 25,
