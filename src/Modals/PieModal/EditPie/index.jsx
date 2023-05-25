@@ -2,7 +2,14 @@ import React from 'react';
 import MyModal from '../../Modal';
 import EditPieForm from './EditPieForm';
 
-const EditPie = ({ modalOpen, onClose, savePie, pie, totalExpenses }) => {
+const EditPie = ({
+  modalOpen,
+  onClose,
+  savePie,
+  pie,
+  totalExpenses,
+  ...props
+}) => {
   return (
     <MyModal animation="fade" modalOpen={modalOpen} onClose={onClose}>
       <EditPieForm
@@ -10,6 +17,7 @@ const EditPie = ({ modalOpen, onClose, savePie, pie, totalExpenses }) => {
         savePie={savePie}
         closeModal={onClose}
         totalExpenses={totalExpenses}
+        {...props}
       />
     </MyModal>
   );

@@ -77,7 +77,7 @@ const CategoryDetails = ({
         <PieSettingsIcon />
       </TouchableOpacity>
     ) : (
-      <TouchableOpacity onPress={() => togglePrompt()}>
+      <TouchableOpacity onPress={togglePrompt}>
         <SecondaryIcon name="backspace" type="material" />
       </TouchableOpacity>
     );
@@ -103,6 +103,7 @@ const CategoryDetails = ({
         pie={pie}
         savePie={savePie}
         totalExpenses={totalExpenses}
+        income
       />
       {category === '' ? null : (
         <>

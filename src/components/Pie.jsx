@@ -3,12 +3,12 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { VictoryPie, VictoryLabel } from 'victory-native';
 import CategoryDetails from './CategoryDetails';
 import Dates from './Dates';
-import { PrimaryIcon, SecondaryIcon, PieSettingsIcon } from './Icon';
 import Prompt from '../Modals/Prompt';
 import Calendar from '../Modals/CalendarModal';
 import AddExpense from '../Modals/ExpenseModal/AddExpense';
-import theme from '../../theme';
 import EditPie from '../Modals/PieModal/EditPie';
+import { PrimaryIcon, SecondaryIcon } from './Icon';
+import theme from '../../theme';
 
 const Pie = ({
   data,
@@ -113,17 +113,10 @@ const Pie = ({
     return handleNavigate({ height, index });
   };
 
-  const openCalendar = () => {
-    toggleCalendar();
-  };
-
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={openCalendar}>
+      <TouchableOpacity onPress={toggleEdit}>
         <Dates dates={data.dates} />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.pieSettings} onPress={toggleEdit}>
-        <PieSettingsIcon />
       </TouchableOpacity>
       <VictoryPie
         data={pieData}
@@ -174,6 +167,7 @@ const Pie = ({
         pie={data}
         savePie={savePie}
         totalExpenses={totalExpenses}
+        dates
       />
       <Prompt
         modalOpen={promptOpen}

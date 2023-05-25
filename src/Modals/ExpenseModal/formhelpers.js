@@ -17,7 +17,7 @@ export const getValidationSchema = (remainingIncome, itemCost = 0) => {
       .typeError('Cost must be a number')
       .required('Cost is required')
       .positive()
-      .max(
+      .lessThan(
         remainingIncome + itemCost,
         `Cost cannot be greater than ${remainingIncome + itemCost}`
       ),

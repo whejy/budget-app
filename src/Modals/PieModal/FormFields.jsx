@@ -3,17 +3,23 @@ import FormikNumberInput from '../../Formik/FormikNumberInput';
 import FormikDateInput from '../../Formik/FormikDateInput';
 import Button from '../../components/Button';
 
-const FormFields = ({ onSubmit, onCancel, edit }) => {
-  const submitTitle = edit ? 'Update Pie' : 'Add Pie';
+const FormFields = ({ onSubmit, onCancel, ...props }) => {
+  const submitTitle = props.dates
+    ? 'Update Dates'
+    : props.income
+    ? 'Update Income'
+    : 'Add Pie';
 
   return (
     <View style={styles.form}>
-      <FormikNumberInput
-        name="income"
-        placeholder="Income"
-        keyboardType="numeric"
-      />
-      <FormikDateInput name="dates" />
+      {!props.dates && (
+        <FormikNumberInput
+          name="income"
+          placeholder="Income"
+          keyboardType="numeric"
+        />
+      )}
+      {!props.income && <FormikDateInput name="dates" />}
       <View style={styles.buttons}>
         <Button title={submitTitle} variant="primary" onPress={onSubmit} />
         <Button title="Cancel" variant="primary" onPress={onCancel} />

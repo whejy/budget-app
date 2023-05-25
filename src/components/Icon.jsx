@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     size: 34,
   },
   settings: {
-    color: 'lightgrey',
-    size: 28,
+    color: theme.colors.textSecondary,
+    size: 34,
   },
 });
 
