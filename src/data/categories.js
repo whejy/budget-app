@@ -5,6 +5,7 @@ export const categories = [
   'Gifts',
   'Groceries',
   'Housing',
+  'Income',
   'Insurance',
   'Medical',
   'Personal',

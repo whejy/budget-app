@@ -8,6 +8,7 @@ import {
   getInitialValues,
   getValidationSchema,
 } from '../formhelpers';
+import { categories } from '../../../data/categories';
 
 const EditExpenseForm = ({
   item,
@@ -19,6 +20,8 @@ const EditExpenseForm = ({
 }) => {
   const initialValues = getInitialValues(initialCategory, item);
   const validationSchema = getValidationSchema(remainingIncome, item.cost);
+
+  const filteredCategories = categories.filter((cat) => cat !== 'Income');
 
   const onDelete = () => {
     const updatedPie = removeExpense({
@@ -69,6 +72,7 @@ const EditExpenseForm = ({
             onSubmit={handleSubmit}
             onDelete={onDelete}
             onCancel={closeModal}
+            categories={filteredCategories}
           />
         )}
       </Formik>

@@ -1,36 +1,40 @@
 import { View, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
-import FormFields from '../FormFields';
-import { parseNumber, parseString } from '../../../../utils/helpers';
-import {
-  addExpense,
-  getInitialValues,
-  getValidationSchema,
-} from '../formhelpers';
 import { categories } from '../../../data/categories';
+import FormFields from '../FormFields';
+import { parseNumber } from '../../../../utils/helpers';
+import { getInitialValues, getValidationSchema } from '../formhelpers';
 
-const AddExpenseForm = ({
+const AddIncomeForm = ({
   pie,
   savePie,
   closeModal,
   remainingIncome,
   selectedCategory,
+  dropdownCategory,
   setDropdownCategory,
 }) => {
-  const initialValues = getInitialValues(selectedCategory);
-  const validationSchema = getValidationSchema(remainingIncome);
+  const initialValues = getInitialValues(
+    selectedCategory,
+    null,
+    dropdownCategory
+  );
+
+  const validationSchema = getValidationSchema(
+    remainingIncome,
+    null,
+    dropdownCategory
+  );
 
   const onSubmit = (values) => {
-    const id = Math.round(1000 * Math.random());
-    const parsedData = {
-      id: id,
-      item: parseString(values.item),
-      cost: parseNumber(values.cost),
-      category: values.category,
-      pie: pie,
+    const updatedIncome = (pie.income += parseNumber(values.amount));
+
+    const updatedPie = {
+      ...pie,
+      income: updatedIncome,
     };
+
     closeModal();
-    const updatedPie = addExpense(parsedData);
     return savePie(updatedPie);
   };
 
@@ -44,6 +48,7 @@ const AddExpenseForm = ({
         {({ handleSubmit }) => (
           <FormFields
             setDropdownCategory={setDropdownCategory}
+            dropdownCategory={dropdownCategory}
             onSubmit={handleSubmit}
             onCancel={closeModal}
             categories={categories}
@@ -68,4 +73,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddExpenseForm;
+export default AddIncomeForm;
