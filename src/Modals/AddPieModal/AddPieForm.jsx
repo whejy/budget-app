@@ -4,11 +4,13 @@ import * as yup from 'yup';
 import uuid from 'react-native-uuid';
 import FormikDateInput from '../../Formik/FormikDateInput';
 import FormikNumberInput from '../../Formik/FormikNumberInput';
+import FormikTextInput from '../../Formik/FormikTextInput';
 import Button from '../../components/Button';
 import { parseNumber } from '../../../utils/helpers';
 
 const initialValues = {
   income: '',
+  source: '',
   dates: { startDate: '', endDate: '' },
 };
 
@@ -18,6 +20,7 @@ const validationSchema = yup.object().shape({
     .typeError('Income must be a number')
     .required('Income is required')
     .positive(),
+  source: yup.string().required('Source is required'),
   dates: yup.object().shape({
     startDate: yup.string().required('Start date is required'),
     endDate: yup.string().required('End date is required'),
@@ -32,6 +35,7 @@ const FormFields = ({ onSubmit, closeModal }) => {
         placeholder="Income"
         keyboardType="numeric"
       />
+      <FormikTextInput name="source" placeholder="Income Source" />
       <FormikDateInput name="dates" />
       <View style={styles.buttons}>
         <Button title="Add Pie" variant="primary" onPress={onSubmit} />
@@ -44,17 +48,18 @@ const FormFields = ({ onSubmit, closeModal }) => {
 const AddPieForm = ({ updateList, closeModal }) => {
   const onSubmit = (values) => {
     class Pie {
-      constructor({ dates, income }) {
+      constructor({ dates, amount, source }) {
         this.id = uuid.v4();
         this.dates = dates;
-        this.income = income;
+        this.income = [{ amount: amount, source: source }];
         this.expenses = {};
       }
     }
 
     const parsedData = {
       dates: values.dates,
-      income: parseNumber(values.income),
+      amount: parseNumber(values.income),
+      source: values.source,
     };
 
     closeModal();

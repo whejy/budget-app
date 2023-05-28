@@ -25,6 +25,8 @@ const Pie = ({
 
   const { expenses, income } = data;
 
+  if (typeof income === 'number') return null;
+
   const toggleModal = () => setModalOpen(!modalOpen);
   const togglePrompt = () => setPromptOpen(!promptOpen);
   const toggleCalendar = () => setCalendarOpen(!calendarOpen);
@@ -59,7 +61,10 @@ const Pie = ({
       pieData.sort((a, b) => a.y - b.y);
     }
 
-    const remainingIncome = pieData.reduce((acc, curr) => acc - curr.y, income);
+    const remainingIncome = pieData.reduce(
+      (acc, curr) => acc - curr.y,
+      income[0].amount
+    );
 
     remainingIncome > 0 &&
       pieData.push({
@@ -106,7 +111,6 @@ const Pie = ({
   ];
 
   const getItemLayout = ({ height }) => {
-    category === 'Income' ? (height = 40) : height;
     return handleNavigate({ height, index });
   };
 
@@ -139,6 +143,7 @@ const Pie = ({
           currency={currency}
           savePie={handlePieUpdate}
           expenses={expenses[category]}
+          income={income}
           remainingIncome={remainingIncome}
           getItemLayout={getItemLayout}
         />

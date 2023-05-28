@@ -23,10 +23,10 @@ const EditExpenses = ({
   return (
     <>
       <TouchableOpacity style={styles.itemDetails} onPress={toggleModal}>
-        <Text style={{ textAlign: 'center' }}>{item.item}</Text>
+        <Text style={{ textAlign: 'center' }}>{item.item || item.source}</Text>
         <Text>
           {currency}
-          {item.cost.toLocaleString('en-US')}
+          {(item.cost || item.amount).toLocaleString('en-US')}
         </Text>
       </TouchableOpacity>
       <EditExpense
@@ -50,8 +50,12 @@ const CategoryDetails = ({
   remainingIncome,
   getItemLayout,
   currency,
+  income,
 }) => {
   const [promptOpen, setPromptOpen] = useState(false);
+
+  const sortedExpenses = expenses?.sort((a, b) => b.cost - a.cost);
+  const flatlistData = category === 'Income' ? income : sortedExpenses;
 
   const removeCategory = () => {
     delete pie.expenses[category];
@@ -65,7 +69,6 @@ const CategoryDetails = ({
 
   const togglePrompt = () => setPromptOpen(!promptOpen);
 
-  expenses?.sort((a, b) => b.cost - a.cost);
   return (
     <View onLayout={onLayout} style={styles.container}>
       <Prompt
@@ -74,22 +77,19 @@ const CategoryDetails = ({
         handleYes={removeCategory}
         message="Delete this category?"
       />
-      {category === 'Income' ? (
-        <Text style={styles.income}>
-          You started this period with {currency}
-          {pie.income.toLocaleString('en-US')}
-        </Text>
-      ) : category === '' ? null : (
+      {category === '' ? null : (
         <>
           <View style={styles.categoryContainer}>
             <Text style={styles.hidden}>X</Text>
             <Subheading style={styles.categoryTitle}>{category}</Subheading>
-            <TouchableOpacity onPress={() => togglePrompt()}>
-              <SecondaryIcon name="backspace" type="material" />
-            </TouchableOpacity>
+            {category !== 'Income' && (
+              <TouchableOpacity onPress={() => togglePrompt()}>
+                <SecondaryIcon name="backspace" type="material" />
+              </TouchableOpacity>
+            )}
           </View>
           <FlatList
-            data={expenses}
+            data={flatlistData}
             ItemSeparatorComponent={ItemSeparator}
             keyExtractor={(_, i) => i}
             numColumns={3}
