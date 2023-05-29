@@ -1,28 +1,56 @@
 import * as yup from 'yup';
 
-export const getInitialValues = (selectedCategory, item = null) => {
-  const initialValues = {
-    item: item?.item || '',
-    cost: (item && String(item.cost)) || '',
-    category: (selectedCategory !== 'Income' && selectedCategory) || 'Shopping',
-  };
+export const getInitialValues = ({ selectedCategory, item, formCategory }) => {
+  const initialValues =
+    formCategory === 'Income'
+      ? { item: '', cost: '', category: 'Income' }
+      : {
+          item: item?.item || '',
+          cost: (item && String(item.cost)) || '',
+          category:
+            (selectedCategory !== 'Income' && selectedCategory) || 'Shopping',
+        };
   return initialValues;
 };
 
-export const getValidationSchema = (remainingIncome, itemCost = 0) => {
-  return yup.object().shape({
-    item: yup.string().required('Description is required'),
-    cost: yup
-      .number()
-      .typeError('Cost must be a number')
-      .required('Cost is required')
-      .positive()
-      .max(
-        remainingIncome + itemCost,
-        `Cost cannot be greater than ${remainingIncome + itemCost}`
-      ),
-    category: yup.string().required('Category is required'),
-  });
+export const getValidationSchema = ({
+  remainingIncome,
+  item,
+  formCategory,
+}) => {
+  const validationSchema =
+    formCategory === 'Income'
+      ? {
+          item: yup.string().required('Source is required'),
+          cost: yup
+            .number()
+            .typeError('Income must be a number')
+            .required('Income is required')
+            .positive(),
+          category: yup.string().required('Category is required'),
+        }
+      : {
+          item: yup.string().required('Description is required'),
+          cost: yup
+            .number()
+            .typeError('Cost must be a number')
+            .required('Cost is required')
+            .positive()
+            .max(
+              remainingIncome + (item?.cost || 0),
+              `Cost cannot be greater than ${
+                remainingIncome + (item?.cost || 0)
+              }`
+            ),
+          category: yup.string().required('Category is required'),
+        };
+
+  return yup.object().shape(validationSchema);
+};
+
+export const addIncome = ({ pie, amount, source }) => {
+  pie.income.push({ amount: amount, source: source });
+  return pie;
 };
 
 export const addExpense = ({ id, item, cost, category, pie }) => {

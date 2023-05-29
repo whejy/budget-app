@@ -6,7 +6,23 @@ import FormikTextInput from '../../Formik/FormikTextInput';
 import FormikSelectInput from '../../Formik/FormikSelectInput';
 import FormikNumberInput from '../../Formik/FormikNumberInput';
 
-const FormFields = ({ onSubmit, onCancel, onDelete }) => {
+const FormFields = ({
+  onSubmit,
+  onCancel,
+  onDelete,
+  formCategory,
+  setFormCategory,
+}) => {
+  let submitButton = 'Add Expense';
+  let textPlaceholder = 'Description';
+  let numberPlaceholder = 'Cost';
+
+  if (formCategory === 'Income') {
+    submitButton = 'Add Income';
+    textPlaceholder = 'Income Source';
+    numberPlaceholder = 'Income';
+  }
+
   const buttons = onDelete ? (
     <>
       <Button title="Delete" onPress={onDelete} variant="secondary" />
@@ -15,16 +31,16 @@ const FormFields = ({ onSubmit, onCancel, onDelete }) => {
     </>
   ) : (
     <>
-      <Button title="Add Expense" onPress={onSubmit} variant="primary" />
+      <Button title={submitButton} onPress={onSubmit} variant="primary" />
       <Button title="Cancel" onPress={onCancel} variant="primary" />
     </>
   );
 
   return (
     <View style={styles.form}>
-      <FormikTextInput name="item" placeholder="Description" />
-      <FormikNumberInput name="cost" placeholder="Cost" />
-      <FormikSelectInput name="category">
+      <FormikNumberInput name="cost" placeholder={numberPlaceholder} />
+      <FormikTextInput name="item" placeholder={textPlaceholder} />
+      <FormikSelectInput setFormCategory={setFormCategory} name="category">
         {categories.map((category, i) => (
           <Picker.Item key={i} label={category} value={category} />
         ))}

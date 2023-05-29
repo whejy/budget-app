@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import FormFields from '../FormFields';
 import { parseNumber, parseString } from '../../../../utils/helpers';
 import {
   addExpense,
+  addIncome,
   getInitialValues,
   getValidationSchema,
 } from '../formhelpers';
@@ -15,20 +17,41 @@ const AddExpenseForm = ({
   remainingIncome,
   selectedCategory,
 }) => {
-  const initialValues = getInitialValues(selectedCategory);
-  const validationSchema = getValidationSchema(remainingIncome);
+  const [formCategory, setFormCategory] = useState('');
+
+  const initialValues = getInitialValues({ selectedCategory, formCategory });
+  const validationSchema = getValidationSchema({
+    remainingIncome,
+    formCategory,
+  });
 
   const onSubmit = (values) => {
-    const id = Math.round(1000 * Math.random());
-    const parsedData = {
-      id: id,
-      item: parseString(values.item),
-      cost: parseNumber(values.cost),
-      category: values.category,
-      pie: pie,
+    const updatePie = () => {
+      if (values.category === 'Income') {
+        const parsedData = {
+          pie: pie,
+          amount: parseNumber(values.cost),
+          source: parseString(values.item),
+        };
+
+        const updatedPie = addIncome(parsedData);
+        return updatedPie;
+      } else {
+        const id = Math.round(1000 * Math.random());
+        const parsedData = {
+          id: id,
+          item: parseString(values.item),
+          cost: parseNumber(values.cost),
+          category: values.category,
+          pie: pie,
+        };
+
+        const updatedPie = addExpense(parsedData);
+        return updatedPie;
+      }
     };
     closeModal();
-    const updatedPie = addExpense(parsedData);
+    const updatedPie = updatePie(values);
     return savePie(updatedPie);
   };
 
@@ -40,7 +63,12 @@ const AddExpenseForm = ({
         validationSchema={validationSchema}
       >
         {({ handleSubmit }) => (
-          <FormFields onSubmit={handleSubmit} onCancel={closeModal} />
+          <FormFields
+            formCategory={formCategory}
+            setFormCategory={setFormCategory}
+            onSubmit={handleSubmit}
+            onCancel={closeModal}
+          />
         )}
       </Formik>
     </View>
@@ -48,17 +76,7 @@ const AddExpenseForm = ({
 };
 
 const styles = StyleSheet.create({
-  buttons: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  form: {
-    display: 'flex',
-    backgroundColor: 'white',
-    padding: 15,
-  },
+  container: {},
 });
 
 export default AddExpenseForm;

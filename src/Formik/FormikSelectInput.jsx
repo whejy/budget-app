@@ -6,10 +6,15 @@ const FormikSelectInput = ({ name, ...props }) => {
   const [field, meta, helpers] = useField(name);
   const showError = meta.touched && meta.error;
 
+  const handleChange = (value) => {
+    props.setFormCategory && props.setFormCategory(value);
+    helpers.setValue(value);
+  };
+
   return (
     <>
       <SelectInput
-        onValueChange={(value) => helpers.setValue(value)}
+        onValueChange={handleChange}
         onBlur={() => helpers.setTouched(true)}
         selectedValue={field.value}
         error={showError}

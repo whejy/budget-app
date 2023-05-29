@@ -55,7 +55,8 @@ const CategoryDetails = ({
   const [promptOpen, setPromptOpen] = useState(false);
 
   const sortedExpenses = expenses?.sort((a, b) => b.cost - a.cost);
-  const flatlistData = category === 'Income' ? income : sortedExpenses;
+  const sortedIncome = income?.sort((a, b) => b.amount - a.amount);
+  const flatlistData = category === 'Income' ? sortedIncome : sortedExpenses;
 
   const removeCategory = () => {
     delete pie.expenses[category];

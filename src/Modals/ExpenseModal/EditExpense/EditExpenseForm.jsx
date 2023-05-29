@@ -1,4 +1,4 @@
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { Formik } from 'formik';
 import FormFields from '../FormFields';
 import { parseNumber, parseString } from '../../../../utils/helpers';
@@ -17,8 +17,8 @@ const EditExpenseForm = ({
   savePie,
   closeModal,
 }) => {
-  const initialValues = getInitialValues(initialCategory, item);
-  const validationSchema = getValidationSchema(remainingIncome, item.cost);
+  const initialValues = getInitialValues({ initialCategory, item });
+  const validationSchema = getValidationSchema({ remainingIncome, item });
 
   const onDelete = () => {
     const updatedPie = removeExpense({
@@ -58,7 +58,7 @@ const EditExpenseForm = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
@@ -75,19 +75,5 @@ const EditExpenseForm = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  buttons: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  form: {
-    display: 'flex',
-    backgroundColor: 'white',
-    padding: 15,
-  },
-});
 
 export default EditExpenseForm;

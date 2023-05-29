@@ -37,7 +37,8 @@ const Pie = ({
   };
 
   const handlePieUpdate = (pie) => {
-    if (!Object.keys(expenses).includes(category)) {
+    // Toggle active category if category no longer exists
+    if (!Object.keys(expenses).includes(category) && category !== 'Income') {
       updateCategory({ index, activeCategory: '' });
     }
     savePie(pie);
@@ -61,9 +62,11 @@ const Pie = ({
       pieData.sort((a, b) => a.y - b.y);
     }
 
+    const totalIncome = income.reduce((acc, curr) => acc + curr.amount, 0);
+
     const remainingIncome = pieData.reduce(
       (acc, curr) => acc - curr.y,
-      income[0].amount
+      totalIncome
     );
 
     remainingIncome > 0 &&
