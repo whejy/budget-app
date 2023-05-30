@@ -1,7 +1,7 @@
 import * as yup from 'yup';
 
 export const getIncomeInitialValues = () => {
-  return { item: '', cost: '', category: 'Income' };
+  return { item: '', income: '', category: 'Income' };
 };
 
 export const getExpenseInitialValues = ({ item, formCategory }) => {
@@ -15,7 +15,7 @@ export const getExpenseInitialValues = ({ item, formCategory }) => {
 export const getIncomeValidationSchema = () => {
   const validationSchema = {
     item: yup.string().required('Source is required'),
-    cost: yup
+    income: yup
       .number()
       .typeError('Income must be a number')
       .required('Income is required')
@@ -42,8 +42,8 @@ export const getExpenseValidationSchema = ({ item, remainingIncome }) => {
   return yup.object().shape(validationSchema);
 };
 
-export const addIncome = ({ pie, amount, source }) => {
-  pie.income.push({ amount: amount, source: source });
+export const addIncome = ({ id, item, income, pie }) => {
+  pie.income.push({ id: id, income: income, item: item });
   return pie;
 };
 

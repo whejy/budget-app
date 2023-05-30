@@ -42,7 +42,7 @@ export const ExpenseFormFields = ({
 export const IncomeFormFields = ({ onSubmit, onCancel, setFormCategory }) => {
   return (
     <View style={styles.form}>
-      <FormikNumberInput name="cost" placeholder="Income" />
+      <FormikNumberInput name="income" placeholder="Income" />
       <FormikTextInput name="item" placeholder="Income Source" />
       <FormikSelectInput setFormCategory={setFormCategory} name="category">
         {categories.map((category, i) => (

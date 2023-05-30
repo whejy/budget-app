@@ -9,9 +9,9 @@ import Prompt from '../Modals/Prompt';
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const EditExpenses = ({
+  pie,
   item,
   category,
-  pie,
   savePie,
   remainingIncome,
   currency,
@@ -23,10 +23,10 @@ const EditExpenses = ({
   return (
     <>
       <TouchableOpacity style={styles.itemDetails} onPress={toggleModal}>
-        <Text style={{ textAlign: 'center' }}>{item.item || item.source}</Text>
+        <Text style={{ textAlign: 'center' }}>{item.item}</Text>
         <Text>
           {currency}
-          {(item.cost || item.amount).toLocaleString('en-US')}
+          {(item.cost || item.income).toLocaleString('en-US')}
         </Text>
       </TouchableOpacity>
       <EditExpense
@@ -54,19 +54,24 @@ const CategoryDetails = ({
 }) => {
   const [promptOpen, setPromptOpen] = useState(false);
 
-  const sortedExpenses = expenses?.sort((a, b) => b.cost - a.cost);
-  const sortedIncome = income?.sort((a, b) => b.amount - a.amount);
-  const flatlistData = category === 'Income' ? sortedIncome : sortedExpenses;
+  const onLayout = (event) => {
+    const { height } = event.nativeEvent.layout;
+    return getItemLayout({ height });
+  };
 
   const removeCategory = () => {
     delete pie.expenses[category];
     savePie(pie);
   };
 
-  const onLayout = (event) => {
-    const { height } = event.nativeEvent.layout;
-    return getItemLayout({ height });
+  const sortCategoryItems = (data) => {
+    return data?.sort((a, b) => b.cost - a.cost);
   };
+
+  const flatlistData =
+    category === 'Income'
+      ? sortCategoryItems(income)
+      : sortCategoryItems(expenses);
 
   const togglePrompt = () => setPromptOpen(!promptOpen);
 

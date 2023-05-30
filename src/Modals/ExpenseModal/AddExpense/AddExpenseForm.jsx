@@ -24,9 +24,8 @@ const AddExpenseForm = ({
   });
 
   const onSubmit = (values) => {
-    const id = Math.round(1000 * Math.random());
     const parsedData = {
-      id: id,
+      id: Math.round(1000 * Math.random()),
       item: parseString(values.item),
       cost: parseNumber(values.cost),
       category: values.category,

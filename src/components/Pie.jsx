@@ -62,7 +62,7 @@ const Pie = ({
       pieData.sort((a, b) => a.y - b.y);
     }
 
-    const totalIncome = income.reduce((acc, curr) => acc + curr.amount, 0);
+    const totalIncome = income.reduce((acc, curr) => acc + curr.income, 0);
 
     const remainingIncome = pieData.reduce(
       (acc, curr) => acc - curr.y,

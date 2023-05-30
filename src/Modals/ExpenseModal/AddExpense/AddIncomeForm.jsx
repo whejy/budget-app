@@ -22,9 +22,10 @@ const AddIncomeForm = ({
 
   const onSubmit = (values) => {
     const parsedData = {
+      id: Math.round(1000 * Math.random()),
       pie: pie,
-      amount: parseNumber(values.cost),
-      source: parseString(values.item),
+      income: parseNumber(values.income),
+      item: parseString(values.item),
     };
 
     onClose();

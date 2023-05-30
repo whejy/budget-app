@@ -10,7 +10,7 @@ import { parseNumber } from '../../../utils/helpers';
 
 const initialValues = {
   income: '',
-  source: '',
+  item: '',
   dates: { startDate: '', endDate: '' },
 };
 
@@ -20,7 +20,7 @@ const validationSchema = yup.object().shape({
     .typeError('Income must be a number')
     .required('Income is required')
     .positive(),
-  source: yup.string().required('Source is required'),
+  item: yup.string().required('Source is required'),
   dates: yup.object().shape({
     startDate: yup.string().required('Start date is required'),
     endDate: yup.string().required('End date is required'),
@@ -35,7 +35,7 @@ const FormFields = ({ onSubmit, closeModal }) => {
         placeholder="Income"
         keyboardType="numeric"
       />
-      <FormikTextInput name="source" placeholder="Income Source" />
+      <FormikTextInput name="item" placeholder="Income Source" />
       <FormikDateInput name="dates" />
       <View style={styles.buttons}>
         <Button title="Add Pie" variant="primary" onPress={onSubmit} />
@@ -48,18 +48,19 @@ const FormFields = ({ onSubmit, closeModal }) => {
 const AddPieForm = ({ updateList, closeModal }) => {
   const onSubmit = (values) => {
     class Pie {
-      constructor({ dates, amount, source }) {
+      constructor({ dates, income, incomeItem, incomeId }) {
         this.id = uuid.v4();
         this.dates = dates;
-        this.income = [{ amount: amount, source: source }];
+        this.income = [{ income: income, item: incomeItem, id: incomeId }];
         this.expenses = {};
       }
     }
 
     const parsedData = {
       dates: values.dates,
-      amount: parseNumber(values.income),
-      source: values.source,
+      income: parseNumber(values.income),
+      incomeId: Math.round(1000 * Math.random()),
+      incomeItem: values.item,
     };
 
     closeModal();
