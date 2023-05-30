@@ -6,23 +6,12 @@ import FormikTextInput from '../../Formik/FormikTextInput';
 import FormikSelectInput from '../../Formik/FormikSelectInput';
 import FormikNumberInput from '../../Formik/FormikNumberInput';
 
-const FormFields = ({
+export const ExpenseFormFields = ({
   onSubmit,
   onCancel,
   onDelete,
-  formCategory,
   setFormCategory,
 }) => {
-  let submitButton = 'Add Expense';
-  let textPlaceholder = 'Description';
-  let numberPlaceholder = 'Cost';
-
-  if (formCategory === 'Income') {
-    submitButton = 'Add Income';
-    textPlaceholder = 'Income Source';
-    numberPlaceholder = 'Income';
-  }
-
   const buttons = onDelete ? (
     <>
       <Button title="Delete" onPress={onDelete} variant="secondary" />
@@ -31,21 +20,39 @@ const FormFields = ({
     </>
   ) : (
     <>
-      <Button title={submitButton} onPress={onSubmit} variant="primary" />
+      <Button title="Add Expense" onPress={onSubmit} variant="primary" />
       <Button title="Cancel" onPress={onCancel} variant="primary" />
     </>
   );
 
   return (
     <View style={styles.form}>
-      <FormikNumberInput name="cost" placeholder={numberPlaceholder} />
-      <FormikTextInput name="item" placeholder={textPlaceholder} />
+      <FormikNumberInput name="cost" placeholder="Cost" />
+      <FormikTextInput name="item" placeholder="Description" />
       <FormikSelectInput setFormCategory={setFormCategory} name="category">
         {categories.map((category, i) => (
           <Picker.Item key={i} label={category} value={category} />
         ))}
       </FormikSelectInput>
       <View style={styles.buttons}>{buttons}</View>
+    </View>
+  );
+};
+
+export const IncomeFormFields = ({ onSubmit, onCancel, setFormCategory }) => {
+  return (
+    <View style={styles.form}>
+      <FormikNumberInput name="cost" placeholder="Income" />
+      <FormikTextInput name="item" placeholder="Income Source" />
+      <FormikSelectInput setFormCategory={setFormCategory} name="category">
+        {categories.map((category, i) => (
+          <Picker.Item key={i} label={category} value={category} />
+        ))}
+      </FormikSelectInput>
+      <View style={styles.buttons}>
+        <Button title="Add Income" onPress={onSubmit} variant="primary" />
+        <Button title="Cancel" onPress={onCancel} variant="primary" />
+      </View>
     </View>
   );
 };
@@ -63,5 +70,3 @@ const styles = StyleSheet.create({
     padding: 15,
   },
 });
-
-export default FormFields;

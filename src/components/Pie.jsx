@@ -163,7 +163,7 @@ const Pie = ({
       </View>
       <AddExpense
         modalOpen={modalOpen}
-        onClose={toggleModal}
+        closeModal={toggleModal}
         savePie={handlePieUpdate}
         pie={data}
         remainingIncome={remainingIncome}

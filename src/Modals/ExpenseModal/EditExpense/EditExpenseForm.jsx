@@ -1,12 +1,12 @@
 import { View } from 'react-native';
 import { Formik } from 'formik';
-import FormFields from '../FormFields';
+import { ExpenseFormFields } from '../FormFields';
 import { parseNumber, parseString } from '../../../../utils/helpers';
 import {
   addExpense,
   removeExpense,
-  getInitialValues,
-  getValidationSchema,
+  getExpenseInitialValues,
+  getExpenseValidationSchema,
 } from '../formhelpers';
 
 const EditExpenseForm = ({
@@ -17,8 +17,14 @@ const EditExpenseForm = ({
   savePie,
   closeModal,
 }) => {
-  const initialValues = getInitialValues({ initialCategory, item });
-  const validationSchema = getValidationSchema({ remainingIncome, item });
+  const initialValues = getExpenseInitialValues({
+    formCategory: initialCategory,
+    item,
+  });
+  const validationSchema = getExpenseValidationSchema({
+    remainingIncome,
+    item,
+  });
 
   const onDelete = () => {
     const updatedPie = removeExpense({
@@ -65,7 +71,7 @@ const EditExpenseForm = ({
         validationSchema={validationSchema}
       >
         {({ handleSubmit }) => (
-          <FormFields
+          <ExpenseFormFields
             onSubmit={handleSubmit}
             onDelete={onDelete}
             onCancel={closeModal}

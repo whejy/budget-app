@@ -1,40 +1,34 @@
 import { View, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
-import { ExpenseFormFields } from '../FormFields';
+import { IncomeFormFields } from '../FormFields';
 import { parseNumber, parseString } from '../../../../utils/helpers';
 import {
-  addExpense,
-  getExpenseInitialValues,
-  getExpenseValidationSchema,
+  addIncome,
+  getIncomeInitialValues,
+  getIncomeValidationSchema,
 } from '../formhelpers';
 
-const AddExpenseForm = ({
+const AddIncomeForm = ({
   pie,
   savePie,
   onClose,
-  remainingIncome,
   formCategory,
   setFormCategory,
 }) => {
-  const initialValues = getExpenseInitialValues({
+  const initialValues = getIncomeInitialValues();
+  const validationSchema = getIncomeValidationSchema({
     formCategory,
-  });
-  const validationSchema = getExpenseValidationSchema({
-    remainingIncome,
   });
 
   const onSubmit = (values) => {
-    const id = Math.round(1000 * Math.random());
     const parsedData = {
-      id: id,
-      item: parseString(values.item),
-      cost: parseNumber(values.cost),
-      category: values.category,
       pie: pie,
+      amount: parseNumber(values.cost),
+      source: parseString(values.item),
     };
 
     onClose();
-    const updatedPie = addExpense(parsedData);
+    const updatedPie = addIncome(parsedData);
     return savePie(updatedPie);
   };
 
@@ -46,7 +40,7 @@ const AddExpenseForm = ({
         validationSchema={validationSchema}
       >
         {({ handleSubmit }) => (
-          <ExpenseFormFields
+          <IncomeFormFields
             onSubmit={handleSubmit}
             onCancel={onClose}
             formCategory={formCategory}
@@ -62,4 +56,4 @@ const styles = StyleSheet.create({
   container: {},
 });
 
-export default AddExpenseForm;
+export default AddIncomeForm;

@@ -1,50 +1,44 @@
 import * as yup from 'yup';
 
-export const getInitialValues = ({ selectedCategory, item, formCategory }) => {
-  const initialValues =
-    formCategory === 'Income'
-      ? { item: '', cost: '', category: 'Income' }
-      : {
-          item: item?.item || '',
-          cost: (item && String(item.cost)) || '',
-          category:
-            (selectedCategory !== 'Income' && selectedCategory) || 'Shopping',
-        };
-  return initialValues;
+export const getIncomeInitialValues = () => {
+  return { item: '', cost: '', category: 'Income' };
 };
 
-export const getValidationSchema = ({
-  remainingIncome,
-  item,
-  formCategory,
-}) => {
-  const validationSchema =
-    formCategory === 'Income'
-      ? {
-          item: yup.string().required('Source is required'),
-          cost: yup
-            .number()
-            .typeError('Income must be a number')
-            .required('Income is required')
-            .positive(),
-          category: yup.string().required('Category is required'),
-        }
-      : {
-          item: yup.string().required('Description is required'),
-          cost: yup
-            .number()
-            .typeError('Cost must be a number')
-            .required('Cost is required')
-            .positive()
-            .max(
-              remainingIncome + (item?.cost || 0),
-              `Cost cannot be greater than ${
-                remainingIncome + (item?.cost || 0)
-              }`
-            ),
-          category: yup.string().required('Category is required'),
-        };
+export const getExpenseInitialValues = ({ item, formCategory }) => {
+  return {
+    item: item?.item || '',
+    cost: (item && String(item.cost)) || '',
+    category: formCategory || 'Shopping',
+  };
+};
 
+export const getIncomeValidationSchema = () => {
+  const validationSchema = {
+    item: yup.string().required('Source is required'),
+    cost: yup
+      .number()
+      .typeError('Income must be a number')
+      .required('Income is required')
+      .positive(),
+    category: yup.string().required('Category is required'),
+  };
+  return yup.object().shape(validationSchema);
+};
+
+export const getExpenseValidationSchema = ({ item, remainingIncome }) => {
+  const validationSchema = {
+    item: yup.string().required('Description is required'),
+    cost: yup
+      .number()
+      .typeError('Cost must be a number')
+      .required('Cost is required')
+      .positive()
+      .max(
+        remainingIncome + (item?.cost || 0),
+        `Cost cannot be greater than ${remainingIncome + (item?.cost || 0)}`
+      ),
+    category: yup.string().required('Category is required'),
+  };
   return yup.object().shape(validationSchema);
 };
 
