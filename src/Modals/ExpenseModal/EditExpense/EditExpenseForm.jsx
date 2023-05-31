@@ -1,12 +1,12 @@
 import { View } from 'react-native';
 import { Formik } from 'formik';
-import { ExpenseFormFields } from '../FormFields';
+import FormFields from '../FormFields';
 import { parseNumber, parseString } from '../../../../utils/helpers';
 import {
   addExpense,
   removeExpense,
-  getExpenseInitialValues,
-  getExpenseValidationSchema,
+  getInitialValues,
+  getValidationSchema,
 } from '../formhelpers';
 
 const EditExpenseForm = ({
@@ -17,18 +17,18 @@ const EditExpenseForm = ({
   savePie,
   closeModal,
 }) => {
-  const initialValues = getExpenseInitialValues({
-    formCategory: initialCategory,
+  const initialValues = getInitialValues({
+    selectedCategory: initialCategory,
     item,
   });
-  const validationSchema = getExpenseValidationSchema({
+  const validationSchema = getValidationSchema({
     remainingIncome,
     item,
   });
 
   const onDelete = () => {
     const updatedPie = removeExpense({
-      item,
+      expenseToRemove: item,
       pie: initialPie,
       category: initialCategory,
     });
@@ -40,20 +40,20 @@ const EditExpenseForm = ({
     if (values !== initialValues) {
       const newCategory = values.category;
 
-      const updatedItem = {
+      const updatedExpense = {
         id: item.id,
         item: parseString(values.item),
-        cost: parseNumber(values.cost),
+        amount: parseNumber(values.amount),
       };
 
       const updatedPiePartial = removeExpense({
-        item: updatedItem,
+        expenseToRemove: item,
         pie: initialPie,
         category: initialCategory,
       });
 
       const updatedPieComplete = addExpense({
-        ...updatedItem,
+        ...updatedExpense,
         pie: updatedPiePartial,
         category: newCategory,
       });
@@ -71,7 +71,7 @@ const EditExpenseForm = ({
         validationSchema={validationSchema}
       >
         {({ handleSubmit }) => (
-          <ExpenseFormFields
+          <FormFields
             onSubmit={handleSubmit}
             onDelete={onDelete}
             onCancel={closeModal}

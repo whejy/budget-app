@@ -1,11 +1,13 @@
+import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
-import { ExpenseFormFields } from '../FormFields';
+import FormFields from '../FormFields';
 import { parseNumber, parseString } from '../../../../utils/helpers';
 import {
   addExpense,
-  getExpenseInitialValues,
-  getExpenseValidationSchema,
+  addIncome,
+  getInitialValues,
+  getValidationSchema,
 } from '../formhelpers';
 
 const AddExpenseForm = ({
@@ -13,27 +15,46 @@ const AddExpenseForm = ({
   savePie,
   onClose,
   remainingIncome,
-  formCategory,
-  setFormCategory,
+  selectedCategory,
 }) => {
-  const initialValues = getExpenseInitialValues({
-    formCategory,
+  const [formCategory, setFormCategory] = useState(selectedCategory);
+
+  const initialValues = getInitialValues({
+    selectedCategory,
   });
-  const validationSchema = getExpenseValidationSchema({
+  const validationSchema = getValidationSchema({
     remainingIncome,
+    formCategory,
   });
 
   const onSubmit = (values) => {
-    const parsedData = {
-      id: Math.round(1000 * Math.random()),
-      item: parseString(values.item),
-      cost: parseNumber(values.cost),
-      category: values.category,
-      pie: pie,
+    const updatePie = () => {
+      if (values.category === 'Income') {
+        const parsedData = {
+          id: Math.round(1000 * Math.random()),
+          pie: pie,
+          amount: parseNumber(values.amount),
+          item: parseString(values.item),
+        };
+
+        const updatedPie = addIncome(parsedData);
+        return updatedPie;
+      } else {
+        const parsedData = {
+          id: Math.round(1000 * Math.random()),
+          item: parseString(values.item),
+          amount: parseNumber(values.amount),
+          category: values.category,
+          pie: pie,
+        };
+
+        const updatedPie = addExpense(parsedData);
+        return updatedPie;
+      }
     };
 
     onClose();
-    const updatedPie = addExpense(parsedData);
+    const updatedPie = updatePie(values);
     return savePie(updatedPie);
   };
 
@@ -45,11 +66,10 @@ const AddExpenseForm = ({
         validationSchema={validationSchema}
       >
         {({ handleSubmit }) => (
-          <ExpenseFormFields
+          <FormFields
+            setFormCategory={setFormCategory}
             onSubmit={handleSubmit}
             onCancel={onClose}
-            formCategory={formCategory}
-            setFormCategory={setFormCategory}
           />
         )}
       </Formik>

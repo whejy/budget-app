@@ -9,18 +9,18 @@ import Button from '../../components/Button';
 import { parseNumber } from '../../../utils/helpers';
 
 const initialValues = {
-  income: '',
+  amount: '',
   item: '',
   dates: { startDate: '', endDate: '' },
 };
 
 const validationSchema = yup.object().shape({
-  income: yup
+  amount: yup
     .number()
     .typeError('Income must be a number')
     .required('Income is required')
     .positive(),
-  item: yup.string().required('Source is required'),
+  item: yup.string().required('Description is required'),
   dates: yup.object().shape({
     startDate: yup.string().required('Start date is required'),
     endDate: yup.string().required('End date is required'),
@@ -31,11 +31,11 @@ const FormFields = ({ onSubmit, closeModal }) => {
   return (
     <View style={styles.form}>
       <FormikNumberInput
-        name="income"
+        name="amount"
         placeholder="Income"
         keyboardType="numeric"
       />
-      <FormikTextInput name="item" placeholder="Income Source" />
+      <FormikTextInput name="item" placeholder="Income source" />
       <FormikDateInput name="dates" />
       <View style={styles.buttons}>
         <Button title="Add Pie" variant="primary" onPress={onSubmit} />
@@ -48,19 +48,19 @@ const FormFields = ({ onSubmit, closeModal }) => {
 const AddPieForm = ({ updateList, closeModal }) => {
   const onSubmit = (values) => {
     class Pie {
-      constructor({ dates, income, incomeItem, incomeId }) {
+      constructor({ dates, amount, item, id }) {
         this.id = uuid.v4();
         this.dates = dates;
-        this.income = [{ income: income, item: incomeItem, id: incomeId }];
+        this.income = [{ amount: amount, item: item, id: id }];
         this.expenses = {};
       }
     }
 
     const parsedData = {
       dates: values.dates,
-      income: parseNumber(values.income),
-      incomeId: Math.round(1000 * Math.random()),
-      incomeItem: values.item,
+      amount: parseNumber(values.amount),
+      id: Math.round(1000 * Math.random()),
+      item: values.item,
     };
 
     closeModal();

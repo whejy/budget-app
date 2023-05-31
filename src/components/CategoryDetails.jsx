@@ -26,7 +26,7 @@ const EditExpenses = ({
         <Text style={{ textAlign: 'center' }}>{item.item}</Text>
         <Text>
           {currency}
-          {(item.cost || item.income).toLocaleString('en-US')}
+          {item.amount.toLocaleString('en-US')}
         </Text>
       </TouchableOpacity>
       <EditExpense
@@ -61,6 +61,7 @@ const CategoryDetails = ({
 
   const removeCategory = () => {
     delete pie.expenses[category];
+    togglePrompt();
     savePie(pie);
   };
 

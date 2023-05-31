@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import MyModal from '../../Modal';
 import AddExpenseForm from './AddExpenseForm';
-import AddIncomeForm from './AddIncomeForm';
 
 const AddExpense = ({
   pie,
@@ -11,39 +10,15 @@ const AddExpense = ({
   remainingIncome,
   selectedCategory,
 }) => {
-  const [formCategory, setFormCategory] = useState('');
-
-  useEffect(() => {
-    setFormCategory(selectedCategory);
-  }, [selectedCategory]);
-
-  const onClose = () => {
-    setFormCategory('');
-    closeModal();
-  };
-
   return (
-    <MyModal animation="fade" modalOpen={modalOpen} onClose={onClose}>
-      {formCategory === 'Income' ||
-      (formCategory === 'Income' && selectedCategory === 'Income') ? (
-        <AddIncomeForm
-          pie={pie}
-          savePie={savePie}
-          onClose={onClose}
-          formCategory={formCategory}
-          setFormCategory={setFormCategory}
-        />
-      ) : (
-        <AddExpenseForm
-          pie={pie}
-          savePie={savePie}
-          remainingIncome={remainingIncome}
-          onClose={onClose}
-          selectedCategory={selectedCategory}
-          formCategory={formCategory}
-          setFormCategory={setFormCategory}
-        />
-      )}
+    <MyModal animation="fade" modalOpen={modalOpen} onClose={closeModal}>
+      <AddExpenseForm
+        pie={pie}
+        savePie={savePie}
+        remainingIncome={remainingIncome}
+        onClose={closeModal}
+        selectedCategory={selectedCategory}
+      />
     </MyModal>
   );
 };

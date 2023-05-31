@@ -25,7 +25,11 @@ const Pie = ({
 
   const { expenses, income } = data;
 
-  if (typeof income === 'number') return null;
+  if (
+    typeof income === 'number' ||
+    (expenses[Object.keys(expenses)] && expenses[Object.keys(expenses)][0].cost)
+  )
+    return null;
 
   const toggleModal = () => setModalOpen(!modalOpen);
   const togglePrompt = () => setPromptOpen(!promptOpen);
@@ -38,8 +42,8 @@ const Pie = ({
 
   const handlePieUpdate = (pie) => {
     // Toggle active category if category no longer exists
-    if (!Object.keys(expenses).includes(category) && category !== 'Income') {
-      updateCategory({ index, activeCategory: '' });
+    if (!Object.keys(expenses).includes(category) && category.length > 0) {
+      updateCategory({ index, activeCategory: 'Income' });
     }
     savePie(pie);
   };
@@ -49,7 +53,7 @@ const Pie = ({
 
     for (const category in expenses) {
       expenses[category].total = expenses[category].reduce(
-        (acc, curr) => acc + curr.cost,
+        (acc, curr) => acc + curr.amount,
         0
       );
 
@@ -62,7 +66,7 @@ const Pie = ({
       pieData.sort((a, b) => a.y - b.y);
     }
 
-    const totalIncome = income.reduce((acc, curr) => acc + curr.income, 0);
+    const totalIncome = income.reduce((acc, curr) => acc + curr.amount, 0);
 
     const remainingIncome = pieData.reduce(
       (acc, curr) => acc - curr.y,
