@@ -19,9 +19,6 @@ const EditExpenseForm = ({
   savePie,
   closeModal,
 }) => {
-  // const incomeIsRemovable = item?.amount - remainingIncome < 0;
-  // console.log(item?.amount - remainingIncome);
-  // console.log(incomeIsRemovable);
   const initialValues = getInitialValues({
     selectedCategory: initialCategory,
     item,
@@ -76,6 +73,8 @@ const EditExpenseForm = ({
     closeModal();
   };
 
+  const incomeIsRemovable = !(item?.amount - remainingIncome > 0);
+
   return (
     <View>
       <Formik
@@ -89,7 +88,7 @@ const EditExpenseForm = ({
             onDelete={onDelete}
             onCancel={closeModal}
             incomeCategory={initialCategory === 'Income'}
-            incomeRemovable={initialPie.income.length > 1}
+            incomeIsRemovable={incomeIsRemovable}
           />
         )}
       </Formik>

@@ -12,10 +12,10 @@ const FormFields = ({
   onDelete,
   setFormCategory,
   incomeCategory,
-  incomeRemovable,
+  incomeIsRemovable,
 }) => {
   const buttons =
-    incomeCategory && !incomeRemovable ? (
+    incomeCategory && !incomeIsRemovable ? (
       <>
         <Button title="Update" onPress={onSubmit} variant="primary" />
         <Button title="Cancel" onPress={onCancel} variant="primary" />

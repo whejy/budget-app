@@ -13,6 +13,8 @@ export const getValidationSchema = ({
   remainingIncome,
   formCategory,
 }) => {
+  const calc = item ? item.amount - remainingIncome : 0;
+  const magicNumber = calc > 0 ? calc : 0;
   const validationSchema =
     formCategory === 'Income'
       ? {
@@ -22,7 +24,7 @@ export const getValidationSchema = ({
             .typeError('Amount must be a number')
             .required('Amount is required')
             .positive()
-            .moreThan(0, `Income must be greater than 0`),
+            .min(magicNumber, `Income must be at least ${magicNumber}`),
         }
       : {
           item: yup.string().required('Description is required'),
@@ -30,10 +32,10 @@ export const getValidationSchema = ({
             .number()
             .typeError('Amount must be a number')
             .required('Amount is required')
-            .positive()
+            .positive('Amount must be greater than 0')
             .max(
               remainingIncome + (item?.cost || 0),
-              `Cost cannot be greater than ${
+              `Amount cannot be greater than ${
                 remainingIncome + (item?.cost || 0)
               }`
             ),
