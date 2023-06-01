@@ -43,16 +43,17 @@ const EditExpenses = ({
 };
 
 const CategoryDetails = ({
-  expenses,
   category,
+  categoryItems,
   pie,
   savePie,
   remainingIncome,
   getItemLayout,
   currency,
-  income,
 }) => {
   const [promptOpen, setPromptOpen] = useState(false);
+
+  const togglePrompt = () => setPromptOpen(!promptOpen);
 
   const onLayout = (event) => {
     const { height } = event.nativeEvent.layout;
@@ -65,16 +66,7 @@ const CategoryDetails = ({
     savePie(pie);
   };
 
-  const sortCategoryItems = (data) => {
-    return data?.sort((a, b) => b.cost - a.cost);
-  };
-
-  const flatlistData =
-    category === 'Income'
-      ? sortCategoryItems(income)
-      : sortCategoryItems(expenses);
-
-  const togglePrompt = () => setPromptOpen(!promptOpen);
+  const sortedFlatlistData = categoryItems.sort((a, b) => b.amount - a.amount);
 
   return (
     <View onLayout={onLayout} style={styles.container}>
@@ -96,7 +88,7 @@ const CategoryDetails = ({
             )}
           </View>
           <FlatList
-            data={flatlistData}
+            data={sortedFlatlistData}
             ItemSeparatorComponent={ItemSeparator}
             keyExtractor={(_, i) => i}
             numColumns={3}

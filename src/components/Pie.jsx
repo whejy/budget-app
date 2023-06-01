@@ -23,6 +23,10 @@ const Pie = ({
   const [promptOpen, setPromptOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
 
+  const toggleModal = () => setModalOpen(!modalOpen);
+  const togglePrompt = () => setPromptOpen(!promptOpen);
+  const toggleCalendar = () => setCalendarOpen(!calendarOpen);
+
   const { expenses, income } = data;
 
   if (
@@ -30,10 +34,6 @@ const Pie = ({
     (expenses[Object.keys(expenses)] && expenses[Object.keys(expenses)][0].cost)
   )
     return null;
-
-  const toggleModal = () => setModalOpen(!modalOpen);
-  const togglePrompt = () => setPromptOpen(!promptOpen);
-  const toggleCalendar = () => setCalendarOpen(!calendarOpen);
 
   const handleDeletePie = () => {
     togglePrompt();
@@ -46,6 +46,14 @@ const Pie = ({
       updateCategory({ index, activeCategory: 'Income' });
     }
     savePie(pie);
+  };
+
+  const getItemLayout = ({ height }) => {
+    return handleNavigate({ height, index });
+  };
+
+  const openCalendar = () => {
+    toggleCalendar();
   };
 
   const formatPieData = () => {
@@ -117,13 +125,7 @@ const Pie = ({
     },
   ];
 
-  const getItemLayout = ({ height }) => {
-    return handleNavigate({ height, index });
-  };
-
-  const openCalendar = () => {
-    toggleCalendar();
-  };
+  const categoryItems = category === 'Income' ? income : expenses[category];
 
   return (
     <View style={styles.container}>
@@ -149,8 +151,7 @@ const Pie = ({
           pie={data}
           currency={currency}
           savePie={handlePieUpdate}
-          expenses={expenses[category]}
-          income={income}
+          categoryItems={categoryItems}
           remainingIncome={remainingIncome}
           getItemLayout={getItemLayout}
         />

@@ -21,8 +21,8 @@ export const getValidationSchema = ({
             .number()
             .typeError('Amount must be a number')
             .required('Amount is required')
-            .positive(),
-          category: yup.string().required('Category is required'),
+            .positive()
+            .moreThan(0, `Income must be greater than 0`),
         }
       : {
           item: yup.string().required('Description is required'),
@@ -44,6 +44,14 @@ export const getValidationSchema = ({
 
 export const addIncome = ({ id, item, amount, pie }) => {
   pie.income.push({ id: id, amount: amount, item: item });
+  return pie;
+};
+
+export const removeIncome = ({ incomeToRemove, pie }) => {
+  const updatedIncome = pie.income.filter(
+    (income) => income.id !== incomeToRemove.id
+  );
+  pie.income = updatedIncome;
   return pie;
 };
 

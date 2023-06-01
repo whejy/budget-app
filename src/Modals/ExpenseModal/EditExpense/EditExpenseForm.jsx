@@ -4,7 +4,9 @@ import FormFields from '../FormFields';
 import { parseNumber, parseString } from '../../../../utils/helpers';
 import {
   addExpense,
+  addIncome,
   removeExpense,
+  removeIncome,
   getInitialValues,
   getValidationSchema,
 } from '../formhelpers';
@@ -17,46 +19,57 @@ const EditExpenseForm = ({
   savePie,
   closeModal,
 }) => {
+  // const incomeIsRemovable = item?.amount - remainingIncome < 0;
+  // console.log(item?.amount - remainingIncome);
+  // console.log(incomeIsRemovable);
   const initialValues = getInitialValues({
     selectedCategory: initialCategory,
     item,
   });
   const validationSchema = getValidationSchema({
+    formCategory: initialCategory,
     remainingIncome,
     item,
   });
 
   const onDelete = () => {
-    const updatedPie = removeExpense({
-      expenseToRemove: item,
-      pie: initialPie,
-      category: initialCategory,
-    });
+    const updatedPie =
+      initialCategory === 'Income'
+        ? removeIncome({ incomeToRemove: item, pie: initialPie })
+        : removeExpense({
+            expenseToRemove: item,
+            pie: initialPie,
+            category: initialCategory,
+          });
     savePie(updatedPie);
     closeModal();
   };
 
   const onSubmit = (values) => {
     if (values !== initialValues) {
-      const newCategory = values.category;
-
-      const updatedExpense = {
+      const updatedItem = {
         id: item.id,
         item: parseString(values.item),
         amount: parseNumber(values.amount),
       };
 
-      const updatedPiePartial = removeExpense({
-        expenseToRemove: item,
-        pie: initialPie,
-        category: initialCategory,
-      });
+      const updatedPiePartial =
+        initialCategory === 'Income'
+          ? removeIncome({ incomeToRemove: item, pie: initialPie })
+          : removeExpense({
+              expenseToRemove: item,
+              pie: initialPie,
+              category: initialCategory,
+            });
 
-      const updatedPieComplete = addExpense({
-        ...updatedExpense,
-        pie: updatedPiePartial,
-        category: newCategory,
-      });
+      const updatedPieComplete =
+        initialCategory === 'Income'
+          ? addIncome({ ...updatedItem, pie: updatedPiePartial })
+          : addExpense({
+              ...updatedItem,
+              pie: updatedPiePartial,
+              category: values.category,
+            });
 
       savePie(updatedPieComplete);
     }
@@ -75,6 +88,8 @@ const EditExpenseForm = ({
             onSubmit={handleSubmit}
             onDelete={onDelete}
             onCancel={closeModal}
+            incomeCategory={initialCategory === 'Income'}
+            incomeRemovable={initialPie.income.length > 1}
           />
         )}
       </Formik>
