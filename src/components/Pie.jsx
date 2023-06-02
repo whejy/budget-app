@@ -7,6 +7,7 @@ import { PrimaryIcon, SecondaryIcon } from './Icon';
 import Prompt from '../Modals/Prompt';
 import Calendar from '../Modals/CalendarModal';
 import AddExpense from '../Modals/ExpenseModal/AddExpense';
+import Text from './Text';
 import theme from '../../theme';
 
 const Pie = ({
@@ -91,8 +92,6 @@ const Pie = ({
     return { pieData, remainingIncome };
   };
 
-  const { pieData, remainingIncome } = formatPieData();
-
   const events = [
     {
       target: 'data',
@@ -125,7 +124,9 @@ const Pie = ({
     },
   ];
 
+  const { pieData, remainingIncome } = formatPieData();
   const categoryItems = category === 'Income' ? income : expenses[category];
+  const emptyIncomeText = 'No remaining income for this period.';
 
   return (
     <View style={styles.container}>
@@ -156,6 +157,9 @@ const Pie = ({
           getItemLayout={getItemLayout}
         />
       ) : null}
+      {remainingIncome === 0 && (
+        <Text style={styles.emptyIncome}>{emptyIncomeText}</Text>
+      )}
       <View style={styles.buttonContainer}>
         {remainingIncome > 0 && (
           <TouchableOpacity onPress={toggleModal}>
@@ -219,6 +223,11 @@ const styles = StyleSheet.create({
   },
   button: {
     paddingHorizontal: 25,
+  },
+  emptyIncome: {
+    textAlign: 'center',
+    fontStyle: 'italic',
+    paddingBottom: 10,
   },
 });
 

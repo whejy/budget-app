@@ -8,39 +8,41 @@ export const getInitialValues = ({ item, selectedCategory }) => {
   };
 };
 
-export const getValidationSchema = ({
-  item,
-  remainingIncome,
-  formCategory,
-}) => {
-  const calc = item ? item.amount - remainingIncome : 0;
-  const magicNumber = calc > 0 ? calc : 0;
-  const validationSchema =
-    formCategory === 'Income'
-      ? {
-          item: yup.string().required('Description is required'),
-          amount: yup
-            .number()
-            .typeError('Amount must be a number')
-            .required('Amount is required')
-            .positive()
-            .min(magicNumber, `Income must be at least ${magicNumber}`),
-        }
-      : {
-          item: yup.string().required('Description is required'),
-          amount: yup
-            .number()
-            .typeError('Amount must be a number')
-            .required('Amount is required')
-            .positive('Amount must be greater than 0')
-            .max(
-              remainingIncome + (item?.cost || 0),
-              `Amount cannot be greater than ${
-                remainingIncome + (item?.cost || 0)
-              }`
-            ),
-          category: yup.string().required('Category is required'),
-        };
+export const getIncomeValidationSchema = ({ item, remainingIncome }) => {
+  // if item = null we are adding an income, otherwise we are editing an income
+  // and must check that the edited income is not less than the total expenses
+  const minIncome = item
+    ? item.amount > remainingIncome
+      ? item.amount - remainingIncome
+      : 0
+    : 0;
+
+  const validationSchema = {
+    item: yup.string().required('Description is required'),
+    amount: yup
+      .number()
+      .typeError('Amount must be a number')
+      .required('Amount is required')
+      .positive()
+      .min(minIncome, `Income must be at least ${minIncome}`),
+  };
+  return yup.object().shape(validationSchema);
+};
+
+export const getExpenseValidationSchema = ({ item, remainingIncome }) => {
+  const validationSchema = {
+    item: yup.string().required('Description is required'),
+    amount: yup
+      .number()
+      .typeError('Amount must be a number')
+      .required('Amount is required')
+      .positive('Amount must be greater than 0')
+      .max(
+        remainingIncome + (item?.amount || 0),
+        `Amount cannot be greater than ${remainingIncome + (item?.amount || 0)}`
+      ),
+    category: yup.string().required('Category is required'),
+  };
   return yup.object().shape(validationSchema);
 };
 

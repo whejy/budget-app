@@ -79,12 +79,16 @@ const CategoryDetails = ({
       {category === '' ? null : (
         <>
           <View style={styles.categoryContainer}>
-            <Text style={styles.hidden}>X</Text>
-            <Subheading style={styles.categoryTitle}>{category}</Subheading>
-            {category !== 'Income' && (
-              <TouchableOpacity onPress={() => togglePrompt()}>
-                <SecondaryIcon name="backspace" type="material" />
-              </TouchableOpacity>
+            {category === 'Income' ? (
+              <Subheading style={styles.categoryTitle}>{category}</Subheading>
+            ) : (
+              <>
+                <Text style={styles.hidden}>X</Text>
+                <Subheading style={styles.categoryTitle}>{category}</Subheading>
+                <TouchableOpacity onPress={() => togglePrompt()}>
+                  <SecondaryIcon name="backspace" type="material" />
+                </TouchableOpacity>
+              </>
             )}
           </View>
           <FlatList

@@ -8,7 +8,8 @@ import {
   removeExpense,
   removeIncome,
   getInitialValues,
-  getValidationSchema,
+  getExpenseValidationSchema,
+  getIncomeValidationSchema,
 } from '../formhelpers';
 
 const EditExpenseForm = ({
@@ -20,14 +21,17 @@ const EditExpenseForm = ({
   closeModal,
 }) => {
   const initialValues = getInitialValues({
+    item,
     selectedCategory: initialCategory,
-    item,
   });
-  const validationSchema = getValidationSchema({
-    formCategory: initialCategory,
-    remainingIncome,
-    item,
-  });
+
+  const validationSchema =
+    initialCategory === 'Income'
+      ? getIncomeValidationSchema({ item, remainingIncome })
+      : getExpenseValidationSchema({
+          item,
+          remainingIncome,
+        });
 
   const onDelete = () => {
     const updatedPie =

@@ -7,7 +7,8 @@ import {
   addExpense,
   addIncome,
   getInitialValues,
-  getValidationSchema,
+  getExpenseValidationSchema,
+  getIncomeValidationSchema,
 } from '../formhelpers';
 
 const AddExpenseForm = ({
@@ -22,10 +23,13 @@ const AddExpenseForm = ({
   const initialValues = getInitialValues({
     selectedCategory,
   });
-  const validationSchema = getValidationSchema({
-    remainingIncome,
-    formCategory,
-  });
+
+  const validationSchema =
+    formCategory === 'Income'
+      ? getIncomeValidationSchema({ remainingIncome })
+      : getExpenseValidationSchema({
+          remainingIncome,
+        });
 
   const onSubmit = (values) => {
     const updatePie = () => {
