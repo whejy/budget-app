@@ -7,7 +7,7 @@ const FormikSelectInput = ({ name, ...props }) => {
   const showError = meta.touched && meta.error;
 
   const handleChange = (value) => {
-    props.setDropdownCategory && props.setDropdownCategory(value);
+    props.setFormCategory && props.setFormCategory(value);
     helpers.setValue(value);
   };
 

@@ -1,14 +1,16 @@
-import { View, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 import { Formik } from 'formik';
 import FormFields from '../FormFields';
 import { parseNumber, parseString } from '../../../../utils/helpers';
 import {
   addExpense,
+  addIncome,
   removeExpense,
+  removeIncome,
   getInitialValues,
-  getValidationSchema,
+  getExpenseValidationSchema,
+  getIncomeValidationSchema,
 } from '../formhelpers';
-import { categories } from '../../../data/categories';
 
 const EditExpenseForm = ({
   item,
@@ -18,50 +20,67 @@ const EditExpenseForm = ({
   savePie,
   closeModal,
 }) => {
-  const initialValues = getInitialValues(initialCategory, item);
-  const validationSchema = getValidationSchema(remainingIncome, item.cost);
+  const initialValues = getInitialValues({
+    item,
+    selectedCategory: initialCategory,
+  });
 
-  const filteredCategories = categories.filter((cat) => cat !== 'Income');
+  const validationSchema =
+    initialCategory === 'Income'
+      ? getIncomeValidationSchema({ item, remainingIncome })
+      : getExpenseValidationSchema({
+          item,
+          remainingIncome,
+        });
 
   const onDelete = () => {
-    const updatedPie = removeExpense({
-      item,
-      pie: initialPie,
-      category: initialCategory,
-    });
+    const updatedPie =
+      initialCategory === 'Income'
+        ? removeIncome({ incomeToRemove: item, pie: initialPie })
+        : removeExpense({
+            expenseToRemove: item,
+            pie: initialPie,
+            category: initialCategory,
+          });
     savePie(updatedPie);
     closeModal();
   };
 
   const onSubmit = (values) => {
     if (values !== initialValues) {
-      const newCategory = values.category;
-
       const updatedItem = {
         id: item.id,
         item: parseString(values.item),
-        cost: parseNumber(values.cost),
+        amount: parseNumber(values.amount),
       };
 
-      const updatedPiePartial = removeExpense({
-        item: updatedItem,
-        pie: initialPie,
-        category: initialCategory,
-      });
+      const updatedPiePartial =
+        initialCategory === 'Income'
+          ? removeIncome({ incomeToRemove: item, pie: initialPie })
+          : removeExpense({
+              expenseToRemove: item,
+              pie: initialPie,
+              category: initialCategory,
+            });
 
-      const updatedPieComplete = addExpense({
-        ...updatedItem,
-        pie: updatedPiePartial,
-        category: newCategory,
-      });
+      const updatedPieComplete =
+        initialCategory === 'Income'
+          ? addIncome({ ...updatedItem, pie: updatedPiePartial })
+          : addExpense({
+              ...updatedItem,
+              pie: updatedPiePartial,
+              category: values.category,
+            });
 
       savePie(updatedPieComplete);
     }
     closeModal();
   };
 
+  const incomeIsRemovable = item?.amount < remainingIncome;
+
   return (
-    <View style={styles.container}>
+    <View>
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
@@ -72,26 +91,13 @@ const EditExpenseForm = ({
             onSubmit={handleSubmit}
             onDelete={onDelete}
             onCancel={closeModal}
-            categories={filteredCategories}
+            incomeCategory={initialCategory === 'Income'}
+            incomeIsRemovable={incomeIsRemovable}
           />
         )}
       </Formik>
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  buttons: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  form: {
-    display: 'flex',
-    backgroundColor: 'white',
-    padding: 15,
-  },
-});
 
 export default EditExpenseForm;

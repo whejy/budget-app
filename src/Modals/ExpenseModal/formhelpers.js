@@ -1,67 +1,75 @@
 import * as yup from 'yup';
 
-export const getInitialValues = (
-  selectedCategory,
-  item = null,
-  dropdownCategory = null
-) => {
-  const initialValues =
-    dropdownCategory === 'Income'
-      ? {
-          amount: '',
-          category: 'Income',
-        }
-      : {
-          item: item?.item || '',
-          cost: (item && String(item.cost)) || '',
-          category:
-            (selectedCategory !== 'Income' && selectedCategory) || 'Shopping',
-        };
-  return initialValues;
+export const getInitialValues = ({ item, selectedCategory }) => {
+  return {
+    item: item?.item || '',
+    amount: (item && String(item.amount)) || '',
+    category: selectedCategory || 'Shopping',
+  };
 };
 
-export const getValidationSchema = (
-  remainingIncome,
-  itemCost = 0,
-  dropdownCategory
-) => {
-  const validationSchema =
-    dropdownCategory === 'Income'
-      ? {
-          amount: yup
-            .number()
-            .typeError('Amount must be a number')
-            .required('Amount is required')
-            .positive(),
-          category: yup.string().required('Category is required'),
-        }
-      : {
-          item: yup.string().required('Description is required'),
-          cost: yup
-            .number()
-            .typeError('Cost must be a number')
-            .required('Cost is required')
-            .positive()
-            .lessThan(
-              remainingIncome + itemCost,
-              `Cost cannot be greater than ${remainingIncome + itemCost}`
-            ),
-          category: yup.string().required('Category is required'),
-        };
+export const getIncomeValidationSchema = ({ item, remainingIncome }) => {
+  // if item = null we are adding an income, otherwise we are editing an income
+  // and must check that the edited income is not less than the total expenses
+  const minIncome = item
+    ? item.amount > remainingIncome
+      ? item.amount - remainingIncome
+      : 0
+    : 0;
+
+  const validationSchema = {
+    item: yup.string().required('Description is required'),
+    amount: yup
+      .number()
+      .typeError('Amount must be a number')
+      .required('Amount is required')
+      .positive()
+      .moreThan(minIncome, `Amount must be more than ${minIncome}`),
+  };
   return yup.object().shape(validationSchema);
 };
 
-export const addExpense = ({ id, item, cost, category, pie }) => {
+export const getExpenseValidationSchema = ({ item, remainingIncome }) => {
+  const validationSchema = {
+    item: yup.string().required('Description is required'),
+    amount: yup
+      .number()
+      .typeError('Amount must be a number')
+      .required('Amount is required')
+      .positive('Amount must be greater than 0')
+      .max(
+        remainingIncome + (item?.amount || 0),
+        `Amount cannot be greater than ${remainingIncome + (item?.amount || 0)}`
+      ),
+    category: yup.string().required('Category is required'),
+  };
+  return yup.object().shape(validationSchema);
+};
+
+export const addIncome = ({ id, item, amount, pie }) => {
+  pie.income.push({ id: id, amount: amount, item: item });
+  return pie;
+};
+
+export const removeIncome = ({ incomeToRemove, pie }) => {
+  const updatedIncome = pie.income.filter(
+    (income) => income.id !== incomeToRemove.id
+  );
+  pie.income = updatedIncome;
+  return pie;
+};
+
+export const addExpense = ({ id, item, amount, category, pie }) => {
   Object.keys(pie.expenses).includes(category)
-    ? pie.expenses[category].push({ id, item, cost })
-    : (pie.expenses[category] = [{ id, item, cost }]);
+    ? pie.expenses[category].push({ id, item, amount })
+    : (pie.expenses[category] = [{ id, item, amount }]);
 
   return pie;
 };
 
-export const removeExpense = ({ item, category, pie }) => {
+export const removeExpense = ({ expenseToRemove, category, pie }) => {
   const updatedCategory = pie.expenses[category].filter(
-    (expense) => expense.id !== item.id
+    (expense) => expense.id !== expenseToRemove.id
   );
 
   // If this item is the final item within the category, remove category

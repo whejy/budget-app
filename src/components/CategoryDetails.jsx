@@ -3,16 +3,15 @@ import { useState } from 'react';
 import Text from './Text';
 import { Subheading } from './Text';
 import EditExpense from '../Modals/ExpenseModal/EditExpense';
-import EditPie from '../Modals/PieModal/EditPie';
-import { PieSettingsIcon, SecondaryIcon } from './Icon';
+import { SecondaryIcon } from './Icon';
 import Prompt from '../Modals/Prompt';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const EditExpenses = ({
+  pie,
   item,
   category,
-  pie,
   savePie,
   remainingIncome,
   currency,
@@ -27,7 +26,7 @@ const EditExpenses = ({
         <Text>{item.item}</Text>
         <Text>
           {currency}
-          {item.cost.toLocaleString('en-US')}
+          {item.amount.toLocaleString('en-US')}
         </Text>
       </TouchableOpacity>
       <EditExpense
@@ -44,9 +43,8 @@ const EditExpenses = ({
 };
 
 const CategoryDetails = ({
-  expenses,
-  totalExpenses,
   category,
+  categoryItems,
   pie,
   savePie,
   remainingIncome,
@@ -54,40 +52,21 @@ const CategoryDetails = ({
   currency,
 }) => {
   const [promptOpen, setPromptOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
 
-  const removeCategory = () => {
-    delete pie.expenses[category];
-    savePie(pie);
-  };
+  const togglePrompt = () => setPromptOpen(!promptOpen);
 
   const onLayout = (event) => {
     const { height } = event.nativeEvent.layout;
     return getItemLayout({ height });
   };
 
-  const togglePrompt = () => setPromptOpen(!promptOpen);
-  const toggleEdit = () => setEditModalOpen(!editModalOpen);
+  const removeCategory = () => {
+    delete pie.expenses[category];
+    togglePrompt();
+    savePie(pie);
+  };
 
-  const sortedExpenses = expenses?.sort((a, b) => b.cost - a.cost);
-
-  const categoryIcons =
-    category === 'Income' ? (
-      <TouchableOpacity onPress={toggleEdit}>
-        <PieSettingsIcon />
-      </TouchableOpacity>
-    ) : (
-      <TouchableOpacity onPress={togglePrompt}>
-        <SecondaryIcon name="backspace" type="material" />
-      </TouchableOpacity>
-    );
-
-  const incomeCategory = (
-    <Text style={styles.income}>
-      You started this period with {currency}
-      {pie.income.toLocaleString('en-US')}
-    </Text>
-  );
+  const sortedFlatlistData = categoryItems.sort((a, b) => b.amount - a.amount);
 
   return (
     <View onLayout={onLayout} style={styles.container}>
@@ -97,27 +76,26 @@ const CategoryDetails = ({
         handleYes={removeCategory}
         message="Delete this category?"
       />
-      <EditPie
-        modalOpen={editModalOpen}
-        onClose={toggleEdit}
-        pie={pie}
-        savePie={savePie}
-        totalExpenses={totalExpenses}
-        income
-      />
       {category === '' ? null : (
         <>
           <View style={styles.categoryContainer}>
-            <Text style={styles.hidden}>X</Text>
-            <Subheading style={styles.categoryTitle}>{category}</Subheading>
-            {categoryIcons}
+            {category === 'Income' ? (
+              <Subheading style={styles.categoryTitle}>{category}</Subheading>
+            ) : (
+              <>
+                <Text style={styles.hidden}>X</Text>
+                <Subheading style={styles.categoryTitle}>{category}</Subheading>
+                <TouchableOpacity onPress={() => togglePrompt()}>
+                  <SecondaryIcon name="backspace" type="material" />
+                </TouchableOpacity>
+              </>
+            )}
           </View>
           <FlatList
-            data={sortedExpenses}
+            data={sortedFlatlistData}
             ItemSeparatorComponent={ItemSeparator}
             keyExtractor={(_, i) => i}
             numColumns={3}
-            ListEmptyComponent={incomeCategory}
             renderItem={({ item }) => (
               <EditExpenses
                 savePie={savePie}

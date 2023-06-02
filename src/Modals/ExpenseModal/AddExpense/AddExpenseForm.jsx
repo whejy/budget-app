@@ -1,36 +1,64 @@
+import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import FormFields from '../FormFields';
 import { parseNumber, parseString } from '../../../../utils/helpers';
 import {
   addExpense,
+  addIncome,
   getInitialValues,
-  getValidationSchema,
+  getExpenseValidationSchema,
+  getIncomeValidationSchema,
 } from '../formhelpers';
-import { categories } from '../../../data/categories';
 
 const AddExpenseForm = ({
   pie,
   savePie,
-  closeModal,
+  onClose,
   remainingIncome,
   selectedCategory,
-  setDropdownCategory,
 }) => {
-  const initialValues = getInitialValues(selectedCategory);
-  const validationSchema = getValidationSchema(remainingIncome);
+  const [formCategory, setFormCategory] = useState(selectedCategory);
+
+  const initialValues = getInitialValues({
+    selectedCategory,
+  });
+
+  const validationSchema =
+    formCategory === 'Income'
+      ? getIncomeValidationSchema({ remainingIncome })
+      : getExpenseValidationSchema({
+          remainingIncome,
+        });
 
   const onSubmit = (values) => {
-    const id = Math.round(1000 * Math.random());
-    const parsedData = {
-      id: id,
-      item: parseString(values.item),
-      cost: parseNumber(values.cost),
-      category: values.category,
-      pie: pie,
+    const updatePie = () => {
+      if (values.category === 'Income') {
+        const parsedData = {
+          id: Math.round(1000 * Math.random()),
+          pie: pie,
+          amount: parseNumber(values.amount),
+          item: parseString(values.item),
+        };
+
+        const updatedPie = addIncome(parsedData);
+        return updatedPie;
+      } else {
+        const parsedData = {
+          id: Math.round(1000 * Math.random()),
+          item: parseString(values.item),
+          amount: parseNumber(values.amount),
+          category: values.category,
+          pie: pie,
+        };
+
+        const updatedPie = addExpense(parsedData);
+        return updatedPie;
+      }
     };
-    closeModal();
-    const updatedPie = addExpense(parsedData);
+
+    onClose();
+    const updatedPie = updatePie(values);
     return savePie(updatedPie);
   };
 
@@ -43,10 +71,9 @@ const AddExpenseForm = ({
       >
         {({ handleSubmit }) => (
           <FormFields
-            setDropdownCategory={setDropdownCategory}
+            setFormCategory={setFormCategory}
             onSubmit={handleSubmit}
-            onCancel={closeModal}
-            categories={categories}
+            onCancel={onClose}
           />
         )}
       </Formik>
@@ -55,17 +82,7 @@ const AddExpenseForm = ({
 };
 
 const styles = StyleSheet.create({
-  buttons: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  form: {
-    display: 'flex',
-    backgroundColor: 'white',
-    padding: 15,
-  },
+  container: {},
 });
 
 export default AddExpenseForm;

@@ -1,6 +1,6 @@
 import React from 'react';
 import AddPieForm from './AddPieForm';
-import MyModal from '../../Modal';
+import MyModal from '../Modal';
 
 const AddPie = ({ modalOpen, updateList, onClose }) => {
   return (

@@ -1,5 +1,6 @@
 import { View, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { categories } from '../../data/categories';
 import Button from '../../components/Button';
 import FormikTextInput from '../../Formik/FormikTextInput';
 import FormikSelectInput from '../../Formik/FormikSelectInput';
@@ -9,57 +10,40 @@ const FormFields = ({
   onSubmit,
   onCancel,
   onDelete,
-  categories,
-  dropdownCategory,
-  setDropdownCategory,
+  setFormCategory,
+  incomeCategory,
+  incomeIsRemovable,
 }) => {
-  const submitButton =
-    dropdownCategory === 'Income' ? 'Add Income' : 'Add Expense';
-
-  const buttons = onDelete ? (
-    <>
-      <Button title="Delete" onPress={onDelete} variant="secondary" />
-      <Button title="Update" onPress={onSubmit} variant="primary" />
-      <Button title="Cancel" onPress={onCancel} variant="primary" />
-    </>
-  ) : (
-    <>
-      <Button title={submitButton} onPress={onSubmit} variant="primary" />
-      <Button title="Cancel" onPress={onCancel} variant="primary" />
-    </>
-  );
-
-  const form =
-    dropdownCategory === 'Income' ? (
+  const buttons =
+    incomeCategory && !incomeIsRemovable ? (
       <>
-        <FormikNumberInput name="amount" placeholder="Amount" />
-        <FormikSelectInput
-          name="category"
-          setDropdownCategory={setDropdownCategory}
-        >
-          {categories.map((category, i) => (
-            <Picker.Item key={i} label={category} value={category} />
-          ))}
-        </FormikSelectInput>
+        <Button title="Update" onPress={onSubmit} variant="primary" />
+        <Button title="Cancel" onPress={onCancel} variant="primary" />
+      </>
+    ) : onDelete ? (
+      <>
+        <Button title="Delete" onPress={onDelete} variant="secondary" />
+        <Button title="Update" onPress={onSubmit} variant="primary" />
+        <Button title="Cancel" onPress={onCancel} variant="primary" />
       </>
     ) : (
       <>
-        <FormikTextInput name="item" placeholder="Description" />
-        <FormikNumberInput name="cost" placeholder="Cost" />
-        <FormikSelectInput
-          name="category"
-          setDropdownCategory={setDropdownCategory}
-        >
-          {categories.map((category, i) => (
-            <Picker.Item key={i} label={category} value={category} />
-          ))}
-        </FormikSelectInput>
+        <Button title="Add" onPress={onSubmit} variant="primary" />
+        <Button title="Cancel" onPress={onCancel} variant="primary" />
       </>
     );
 
   return (
     <View style={styles.form}>
-      {form}
+      <FormikNumberInput name="amount" placeholder="Amount" />
+      <FormikTextInput name="item" placeholder="Description" />
+      {!incomeCategory && (
+        <FormikSelectInput setFormCategory={setFormCategory} name="category">
+          {categories.map((category, i) => (
+            <Picker.Item key={i} label={category} value={category} />
+          ))}
+        </FormikSelectInput>
+      )}
       <View style={styles.buttons}>{buttons}</View>
     </View>
   );
@@ -71,6 +55,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 10,
   },
   form: {
     display: 'flex',

@@ -3,11 +3,11 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { VictoryPie, VictoryLabel } from 'victory-native';
 import CategoryDetails from './CategoryDetails';
 import Dates from './Dates';
+import { PrimaryIcon, SecondaryIcon } from './Icon';
 import Prompt from '../Modals/Prompt';
 import Calendar from '../Modals/CalendarModal';
 import AddExpense from '../Modals/ExpenseModal/AddExpense';
-import EditPie from '../Modals/PieModal/EditPie';
-import { PrimaryIcon, SecondaryIcon } from './Icon';
+import Text from './Text';
 import theme from '../../theme';
 
 const Pie = ({
@@ -23,14 +23,18 @@ const Pie = ({
   const [modalOpen, setModalOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false);
-
-  const { expenses, income } = data;
 
   const toggleModal = () => setModalOpen(!modalOpen);
   const togglePrompt = () => setPromptOpen(!promptOpen);
   const toggleCalendar = () => setCalendarOpen(!calendarOpen);
-  const toggleEdit = () => setEditModalOpen(!editModalOpen);
+
+  const { expenses, income } = data;
+
+  if (
+    typeof income === 'number' ||
+    (expenses[Object.keys(expenses)] && expenses[Object.keys(expenses)][0].cost)
+  )
+    return null;
 
   const handleDeletePie = () => {
     togglePrompt();
@@ -38,10 +42,19 @@ const Pie = ({
   };
 
   const handlePieUpdate = (pie) => {
-    if (!Object.keys(expenses).includes(category)) {
-      updateCategory({ index, activeCategory: '' });
+    // Toggle active category if category no longer exists
+    if (!Object.keys(expenses).includes(category) && category.length > 0) {
+      updateCategory({ index, activeCategory: 'Income' });
     }
     savePie(pie);
+  };
+
+  const getItemLayout = ({ height }) => {
+    return handleNavigate({ height, index });
+  };
+
+  const openCalendar = () => {
+    toggleCalendar();
   };
 
   const formatPieData = () => {
@@ -49,7 +62,7 @@ const Pie = ({
 
     for (const category in expenses) {
       expenses[category].total = expenses[category].reduce(
-        (acc, curr) => acc + curr.cost,
+        (acc, curr) => acc + curr.amount,
         0
       );
 
@@ -62,7 +75,12 @@ const Pie = ({
       pieData.sort((a, b) => a.y - b.y);
     }
 
-    const remainingIncome = pieData.reduce((acc, curr) => acc - curr.y, income);
+    const totalIncome = income.reduce((acc, curr) => acc + curr.amount, 0);
+
+    const remainingIncome = pieData.reduce(
+      (acc, curr) => acc - curr.y,
+      totalIncome
+    );
 
     remainingIncome > 0 &&
       pieData.push({
@@ -73,9 +91,6 @@ const Pie = ({
 
     return { pieData, remainingIncome };
   };
-
-  const { pieData, remainingIncome } = formatPieData();
-  const totalExpenses = data.income - remainingIncome;
 
   const events = [
     {
@@ -109,13 +124,13 @@ const Pie = ({
     },
   ];
 
-  const getItemLayout = ({ height }) => {
-    return handleNavigate({ height, index });
-  };
+  const { pieData, remainingIncome } = formatPieData();
+  const categoryItems = category === 'Income' ? income : expenses[category];
+  const emptyIncomeText = 'No remaining income for this period.';
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={toggleEdit}>
+      <TouchableOpacity onPress={openCalendar}>
         <Dates dates={data.dates} />
       </TouchableOpacity>
       <VictoryPie
@@ -137,12 +152,14 @@ const Pie = ({
           pie={data}
           currency={currency}
           savePie={handlePieUpdate}
-          expenses={expenses[category]}
-          totalExpenses={totalExpenses}
+          categoryItems={categoryItems}
           remainingIncome={remainingIncome}
           getItemLayout={getItemLayout}
         />
       ) : null}
+      {remainingIncome === 0 && (
+        <Text style={styles.emptyIncome}>{emptyIncomeText}</Text>
+      )}
       <View style={styles.buttonContainer}>
         {remainingIncome > 0 && (
           <TouchableOpacity onPress={toggleModal}>
@@ -155,19 +172,11 @@ const Pie = ({
       </View>
       <AddExpense
         modalOpen={modalOpen}
-        onClose={toggleModal}
+        closeModal={toggleModal}
         savePie={handlePieUpdate}
         pie={data}
         remainingIncome={remainingIncome}
         selectedCategory={category}
-      />
-      <EditPie
-        modalOpen={editModalOpen}
-        onClose={toggleEdit}
-        pie={data}
-        savePie={savePie}
-        totalExpenses={totalExpenses}
-        dates
       />
       <Prompt
         modalOpen={promptOpen}
@@ -217,6 +226,11 @@ const styles = StyleSheet.create({
   },
   button: {
     paddingHorizontal: 25,
+  },
+  emptyIncome: {
+    textAlign: 'center',
+    fontStyle: 'italic',
+    paddingBottom: 10,
   },
 });
 
