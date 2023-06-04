@@ -99,7 +99,7 @@ const EditExpenseForm = ({
             onSubmit={handleSubmit}
             onDelete={onDelete}
             onCancel={closeModal}
-            filteredCategories={filteredCategories}
+            categories={filteredCategories}
             incomeCategory={initialCategory === 'Income'}
             incomeIsRemovable={incomeIsRemovable}
           />

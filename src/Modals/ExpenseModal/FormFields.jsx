@@ -28,15 +28,20 @@ const FormFields = ({
       </>
     ) : (
       <>
-        <Button title="Add" onPress={onSubmit} variant="primary" />
+        <Button
+          title="Add"
+          onPress={onSubmit}
+          style={styles.addButton}
+          variant="primary"
+        />
         <Button title="Cancel" onPress={onCancel} variant="primary" />
       </>
     );
 
   return (
     <View style={styles.form}>
-      <FormikNumberInput name="amount" placeholder="Amount" />
       <FormikTextInput name="item" placeholder="Description" />
+      <FormikNumberInput name="amount" placeholder="Amount" />
       {!incomeCategory && (
         <FormikSelectInput setFormCategory={setFormCategory} name="category">
           {categories.map((category, i) => (
@@ -56,6 +61,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 10,
+  },
+  addButton: {
+    paddingHorizontal: 25,
   },
   form: {
     display: 'flex',

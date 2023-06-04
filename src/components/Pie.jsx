@@ -5,10 +5,10 @@ import CategoryDetails from './CategoryDetails';
 import Dates from './Dates';
 import { PrimaryIcon, SecondaryIcon } from './Icon';
 import Prompt from '../Modals/Prompt';
-import Calendar from '../Modals/CalendarModal';
 import AddExpense from '../Modals/ExpenseModal/AddExpense';
 import Text from './Text';
 import theme from '../../theme';
+import EditDates from '../Modals/EditDatesModal';
 
 const Pie = ({
   data,
@@ -44,17 +44,13 @@ const Pie = ({
   const handlePieUpdate = (pie) => {
     // Toggle active category if category no longer exists
     if (!Object.keys(expenses).includes(category) && category.length > 0) {
-      updateCategory({ index, activeCategory: 'Income' });
+      updateCategory({ index, activeCategory: '' });
     }
     savePie(pie);
   };
 
   const getItemLayout = ({ height }) => {
     return handleNavigate({ height, index });
-  };
-
-  const openCalendar = () => {
-    toggleCalendar();
   };
 
   const formatPieData = () => {
@@ -130,7 +126,7 @@ const Pie = ({
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={openCalendar}>
+      <TouchableOpacity onPress={toggleCalendar}>
         <Dates dates={data.dates} />
       </TouchableOpacity>
       <VictoryPie
@@ -184,11 +180,11 @@ const Pie = ({
         handleYes={handleDeletePie}
         message="Delete this pie?"
       />
-      <Calendar
-        dates={data.dates}
+      <EditDates
         modalOpen={calendarOpen}
         onClose={toggleCalendar}
-        initialDate={data.dates.startDate}
+        pie={data}
+        savePie={savePie}
       />
     </View>
   );

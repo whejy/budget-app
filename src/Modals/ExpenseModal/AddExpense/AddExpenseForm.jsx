@@ -84,7 +84,9 @@ const AddExpenseForm = ({
 };
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    width: 250,
+  },
 });
 
 export default AddExpenseForm;
