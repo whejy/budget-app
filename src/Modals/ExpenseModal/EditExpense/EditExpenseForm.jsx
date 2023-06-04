@@ -2,6 +2,7 @@ import { View } from 'react-native';
 import { Formik } from 'formik';
 import FormFields from '../FormFields';
 import { parseNumber, parseString } from '../../../../utils/helpers';
+import { categories } from '../../../data/categories';
 import {
   addExpense,
   addIncome,
@@ -77,7 +78,14 @@ const EditExpenseForm = ({
     closeModal();
   };
 
-  const incomeIsRemovable = item?.amount < remainingIncome;
+  const filteredCategories =
+    initialCategory !== 'Income'
+      ? categories.filter((category) => category !== 'Income')
+      : categories;
+
+  const incomeIsRemovable =
+    item?.amount < remainingIncome ||
+    (item?.amount <= remainingIncome && initialPie.income.length > 1);
 
   return (
     <View>
@@ -91,6 +99,7 @@ const EditExpenseForm = ({
             onSubmit={handleSubmit}
             onDelete={onDelete}
             onCancel={closeModal}
+            filteredCategories={filteredCategories}
             incomeCategory={initialCategory === 'Income'}
             incomeIsRemovable={incomeIsRemovable}
           />

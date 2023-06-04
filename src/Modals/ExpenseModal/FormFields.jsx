@@ -1,6 +1,5 @@
 import { View, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { categories } from '../../data/categories';
 import Button from '../../components/Button';
 import FormikTextInput from '../../Formik/FormikTextInput';
 import FormikSelectInput from '../../Formik/FormikSelectInput';
@@ -13,6 +12,7 @@ const FormFields = ({
   setFormCategory,
   incomeCategory,
   incomeIsRemovable,
+  categories,
 }) => {
   const buttons =
     incomeCategory && !incomeIsRemovable ? (

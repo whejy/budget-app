@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import FormFields from '../FormFields';
 import { parseNumber, parseString } from '../../../../utils/helpers';
+import { categories } from '../../../data/categories';
 import {
   addExpense,
   addIncome,
@@ -74,6 +75,7 @@ const AddExpenseForm = ({
             setFormCategory={setFormCategory}
             onSubmit={handleSubmit}
             onCancel={onClose}
+            categories={categories}
           />
         )}
       </Formik>
