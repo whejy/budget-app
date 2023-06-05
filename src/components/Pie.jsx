@@ -11,7 +11,7 @@ import theme from '../../theme';
 import EditDates from '../Modals/EditDatesModal';
 
 const Pie = ({
-  data,
+  pie,
   savePie,
   removePie,
   handleNavigate,
@@ -28,25 +28,25 @@ const Pie = ({
   const togglePrompt = () => setPromptOpen(!promptOpen);
   const toggleCalendar = () => setCalendarOpen(!calendarOpen);
 
-  const { expenses, income } = data;
+  const { expenses, income } = pie;
 
-  if (
-    typeof income === 'number' ||
-    (expenses[Object.keys(expenses)] && expenses[Object.keys(expenses)][0].cost)
-  )
+  // Check if app is using retired data structure
+  if (typeof income === 'number') {
+    removePie(pie);
     return null;
+  }
 
   const handleDeletePie = () => {
     togglePrompt();
-    removePie(data);
+    removePie(pie);
   };
 
-  const handlePieUpdate = (pie) => {
+  const handlePieUpdate = (updatedPie) => {
     // Toggle active category if category no longer exists
     if (!Object.keys(expenses).includes(category) && category.length > 0) {
       updateCategory({ index, activeCategory: '' });
     }
-    savePie(pie);
+    savePie(updatedPie);
   };
 
   const getItemLayout = ({ height }) => {
@@ -127,7 +127,7 @@ const Pie = ({
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={toggleCalendar}>
-        <Dates dates={data.dates} />
+        <Dates dates={pie.dates} />
       </TouchableOpacity>
       <VictoryPie
         data={pieData}
@@ -145,7 +145,7 @@ const Pie = ({
       {category?.length > 0 ? (
         <CategoryDetails
           category={category}
-          pie={data}
+          pie={pie}
           currency={currency}
           savePie={handlePieUpdate}
           categoryItems={categoryItems}
@@ -170,7 +170,7 @@ const Pie = ({
         modalOpen={modalOpen}
         closeModal={toggleModal}
         savePie={handlePieUpdate}
-        pie={data}
+        pie={pie}
         remainingIncome={remainingIncome}
         selectedCategory={category}
       />
@@ -183,7 +183,7 @@ const Pie = ({
       <EditDates
         modalOpen={calendarOpen}
         onClose={toggleCalendar}
-        pie={data}
+        pie={pie}
         savePie={savePie}
       />
     </View>

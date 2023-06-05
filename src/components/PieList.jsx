@@ -102,8 +102,7 @@ const PieList = ({ pies, setPies, currency }) => {
             ItemSeparatorComponent={ItemSeparator}
             renderItem={({ item, index }) => (
               <Pie
-                item={item}
-                data={item}
+                pie={item}
                 index={index}
                 currency={currency}
                 handleNavigate={handleNavigate}
