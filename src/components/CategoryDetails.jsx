@@ -23,7 +23,7 @@ const EditExpenses = ({
   return (
     <>
       <TouchableOpacity style={styles.itemDetails} onPress={toggleModal}>
-        <Text>{item.item}</Text>
+        <Text style={styles.centred}>{item.item}</Text>
         <Text>
           {currency}
           {item.amount.toLocaleString('en-US')}
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  income: {
+  centred: {
     textAlign: 'center',
   },
   hidden: {
