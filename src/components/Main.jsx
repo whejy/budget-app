@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { StyleSheet } from 'react-native';
+import { Route, Routes, Navigate } from 'react-router-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import AppBar from './AppBar';
 import PieList from './PieList';
+import Summary from './Summary';
 import PieStorage from '../../utils/pieStorage';
 import CurrencyStorage from '../../utils/currencyStorage';
 import { gradient } from '../../theme';
@@ -39,7 +41,17 @@ const Main = () => {
         removeAllPies={removeAllPies}
       />
       <LinearGradient colors={gradient} style={styles.container}>
-        <PieList pies={pies} currency={currency} setPies={setPies} />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <PieList pies={pies} currency={currency} setPies={setPies} />
+            }
+            exact
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="/summary" element={<Summary />} />
+        </Routes>
       </LinearGradient>
     </>
   );

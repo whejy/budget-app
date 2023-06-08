@@ -1,18 +1,16 @@
 import { useState } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Appbar } from 'react-native-paper';
-import { StyleSheet, TouchableOpacity } from 'react-native';
-import FactAlert from './Alert';
+import AppBarTab from './AppBarTab';
 import Prompt from '../Modals/Prompt';
 import MenuComponent from './Menu';
 import { Heading } from './Text';
+import { AppBarIcon } from './Icon';
 import theme from '../../theme';
-
-const APPHEADER = <Heading>trackthat</Heading>;
 
 const AppBar = ({ pies, removeAllPies, currency, setCurrency }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
-  const [canGetFact, setCanGetFact] = useState(true);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const togglePrompt = () => setPromptOpen(!promptOpen);
@@ -28,23 +26,16 @@ const AppBar = ({ pies, removeAllPies, currency, setCurrency }) => {
     toggleMenu();
   };
 
-  const getFact = () => {
-    if (canGetFact) {
-      setCanGetFact(false);
-      FactAlert(setCanGetFact);
-    }
-  };
-
-  const title = (
-    <TouchableOpacity style={styles.header} onPress={getFact}>
-      {APPHEADER}
-    </TouchableOpacity>
+  const AppTitle = (
+    <View style={styles.header}>
+      <Heading allowFontScaling={false}>trackthat</Heading>
+    </View>
   );
 
   return (
     <>
       <Appbar.Header mode="small" style={styles.container}>
-        <Appbar.Content title={title} />
+        <Appbar.Content title={AppTitle} />
         <MenuComponent
           anchor={
             <Appbar.Action
@@ -61,6 +52,17 @@ const AppBar = ({ pies, removeAllPies, currency, setCurrency }) => {
           visible={menuOpen}
         />
       </Appbar.Header>
+      <View style={styles.actionsContainer}>
+        <AppBarTab to={'/'}>
+          <AppBarIcon name="pie-chart" type="material" />
+        </AppBarTab>
+        <AppBarTab to={'/summary'}>
+          <AppBarIcon name="insights" type="material" />
+        </AppBarTab>
+        <AppBarTab>
+          <AppBarIcon name="stream" type="material" />
+        </AppBarTab>
+      </View>
       <Prompt
         modalOpen={promptOpen}
         onClose={handleCancel}
@@ -74,6 +76,12 @@ const AppBar = ({ pies, removeAllPies, currency, setCurrency }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.primary,
+  },
+  actionsContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    paddingBottom: 10,
+    justifyContent: 'space-around',
   },
   header: {
     alignSelf: 'flex-start',

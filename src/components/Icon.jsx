@@ -17,10 +17,8 @@ export const SecondaryIcon = ({ ...props }) => {
   return <Icon {...styles.secondary} {...props} />;
 };
 
-export const PieSettingsIcon = ({ ...props }) => {
-  return (
-    <Icon name="settings" type="material" {...styles.settings} {...props} />
-  );
+export const AppBarIcon = ({ ...props }) => {
+  return <Icon name="settings" type="material" {...styles.appbar} {...props} />;
 };
 
 const styles = StyleSheet.create({
@@ -32,8 +30,8 @@ const styles = StyleSheet.create({
     color: theme.colors.cancel,
     size: 34,
   },
-  settings: {
-    color: theme.colors.textSecondary,
+  appbar: {
+    color: 'white',
     size: 34,
   },
 });
