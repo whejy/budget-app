@@ -50,7 +50,7 @@ const Main = () => {
             exact
           />
           <Route path="*" element={<Navigate to="/" replace />} />
-          <Route path="/summary" element={<Summary />} />
+          <Route path="/summary" element={<Summary pies={pies} />} />
         </Routes>
       </LinearGradient>
     </>

@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     height: 32,
   },
   pieList: {
-    paddingTop: 40,
+    paddingTop: 30,
     paddingBottom: 120,
   },
   emptyList: {
