@@ -15,11 +15,17 @@ const Main = () => {
 
   useEffect(() => {
     getStoredCurrency();
+    getStoredPies();
   }, []);
 
   async function getStoredCurrency() {
     const storedCurrency = await CurrencyStorage.getCurrency();
     return setCurrency(storedCurrency);
+  }
+
+  async function getStoredPies() {
+    const initialPies = await PieStorage.getPies();
+    return setPies(initialPies);
   }
 
   async function setNewCurrency(newCurrency) {

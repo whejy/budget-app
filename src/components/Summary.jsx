@@ -1,6 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import { VictoryPie, VictoryLabel } from 'victory-native';
 import theme from '../../theme';
+import { DatesText } from './Text';
 
 const Summary = ({ pies }) => {
   let result = { total: 0 };
@@ -43,6 +44,9 @@ const Summary = ({ pies }) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.summaryHeading}>
+        <DatesText>Expense Summary</DatesText>
+      </View>
       <VictoryPie
         data={pieData}
         labels={({ datum }) => [datum.x, `${datum.y}%`]}
@@ -68,6 +72,7 @@ const styles = StyleSheet.create({
     elevation: 40,
     paddingVertical: 25,
     marginHorizontal: 10,
+    marginTop: 30,
     shadowOffset: {
       width: 0,
       height: 5,
@@ -80,6 +85,13 @@ const styles = StyleSheet.create({
     padding: 10,
     fill: theme.colors.labels,
     fontFamily: theme.fonts.secondary,
+  },
+  summaryHeading: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    textAlign: 'center',
+    paddingVertical: 20,
   },
 });
 

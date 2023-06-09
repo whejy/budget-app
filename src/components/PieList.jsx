@@ -14,20 +14,12 @@ const PieList = ({ pies, setPies, currency }) => {
   const flatListRef = useRef();
 
   useEffect(() => {
-    getStoragePies();
+    initialisePies();
   }, []);
 
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
-      await SplashScreen.hideAsync();
-    }
-  }, [appIsReady]);
-
-  async function getStoragePies() {
-    const initialPies = await PieStorage.getPies();
+  function initialisePies() {
     setAppIsReady(true);
-    initialiseCategories(initialPies);
-    return setPies(initialPies);
+    initialiseCategories(pies);
   }
 
   async function setStoragePies(newPie) {
@@ -66,6 +58,12 @@ const PieList = ({ pies, setPies, currency }) => {
     );
     setActiveCategories(updatedCategories);
   };
+
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
 
   const handleNavigate = ({ height, index }) => {
     flatListRef.current?.scrollToIndex({
