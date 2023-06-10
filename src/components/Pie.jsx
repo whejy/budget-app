@@ -53,12 +53,23 @@ const Pie = ({
     return handleNavigate({ height, index });
   };
 
+  const getRemainingIncome = ({ income, pieData }) => {
+    const totalIncome = income.reduce((acc, curr) => acc + curr.amount, 0);
+
+    const remainingIncome = pieData.reduce(
+      (acc, curr) => acc - curr.y,
+      totalIncome
+    );
+
+    return remainingIncome;
+  };
+
   const formatPieData = () => {
     let pieData = [];
 
-    for (const category in expenses) {
-      expenses[category].total = expenses[category].reduce(
-        (acc, curr) => acc + curr.amount,
+    Object.entries(expenses).forEach(([category, expenseArray]) => {
+      expenseArray.total = expenseArray.reduce(
+        (total, expense) => total + expense.amount,
         0
       );
 
@@ -67,24 +78,18 @@ const Pie = ({
         y: Math.round(100 * expenses[category].total) / 100,
         fill: theme.colors.pieData[category],
       });
+    });
 
-      pieData.sort((a, b) => a.y - b.y);
-    }
-
-    const totalIncome = income.reduce((acc, curr) => acc + curr.amount, 0);
-
-    const remainingIncome = pieData.reduce(
-      (acc, curr) => acc - curr.y,
-      totalIncome
-    );
+    const remainingIncome = getRemainingIncome({ income, pieData });
 
     remainingIncome > 0 &&
       pieData.push({
         x: 'Income',
-        y: Math.round(remainingIncome * 100) / 100,
+        y: Math.round(100 * remainingIncome) / 100,
         fill: theme.colors.pieData.Income,
       });
 
+    pieData.sort((a, b) => a.y - b.y);
     return { pieData, remainingIncome };
   };
 

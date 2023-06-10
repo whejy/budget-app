@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { Appbar } from 'react-native-paper';
 import AppBarTab from './AppBarTab';
 import Prompt from '../Modals/Prompt';
 import MenuComponent from './Menu';
+import FactAlert from './Alert';
 import { Heading } from './Text';
 import { AppBarIcon } from './Icon';
 import theme from '../../theme';
@@ -11,6 +12,7 @@ import theme from '../../theme';
 const AppBar = ({ pies, removeAllPies, currency, setCurrency }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
+  const [canGetFact, setCanGetFact] = useState(true);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const togglePrompt = () => setPromptOpen(!promptOpen);
@@ -26,10 +28,17 @@ const AppBar = ({ pies, removeAllPies, currency, setCurrency }) => {
     toggleMenu();
   };
 
+  const getFact = () => {
+    if (canGetFact) {
+      setCanGetFact(false);
+      FactAlert(setCanGetFact);
+    }
+  };
+
   const AppTitle = (
-    <View style={styles.header}>
+    <TouchableOpacity style={styles.header} onPress={getFact}>
       <Heading allowFontScaling={false}>trackthat</Heading>
-    </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -59,9 +68,6 @@ const AppBar = ({ pies, removeAllPies, currency, setCurrency }) => {
         <AppBarTab to={'/summary'}>
           <AppBarIcon name="insights" type="material" />
         </AppBarTab>
-        <AppBarTab>
-          <AppBarIcon name="stream" type="material" />
-        </AppBarTab>
       </View>
       <Prompt
         modalOpen={promptOpen}
@@ -81,7 +87,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     paddingBottom: 10,
-    justifyContent: 'space-around',
+    justifyContent: 'space-evenly',
   },
   header: {
     alignSelf: 'flex-start',

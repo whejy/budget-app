@@ -1,46 +1,69 @@
 import { View, StyleSheet } from 'react-native';
 import { VictoryPie, VictoryLabel } from 'victory-native';
-import theme from '../../theme';
 import { DatesText } from './Text';
+import theme from '../../theme';
 
 const Summary = ({ pies }) => {
-  let result = { total: 0 };
-  const getSummary = (pie) => {
+  let expenseTotals = { total: 0 };
+
+  const getExpenseTotals = (pie) => {
     const { expenses } = pie;
 
-    for (const category in expenses) {
-      result = result[category] ? { ...result } : { ...result, [category]: 0 };
-      expenses[category].reduce((result, curr) => {
-        result[category] += curr.amount;
-        result.total += curr.amount;
-        return result;
-      }, result);
-    }
+    Object.entries(expenses).forEach(([category, expenseArray]) => {
+      // Initialise expenseTotals with required categories
+      expenseTotals = expenseTotals[category]
+        ? expenseTotals
+        : { ...expenseTotals, [category]: 0 };
+
+      // Calculate total expenses per category, and total expenses across all categories
+      expenseArray.reduce((expenseTotals, expense) => {
+        expenseTotals[category] += expense.amount;
+        expenseTotals.total += expense.amount;
+        return expenseTotals;
+      }, expenseTotals);
+    });
   };
 
-  pies.forEach((pie) => getSummary(pie));
+  // Convert each expense total to a percentage
+  const getPercentages = () => {
+    let percentages = {};
 
-  const keys = Object.keys(result).filter((key) => key != 'total');
+    const categories = Object.keys(expenseTotals).filter(
+      (key) => key !== 'total'
+    );
 
-  let percentages = {};
+    categories.forEach(
+      (category) =>
+        (percentages[category] =
+          (100 *
+            Math.round(
+              (1000 * expenseTotals[category]) / expenseTotals.total
+            )) /
+          1000)
+    );
 
-  keys.forEach(
-    (cat) =>
-      (percentages[cat] =
-        (100 * Math.round((1000 * result[cat]) / result.total)) / 1000)
-  );
+    return percentages;
+  };
 
-  let pieData = [];
+  const formatPieData = () => {
+    let pieData = [];
 
-  Object.keys(percentages).forEach((category) =>
-    pieData.push({
-      x: category,
-      y: percentages[category],
-      fill: theme.colors.pieData[category],
-    })
-  );
+    const percentages = getPercentages();
 
-  pieData.sort((a, b) => a.y - b.y);
+    Object.entries(percentages).forEach(([category, percentage]) =>
+      pieData.push({
+        x: category,
+        y: percentage,
+        fill: theme.colors.pieData[category],
+      })
+    );
+
+    pieData.sort((a, b) => a.y - b.y);
+    return { pieData };
+  };
+
+  pies.forEach((pie) => getExpenseTotals(pie));
+  const { pieData } = formatPieData();
 
   return (
     <View style={styles.container}>
