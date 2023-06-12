@@ -7,7 +7,7 @@ import { Subheading } from './Text';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const PieList = ({ pies, setPies, currency }) => {
+const PieList = ({ pies, setPies, currency, onLayoutRootView }) => {
   const [activeCategories, setActiveCategories] = useState();
   const flatListRef = useRef();
 
@@ -57,7 +57,7 @@ const PieList = ({ pies, setPies, currency }) => {
       animated: true,
       index: index,
       viewPosition: 0,
-      viewOffset: 150 - height,
+      viewOffset: 110 - height,
     });
   };
 
@@ -67,7 +67,7 @@ const PieList = ({ pies, setPies, currency }) => {
 
   return (
     <>
-      <View>
+      <View onLayout={onLayoutRootView}>
         {pies.length > 0 ? (
           <FlatList
             contentContainerStyle={styles.pieList}
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   pieList: {
     paddingTop: 30,
-    paddingBottom: 120,
+    paddingBottom: 80,
   },
   emptyList: {
     textAlign: 'center',

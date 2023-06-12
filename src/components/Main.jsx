@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Route, Routes, Navigate } from 'react-router-native';
 import * as SplashScreen from 'expo-splash-screen';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -69,22 +69,25 @@ const Main = () => {
         removeAllPies={removeAllPies}
       />
       <LinearGradient colors={gradient} style={styles.container}>
-        <View onLayout={onLayoutRootView}>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <PieList pies={pies} currency={currency} setPies={setPies} />
-              }
-              exact
-            />
-            <Route path="*" element={<Navigate to="/" replace />} />
-            <Route
-              path="/summary"
-              element={<Summary pies={pies} currency={currency} />}
-            />
-          </Routes>
-        </View>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <PieList
+                pies={pies}
+                onLayoutRootView={onLayoutRootView}
+                currency={currency}
+                setPies={setPies}
+              />
+            }
+            exact
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route
+            path="/summary"
+            element={<Summary pies={pies} currency={currency} />}
+          />
+        </Routes>
       </LinearGradient>
     </>
   );

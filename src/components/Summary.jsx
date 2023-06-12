@@ -1,14 +1,94 @@
-import { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { useState, useRef } from 'react';
+import { View, StyleSheet, FlatList } from 'react-native';
 import { VictoryPie, VictoryLabel } from 'victory-native';
 import CategoryDetails from './CategoryDetails';
-import { DatesText } from './Text';
+import { DatesText, Subheading } from './Text';
 import theme from '../../theme';
 
-const Summary = ({ pies, currency }) => {
+const SummaryPie = ({
+  pieData,
+  categoryDetails,
+  currency,
+  handleNavigate,
+  index,
+}) => {
   const [category, setCategory] = useState('');
 
+  const getItemLayout = ({ height }) => {
+    return handleNavigate({ height, index });
+  };
+
+  const categoryItems = categoryDetails[category];
+
+  const events = [
+    {
+      target: 'data',
+      eventHandlers: {
+        onPressIn: () => {
+          return [
+            {
+              eventKey: 'all',
+              mutation: () => null,
+            },
+
+            {
+              mutation: (props) => {
+                setCategory(props.datum.x);
+                if (props.datum.x !== category) {
+                  return {
+                    style: {
+                      ...props.style,
+                      stroke: props.style.fill,
+                      fillOpacity: 0.6,
+                      strokeWidth: 4,
+                    },
+                  };
+                }
+                setCategory('');
+              },
+            },
+          ];
+        },
+      },
+    },
+  ];
+  return (
+    <View style={styles.container}>
+      <View style={styles.summaryHeading}>
+        <DatesText>Expense</DatesText>
+        <DatesText>Summary</DatesText>
+      </View>
+      <VictoryPie
+        data={pieData}
+        labels={({ datum }) => [datum.x, `${datum.y}%`]}
+        events={events}
+        style={{
+          data: {
+            fill: ({ datum }) => datum.fill,
+          },
+          labels: styles.labels,
+        }}
+        labelComponent={<VictoryLabel textAnchor="middle" />}
+      />
+      {category?.length > 0 ? (
+        <CategoryDetails
+          category={category}
+          getItemLayout={getItemLayout}
+          categoryItems={categoryItems}
+          currency={currency}
+          summary
+        />
+      ) : null}
+    </View>
+  );
+};
+
+const Summary = ({ pies, currency }) => {
+  const flatListRef = useRef();
+
   let expenseTotals = { total: 0 };
+
+  const ItemSeparator = () => <View style={styles.separator} />;
 
   const getExpenseTotals = (pie) => {
     const { expenses } = pie;
@@ -52,7 +132,7 @@ const Summary = ({ pies, currency }) => {
   const getCategoryDetails = () => {
     const categoryDetails = {};
     Object.entries(expenseTotals).forEach(([category, total]) => {
-      categoryDetails[category] = [{ amount: total, item: 'Total' }];
+      categoryDetails[category] = [{ amount: total, item: 'Total Spend' }];
     });
     return categoryDetails;
   };
@@ -77,70 +157,47 @@ const Summary = ({ pies, currency }) => {
   pies.forEach((pie) => getExpenseTotals(pie));
   const { pieData } = formatPieData();
   const categoryDetails = getCategoryDetails();
-  const categoryItems = categoryDetails[category];
 
-  const events = [
-    {
-      target: 'data',
-      eventHandlers: {
-        onPressIn: () => {
-          return [
-            {
-              eventKey: 'all',
-              mutation: () => null,
-            },
-
-            {
-              mutation: (props) => {
-                setCategory(props.datum.x);
-                if (props.datum.x !== category) {
-                  return {
-                    style: {
-                      ...props.style,
-                      stroke: props.style.fill,
-                      fillOpacity: 0.6,
-                      strokeWidth: 4,
-                    },
-                  };
-                }
-                setCategory('');
-              },
-            },
-          ];
-        },
-      },
-    },
-  ];
-
-  const getItemLayout = () => {
-    console.log('test');
+  const handleNavigate = ({ height, index }) => {
+    flatListRef.current?.scrollToIndex({
+      animated: true,
+      index: index,
+      viewPosition: 0,
+      viewOffset: 110 - height,
+    });
   };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.summaryHeading}>
-        <DatesText>Expense Summary</DatesText>
-      </View>
-      <VictoryPie
-        data={pieData}
-        labels={({ datum }) => [datum.x, `${datum.y}%`]}
-        events={events}
-        style={{
-          data: {
-            fill: ({ datum }) => datum.fill,
-          },
-          labels: styles.labels,
-        }}
-        labelComponent={<VictoryLabel textAnchor="middle" />}
-      />
-      {category?.length > 0 ? (
-        <CategoryDetails
-          category={category}
-          getItemLayout={getItemLayout}
-          categoryItems={categoryItems}
-          currency={currency}
-          summary
+    <View>
+      {pieData.length > 0 ? (
+        <FlatList
+          contentContainerStyle={styles.pieList}
+          ref={flatListRef}
+          onScrollToIndexFailed={() => {
+            flatListRef.current?.scrollToOffset({
+              offset: 0,
+              animated: true,
+            });
+          }}
+          data={[{ pieData }]}
+          keyboardShouldPersistTaps="handled"
+          ItemSeparatorComponent={ItemSeparator}
+          renderItem={({ item, index }) => (
+            <SummaryPie
+              pieData={item.pieData}
+              index={index}
+              categoryDetails={categoryDetails}
+              currency={currency}
+              handleNavigate={handleNavigate}
+            />
+          )}
+          keyExtractor={(_, i) => i}
         />
-      ) : null}
+      ) : (
+        <Subheading style={styles.emptyList}>
+          Add expenses to your pies to see your summary here.
+        </Subheading>
+      )}
     </View>
   );
 };
@@ -174,7 +231,17 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     textAlign: 'center',
-    paddingVertical: 20,
+  },
+  pieList: {
+    paddingBottom: 80,
+  },
+  emptyList: {
+    textAlign: 'center',
+    fontStyle: 'italic',
+    position: 'absolute',
+    left: 50,
+    right: 50,
+    top: 240,
   },
 });
 

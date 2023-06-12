@@ -20,13 +20,11 @@ const EditExpenses = ({
   const [modalOpen, setModalOpen] = useState(false);
 
   const toggleModal = () => setModalOpen(!modalOpen);
+  const onExpensePress = summary ? null : toggleModal;
 
   return (
     <>
-      <TouchableOpacity
-        style={styles.itemDetails}
-        onPress={summary ? null : toggleModal}
-      >
+      <TouchableOpacity style={styles.itemDetails} onPress={onExpensePress}>
         <Text style={styles.item}>{item.item}</Text>
         <Text>
           {currency}
@@ -54,7 +52,7 @@ const CategoryDetails = ({
   remainingIncome,
   getItemLayout,
   currency,
-  ...props
+  summary,
 }) => {
   const [promptOpen, setPromptOpen] = useState(false);
 
@@ -84,25 +82,15 @@ const CategoryDetails = ({
       {category === '' ? null : (
         <>
           <View style={styles.categoryContainer}>
-            {category === 'Income' ? (
+            {category === 'Income' || summary ? (
               <Subheading style={styles.categoryTitle}>{category}</Subheading>
             ) : (
               <>
-                {props?.summary ? (
-                  <Subheading style={styles.categoryTitle}>
-                    {category}
-                  </Subheading>
-                ) : (
-                  <>
-                    <Text style={styles.hidden}>X</Text>
-                    <Subheading style={styles.categoryTitle}>
-                      {category}
-                    </Subheading>
-                    <TouchableOpacity onPress={() => togglePrompt()}>
-                      <SecondaryIcon name="backspace" type="material" />
-                    </TouchableOpacity>
-                  </>
-                )}
+                <Text style={styles.hidden}>X</Text>
+                <Subheading style={styles.categoryTitle}>{category}</Subheading>
+                <TouchableOpacity onPress={() => togglePrompt()}>
+                  <SecondaryIcon name="backspace" type="material" />
+                </TouchableOpacity>
               </>
             )}
           </View>
@@ -119,7 +107,7 @@ const CategoryDetails = ({
                 remainingIncome={remainingIncome}
                 pie={pie}
                 currency={currency}
-                summary={props?.summary}
+                summary={summary}
               />
             )}
           />

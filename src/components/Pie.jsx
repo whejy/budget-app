@@ -50,6 +50,9 @@ const Pie = ({
   };
 
   const getItemLayout = ({ height }) => {
+    if (category === 'Income') {
+      height += 7;
+    }
     return handleNavigate({ height, index });
   };
 
@@ -222,9 +225,6 @@ const styles = StyleSheet.create({
     padding: 10,
     fill: theme.colors.labels,
     fontFamily: theme.fonts.secondary,
-  },
-  pieSettings: {
-    padding: 10,
   },
   button: {
     paddingHorizontal: 25,
