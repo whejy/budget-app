@@ -15,6 +15,7 @@ const EditExpenses = ({
   savePie,
   remainingIncome,
   currency,
+  summary,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -22,8 +23,11 @@ const EditExpenses = ({
 
   return (
     <>
-      <TouchableOpacity style={styles.itemDetails} onPress={toggleModal}>
-        <Text style={styles.centred}>{item.item}</Text>
+      <TouchableOpacity
+        style={styles.itemDetails}
+        onPress={summary ? null : toggleModal}
+      >
+        <Text style={styles.item}>{item.item}</Text>
         <Text>
           {currency}
           {item.amount.toLocaleString('en-US')}
@@ -50,6 +54,7 @@ const CategoryDetails = ({
   remainingIncome,
   getItemLayout,
   currency,
+  ...props
 }) => {
   const [promptOpen, setPromptOpen] = useState(false);
 
@@ -83,11 +88,21 @@ const CategoryDetails = ({
               <Subheading style={styles.categoryTitle}>{category}</Subheading>
             ) : (
               <>
-                <Text style={styles.hidden}>X</Text>
-                <Subheading style={styles.categoryTitle}>{category}</Subheading>
-                <TouchableOpacity onPress={() => togglePrompt()}>
-                  <SecondaryIcon name="backspace" type="material" />
-                </TouchableOpacity>
+                {props?.summary ? (
+                  <Subheading style={styles.categoryTitle}>
+                    {category}
+                  </Subheading>
+                ) : (
+                  <>
+                    <Text style={styles.hidden}>X</Text>
+                    <Subheading style={styles.categoryTitle}>
+                      {category}
+                    </Subheading>
+                    <TouchableOpacity onPress={() => togglePrompt()}>
+                      <SecondaryIcon name="backspace" type="material" />
+                    </TouchableOpacity>
+                  </>
+                )}
               </>
             )}
           </View>
@@ -104,6 +119,7 @@ const CategoryDetails = ({
                 remainingIncome={remainingIncome}
                 pie={pie}
                 currency={currency}
+                summary={props?.summary}
               />
             )}
           />
@@ -134,6 +150,10 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  item: {
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
   centred: {
     textAlign: 'center',

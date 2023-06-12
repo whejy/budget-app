@@ -1,9 +1,13 @@
+import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { VictoryPie, VictoryLabel } from 'victory-native';
+import CategoryDetails from './CategoryDetails';
 import { DatesText } from './Text';
 import theme from '../../theme';
 
-const Summary = ({ pies }) => {
+const Summary = ({ pies, currency }) => {
+  const [category, setCategory] = useState('');
+
   let expenseTotals = { total: 0 };
 
   const getExpenseTotals = (pie) => {
@@ -45,6 +49,14 @@ const Summary = ({ pies }) => {
     return percentages;
   };
 
+  const getCategoryDetails = () => {
+    const categoryDetails = {};
+    Object.entries(expenseTotals).forEach(([category, total]) => {
+      categoryDetails[category] = [{ amount: total, item: 'Total' }];
+    });
+    return categoryDetails;
+  };
+
   const formatPieData = () => {
     let pieData = [];
 
@@ -64,7 +76,45 @@ const Summary = ({ pies }) => {
 
   pies.forEach((pie) => getExpenseTotals(pie));
   const { pieData } = formatPieData();
+  const categoryDetails = getCategoryDetails();
+  const categoryItems = categoryDetails[category];
 
+  const events = [
+    {
+      target: 'data',
+      eventHandlers: {
+        onPressIn: () => {
+          return [
+            {
+              eventKey: 'all',
+              mutation: () => null,
+            },
+
+            {
+              mutation: (props) => {
+                setCategory(props.datum.x);
+                if (props.datum.x !== category) {
+                  return {
+                    style: {
+                      ...props.style,
+                      stroke: props.style.fill,
+                      fillOpacity: 0.6,
+                      strokeWidth: 4,
+                    },
+                  };
+                }
+                setCategory('');
+              },
+            },
+          ];
+        },
+      },
+    },
+  ];
+
+  const getItemLayout = () => {
+    console.log('test');
+  };
   return (
     <View style={styles.container}>
       <View style={styles.summaryHeading}>
@@ -73,6 +123,7 @@ const Summary = ({ pies }) => {
       <VictoryPie
         data={pieData}
         labels={({ datum }) => [datum.x, `${datum.y}%`]}
+        events={events}
         style={{
           data: {
             fill: ({ datum }) => datum.fill,
@@ -81,6 +132,15 @@ const Summary = ({ pies }) => {
         }}
         labelComponent={<VictoryLabel textAnchor="middle" />}
       />
+      {category?.length > 0 ? (
+        <CategoryDetails
+          category={category}
+          getItemLayout={getItemLayout}
+          categoryItems={categoryItems}
+          currency={currency}
+          summary
+        />
+      ) : null}
     </View>
   );
 };

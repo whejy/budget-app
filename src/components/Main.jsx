@@ -79,7 +79,10 @@ const Main = () => {
               exact
             />
             <Route path="*" element={<Navigate to="/" replace />} />
-            <Route path="/summary" element={<Summary pies={pies} />} />
+            <Route
+              path="/summary"
+              element={<Summary pies={pies} currency={currency} />}
+            />
           </Routes>
         </View>
       </LinearGradient>

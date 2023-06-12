@@ -80,6 +80,8 @@ const Pie = ({
       });
     });
 
+    pieData.sort((a, b) => a.y - b.y);
+
     const remainingIncome = getRemainingIncome({ income, pieData });
 
     remainingIncome > 0 &&
@@ -89,7 +91,6 @@ const Pie = ({
         fill: theme.colors.pieData.Income,
       });
 
-    pieData.sort((a, b) => a.y - b.y);
     return { pieData, remainingIncome };
   };
 
