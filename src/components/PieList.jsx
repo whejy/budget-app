@@ -1,6 +1,5 @@
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import * as SplashScreen from 'expo-splash-screen';
 import PieStorage from '../../utils/pieStorage';
 import Pie from './Pie';
 import FloatingButton from './FloatingButton';
@@ -9,18 +8,12 @@ import { Subheading } from './Text';
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const PieList = ({ pies, setPies, currency }) => {
-  const [appIsReady, setAppIsReady] = useState(false);
   const [activeCategories, setActiveCategories] = useState();
   const flatListRef = useRef();
 
   useEffect(() => {
-    initialisePies();
-  }, []);
-
-  function initialisePies() {
-    setAppIsReady(true);
     initialiseCategories(pies);
-  }
+  }, []);
 
   async function setStoragePies(newPie) {
     const updatedPies = await PieStorage.setPies(newPie);
@@ -59,12 +52,6 @@ const PieList = ({ pies, setPies, currency }) => {
     setActiveCategories(updatedCategories);
   };
 
-  const onLayoutRootView = useCallback(async () => {
-    if (appIsReady) {
-      await SplashScreen.hideAsync();
-    }
-  }, [appIsReady]);
-
   const handleNavigate = ({ height, index }) => {
     flatListRef.current?.scrollToIndex({
       animated: true,
@@ -78,13 +65,9 @@ const PieList = ({ pies, setPies, currency }) => {
     return handleNavigate({ height: 40, index: 0 });
   };
 
-  if (!appIsReady) {
-    return null;
-  }
-
   return (
     <>
-      <View onLayout={onLayoutRootView}>
+      <View>
         {pies.length > 0 ? (
           <FlatList
             contentContainerStyle={styles.pieList}

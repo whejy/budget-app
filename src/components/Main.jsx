@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { useState, useEffect, useCallback } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Route, Routes, Navigate } from 'react-router-native';
+import * as SplashScreen from 'expo-splash-screen';
 import { LinearGradient } from 'expo-linear-gradient';
 import AppBar from './AppBar';
 import PieList from './PieList';
@@ -10,12 +11,23 @@ import CurrencyStorage from '../../utils/currencyStorage';
 import { gradient } from '../../theme';
 
 const Main = () => {
+  const [appIsReady, setAppIsReady] = useState(false);
   const [pies, setPies] = useState([]);
   const [currency, setCurrency] = useState('');
 
   useEffect(() => {
-    getStoredCurrency();
-    getStoredPies();
+    async function prepare() {
+      try {
+        await getStoredPies();
+        await getStoredCurrency();
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
+      }
+    }
+
+    prepare();
   }, []);
 
   async function getStoredCurrency() {
@@ -38,6 +50,16 @@ const Main = () => {
     return setPies([]);
   }
 
+  const onLayoutRootView = useCallback(async () => {
+    if (appIsReady) {
+      await SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
+  }
+
   return (
     <>
       <AppBar
@@ -47,17 +69,19 @@ const Main = () => {
         removeAllPies={removeAllPies}
       />
       <LinearGradient colors={gradient} style={styles.container}>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <PieList pies={pies} currency={currency} setPies={setPies} />
-            }
-            exact
-          />
-          <Route path="*" element={<Navigate to="/" replace />} />
-          <Route path="/summary" element={<Summary pies={pies} />} />
-        </Routes>
+        <View onLayout={onLayoutRootView}>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <PieList pies={pies} currency={currency} setPies={setPies} />
+              }
+              exact
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="/summary" element={<Summary pies={pies} />} />
+          </Routes>
+        </View>
       </LinearGradient>
     </>
   );
