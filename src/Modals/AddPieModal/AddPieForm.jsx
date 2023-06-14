@@ -2,7 +2,7 @@ import { View, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import uuid from 'react-native-uuid';
-import FormikDateInput from '../../Formik/FormikDateInput';
+import FormikDatesInput from '../../Formik/FormikDatesInput';
 import FormikNumberInput from '../../Formik/FormikNumberInput';
 import FormikTextInput from '../../Formik/FormikTextInput';
 import Button from '../../components/Button';
@@ -36,7 +36,7 @@ const FormFields = ({ onSubmit, closeModal }) => {
         keyboardType="numeric"
       />
       <FormikTextInput name="item" placeholder="Income source" />
-      <FormikDateInput name="dates" />
+      <FormikDatesInput name="dates" />
       <View style={styles.buttons}>
         <Button title="Add Pie" variant="primary" onPress={onSubmit} />
         <Button title="Cancel" variant="primary" onPress={closeModal} />

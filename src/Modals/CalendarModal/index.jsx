@@ -5,18 +5,27 @@ import theme from '../../../theme';
 import MyModal from '../Modal';
 
 const CalendarModal = ({ modalOpen, onClose, dates, ...props }) => {
-  const markedDates = {
-    [dates.startDate]: {
-      selected: true,
-      marked: true,
-      selectedColor: theme.colors.primary,
-    },
-    [dates.endDate]: {
-      selected: true,
-      marked: true,
-      selectedColor: theme.colors.cancel,
-    },
-  };
+  const markedDates =
+    typeof dates === 'object'
+      ? {
+          [dates.startDate]: {
+            selected: true,
+            marked: true,
+            selectedColor: theme.colors.primary,
+          },
+          [dates.endDate]: {
+            selected: true,
+            marked: true,
+            selectedColor: theme.colors.cancel,
+          },
+        }
+      : {
+          [dates]: {
+            selected: true,
+            marked: true,
+            selectedColor: theme.colors.primary,
+          },
+        };
 
   return (
     <MyModal animation="fade" modalOpen={modalOpen} onClose={onClose}>

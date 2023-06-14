@@ -1,6 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Button from '../../components/Button';
+import FormikDatesInput from '../../Formik/FormikDatesInput';
 import FormikTextInput from '../../Formik/FormikTextInput';
 import FormikSelectInput from '../../Formik/FormikSelectInput';
 import FormikNumberInput from '../../Formik/FormikNumberInput';
@@ -9,11 +10,16 @@ const FormFields = ({
   onSubmit,
   onCancel,
   onDelete,
+  formCategory,
   setFormCategory,
   incomeCategory,
   incomeIsRemovable,
   categories,
+  dates,
 }) => {
+  const minDate = dates.startDate;
+  const maxDate = dates.endDate;
+
   const buttons =
     incomeCategory && !incomeIsRemovable ? (
       <>
@@ -42,6 +48,9 @@ const FormFields = ({
     <View style={styles.form}>
       <FormikTextInput name="item" placeholder="Description" />
       <FormikNumberInput name="amount" placeholder="Amount" />
+      {formCategory !== 'Income' && (
+        <FormikDatesInput name="date" minDate={minDate} maxDate={maxDate} />
+      )}
       {!incomeCategory && (
         <FormikSelectInput setFormCategory={setFormCategory} name="category">
           {categories.map((category, i) => (

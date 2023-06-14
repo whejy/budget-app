@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useField } from 'formik';
-import { TextInput } from './Inputs';
-import { ErrorText } from '../components/Text';
-import Calendar from '../Modals/CalendarModal';
+import { TextInput } from '../Inputs';
+import { ErrorText } from '../../components/Text';
+import Calendar from '../../Modals/CalendarModal';
 
-const FormikDateInput = ({ name, ...props }) => {
+const PeriodInput = ({ name, ...props }) => {
   const [field, meta, helpers] = useField(name);
   const [modalOpen, setModalOpen] = useState(false);
   const [inputCaller, setInputCaller] = useState('');
@@ -67,4 +67,4 @@ const FormikDateInput = ({ name, ...props }) => {
   );
 };
 
-export default FormikDateInput;
+export default PeriodInput;

@@ -50,6 +50,7 @@ const AddExpenseForm = ({
           item: parseString(values.item),
           amount: parseNumber(values.amount),
           category: values.category,
+          date: values.date,
           pie: pie,
         };
 
@@ -72,10 +73,12 @@ const AddExpenseForm = ({
       >
         {({ handleSubmit }) => (
           <FormFields
+            formCategory={formCategory}
             setFormCategory={setFormCategory}
             onSubmit={handleSubmit}
             onCancel={onClose}
             categories={categories}
+            dates={pie.dates}
           />
         )}
       </Formik>

@@ -1,7 +1,7 @@
 import { View, StyleSheet } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import FormikDateInput from '../../Formik/FormikDateInput';
+import FormikDatesInput from '../../Formik/FormikDatesInput';
 import Button from '../../components/Button';
 
 const validationSchema = yup.object().shape({
@@ -14,7 +14,7 @@ const validationSchema = yup.object().shape({
 const FormFields = ({ onSubmit, closeModal }) => {
   return (
     <View style={styles.form}>
-      <FormikDateInput name="dates" />
+      <FormikDatesInput name="dates" />
       <View style={styles.buttons}>
         <Button title="Update" variant="primary" onPress={onSubmit} />
         <Button title="Cancel" variant="primary" onPress={closeModal} />

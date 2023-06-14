@@ -5,6 +5,8 @@ import CategoryDetails from './CategoryDetails';
 import { DatesText, Subheading } from './Text';
 import theme from '../../theme';
 
+const ItemSeparator = () => <View style={styles.separator} />;
+
 const SummaryPie = ({
   pieData,
   categoryDetails,
@@ -87,8 +89,6 @@ const Summary = ({ pies, currency }) => {
   const flatListRef = useRef();
 
   let expenseTotals = { total: 0 };
-
-  const ItemSeparator = () => <View style={styles.separator} />;
 
   const getExpenseTotals = (pie) => {
     const { expenses } = pie;

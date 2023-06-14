@@ -53,6 +53,7 @@ const EditExpenseForm = ({
         id: item.id,
         item: parseString(values.item),
         amount: parseNumber(values.amount),
+        date: values.date,
       };
 
       const updatedPiePartial =
@@ -100,6 +101,7 @@ const EditExpenseForm = ({
             onDelete={onDelete}
             onCancel={closeModal}
             categories={filteredCategories}
+            dates={initialPie.dates}
             incomeCategory={initialCategory === 'Income'}
             incomeIsRemovable={incomeIsRemovable}
           />

@@ -5,6 +5,7 @@ export const getInitialValues = ({ item, selectedCategory }) => {
     item: item?.item || '',
     amount: (item && String(item.amount)) || '',
     category: selectedCategory || 'Shopping',
+    date: item?.date || '',
   };
 };
 
@@ -41,6 +42,7 @@ export const getExpenseValidationSchema = ({ item, remainingIncome }) => {
         remainingIncome + (item?.amount || 0),
         `Amount cannot be greater than ${remainingIncome + (item?.amount || 0)}`
       ),
+    date: yup.string().required('Date is requred'),
     category: yup.string().required('Category is required'),
   };
   return yup.object().shape(validationSchema);
@@ -59,10 +61,10 @@ export const removeIncome = ({ incomeToRemove, pie }) => {
   return pie;
 };
 
-export const addExpense = ({ id, item, amount, category, pie }) => {
+export const addExpense = ({ id, item, amount, category, date, pie }) => {
   Object.keys(pie.expenses).includes(category)
-    ? pie.expenses[category].push({ id, item, amount })
-    : (pie.expenses[category] = [{ id, item, amount }]);
+    ? pie.expenses[category].push({ id, item, amount, date })
+    : (pie.expenses[category] = [{ id, item, amount, date }]);
 
   return pie;
 };
