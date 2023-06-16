@@ -18,7 +18,6 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
   };
 
   const getSummaryData = () => {
-    let expenseTotals = { total: 0 };
     let monthlyTotals = {};
     let summaryPies = [];
 
@@ -26,42 +25,47 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
       const { expenses } = pie;
 
       Object.entries(expenses).forEach(([category, expenseArray]) => {
-        // Initialise expenseTotals with required categories
-        expenseTotals = expenseTotals[category]
-          ? expenseTotals
-          : { ...expenseTotals, [category]: 0 };
-
-        // Calculate total expenses per category, and total expenses across all categories
-        expenseArray.reduce((expenseTotals, expense) => {
+        expenseArray.forEach((expense) => {
           if (expense.date) {
             const date = new Date(expense.date);
             const month = date.getMonth();
-            monthlyTotals = monthlyTotals[month]
-              ? monthlyTotals
-              : { ...monthlyTotals, [month]: { total: 0 } };
-            monthlyTotals[month] = monthlyTotals[month][category]
-              ? monthlyTotals[month]
-              : { ...monthlyTotals[month], [category]: [] };
+            const year = date.getFullYear();
 
-            monthlyTotals[month][category].push(expense);
-            monthlyTotals[month].total += expense.amount;
+            monthlyTotals = monthlyTotals[year]
+              ? monthlyTotals
+              : { ...monthlyTotals, [year]: { expenses: {} } };
+
+            monthlyTotals[year].expenses = monthlyTotals[year].expenses[month]
+              ? monthlyTotals[year].expenses
+              : { ...monthlyTotals[year].expenses, [month]: { total: 0 } };
+
+            monthlyTotals[year].expenses[month] = monthlyTotals[year].expenses[
+              month
+            ][category]
+              ? monthlyTotals[year].expenses[month]
+              : { ...monthlyTotals[year].expenses[month], [category]: [] };
+
+            monthlyTotals[year].expenses[month][category].push(expense);
+            monthlyTotals[year].expenses[month].total += expense.amount;
           }
-          //   expenseTotals[category] += expense.amount;
-          //   expenseTotals.total += expense.amount;
-          return expenseTotals, monthlyTotals;
-        }, expenseTotals);
+        });
       });
     };
 
     pies.forEach((pie) => getExpenseTotals(pie));
 
-    Object.entries(monthlyTotals).forEach(([month, expenses]) => {
-      summaryPies.push({
-        month: month,
-        expenses: expenses,
-      });
+    Object.keys(monthlyTotals).forEach((year) => {
+      Object.entries(monthlyTotals[year].expenses).forEach(
+        ([month, expenses]) => {
+          summaryPies.push({
+            month: month,
+            expenses: expenses,
+            year: year,
+          });
+        }
+      );
     });
-    return { summaryPies, categoryDetails, expenseTotals };
+    return { summaryPies, categoryDetails };
   };
 
   const { summaryPies, categoryDetails } = getSummaryData();

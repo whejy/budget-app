@@ -9,8 +9,8 @@ import theme from '../../theme';
 const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
   const [category, setCategory] = useState('');
 
-  const { expenses, month } = pie;
-  const date = months[month];
+  const { expenses, month, year } = pie;
+  const date = { month: months[month], year: year };
 
   const getItemLayout = ({ height }) => {
     return handleNavigate({ height, index });
@@ -105,8 +105,8 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
 
   return (
     <View style={styles.container}>
-      <DatesText></DatesText>
-      <DatesText>{date}</DatesText>
+      <DatesText>{date.year}</DatesText>
+      <DatesText>{date.month}</DatesText>
       <VictoryPie
         data={pieData}
         labels={({ datum }) => [datum.x, `${datum.y}%`]}
