@@ -88,22 +88,35 @@ const SummaryPie = ({
 const Summary = ({ pies, currency }) => {
   const flatListRef = useRef();
 
-  let expenseTotals = { total: 0 };
+  let expenseTotals = { Monthly: {}, Totals: { total: 0 } };
+  let monthlyTotals = {};
 
   const getExpenseTotals = (pie) => {
     const { expenses } = pie;
 
     Object.entries(expenses).forEach(([category, expenseArray]) => {
       // Initialise expenseTotals with required categories
-      expenseTotals = expenseTotals[category]
-        ? expenseTotals
-        : { ...expenseTotals, [category]: 0 };
+      expenseTotals.Totals = expenseTotals.Totals[category]
+        ? expenseTotals.Totals
+        : { ...expenseTotals.Totals, [category]: 0 };
 
       // Calculate total expenses per category, and total expenses across all categories
       expenseArray.reduce((expenseTotals, expense) => {
-        expenseTotals[category] += expense.amount;
-        expenseTotals.total += expense.amount;
-        return expenseTotals;
+        if (expense.date) {
+          const date = new Date(expense.date);
+          const month = date.getMonth();
+          monthlyTotals = monthlyTotals[month]
+            ? monthlyTotals
+            : { ...monthlyTotals, [month]: {} };
+          monthlyTotals[month] = monthlyTotals[month][category]
+            ? monthlyTotals[month]
+            : { ...monthlyTotals[month], [category]: [] };
+
+          monthlyTotals[month][category].push(expense);
+        }
+        expenseTotals.Totals[category] += expense.amount;
+        expenseTotals.Totals.total += expense.amount;
+        return expenseTotals, monthlyTotals;
       }, expenseTotals);
     });
   };
@@ -155,7 +168,12 @@ const Summary = ({ pies, currency }) => {
   };
 
   pies.forEach((pie) => getExpenseTotals(pie));
+  expenseTotals.Monthly = monthlyTotals;
+  Object.entries(expenseTotals.Monthly).forEach(([month, expenses]) => {
+    console.log(month, expenses);
+  });
   const { pieData } = formatPieData();
+  console.log(pieData);
   const categoryDetails = getCategoryDetails();
 
   const handleNavigate = ({ height, index }) => {

@@ -5,7 +5,7 @@ import AppBarTab from './AppBarTab';
 import Prompt from '../Modals/Prompt';
 import MenuComponent from './Menu';
 import FactAlert from './Alert';
-import { Heading } from './Text';
+import Text, { Heading } from './Text';
 import { AppBarIcon } from './Icon';
 import theme from '../../theme';
 
@@ -63,10 +63,12 @@ const AppBar = ({ pies, removeAllPies, currency, setCurrency }) => {
       </Appbar.Header>
       <View style={styles.actionsContainer}>
         <AppBarTab to={'/'}>
-          <AppBarIcon name="pie-chart" type="material" />
+          <Text>Home</Text>
+          {/* <AppBarIcon name="pie-chart" type="material" /> */}
         </AppBarTab>
         <AppBarTab to={'/summary'}>
-          <AppBarIcon name="insights" type="material" />
+          <Text>Summary</Text>
+          {/* <AppBarIcon name="insights" type="material" /> */}
         </AppBarTab>
       </View>
       <Prompt

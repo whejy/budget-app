@@ -5,7 +5,6 @@ import * as SplashScreen from 'expo-splash-screen';
 import { LinearGradient } from 'expo-linear-gradient';
 import AppBar from './AppBar';
 import PieList from './PieList';
-import Summary from './Summary';
 import PieStorage from '../../utils/pieStorage';
 import CurrencyStorage from '../../utils/currencyStorage';
 import { gradient } from '../../theme';
@@ -35,14 +34,14 @@ const Main = () => {
     return setCurrency(storedCurrency);
   }
 
-  async function getStoredPies() {
-    const initialPies = await PieStorage.getPies();
-    return setPies(initialPies);
-  }
-
   async function setNewCurrency(newCurrency) {
     const updatedCurrency = await CurrencyStorage.setCurrency(newCurrency);
     return setCurrency(updatedCurrency);
+  }
+
+  async function getStoredPies() {
+    const initialPies = await PieStorage.getPies();
+    return setPies(initialPies);
   }
 
   async function removeAllPies() {
@@ -85,7 +84,14 @@ const Main = () => {
           <Route path="*" element={<Navigate to="/" replace />} />
           <Route
             path="/summary"
-            element={<Summary pies={pies} currency={currency} />}
+            element={
+              <PieList
+                pies={pies}
+                currency={currency}
+                onLayoutRootView={onLayoutRootView}
+                summary
+              />
+            }
           />
         </Routes>
       </LinearGradient>
