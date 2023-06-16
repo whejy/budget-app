@@ -5,6 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { LinearGradient } from 'expo-linear-gradient';
 import AppBar from './AppBar';
 import PieList from './PieList';
+import SummaryList from './SummaryList';
 import PieStorage from '../../utils/pieStorage';
 import CurrencyStorage from '../../utils/currencyStorage';
 import { gradient } from '../../theme';
@@ -85,11 +86,10 @@ const Main = () => {
           <Route
             path="/summary"
             element={
-              <PieList
+              <SummaryList
                 pies={pies}
                 currency={currency}
                 onLayoutRootView={onLayoutRootView}
-                summary
               />
             }
           />

@@ -2,13 +2,12 @@ import { useEffect, useState, useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import PieStorage from '../../utils/pieStorage';
 import Pie from './Pie';
-import SummaryPie from './SummaryPie';
 import FloatingButton from './FloatingButton';
 import { Subheading } from './Text';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const PieList = ({ pies, setPies, currency, onLayoutRootView, summary }) => {
+const PieList = ({ pies, setPies, currency, onLayoutRootView }) => {
   const [activeCategories, setActiveCategories] = useState();
   const flatListRef = useRef();
 
@@ -66,82 +65,6 @@ const PieList = ({ pies, setPies, currency, onLayoutRootView, summary }) => {
     return handleNavigate({ height: 40, index: 0 });
   };
 
-  const renderItem = ({ item, index }) => {
-    const pie = summary ? (
-      <SummaryPie
-        pie={item}
-        index={index}
-        currency={currency}
-        handleNavigate={handleNavigate}
-      />
-    ) : (
-      <Pie
-        pie={item}
-        index={index}
-        currency={currency}
-        handleNavigate={handleNavigate}
-        removePie={removePie}
-        savePie={updateStoragePie}
-        updateCategory={updateActiveCategory}
-        category={
-          activeCategories?.filter((pie) => pie.index === index)[0]
-            ?.activeCategory
-        }
-      />
-    );
-    return pie;
-  };
-
-  const getSummaryData = () => {
-    let expenseTotals = { total: 0 };
-    let monthlyTotals = {};
-    let summaryPies = [];
-
-    const getExpenseTotals = (pie) => {
-      const { expenses } = pie;
-
-      Object.entries(expenses).forEach(([category, expenseArray]) => {
-        // Initialise expenseTotals with required categories
-        expenseTotals = expenseTotals[category]
-          ? expenseTotals
-          : { ...expenseTotals, [category]: 0 };
-
-        // Calculate total expenses per category, and total expenses across all categories
-        expenseArray.reduce((expenseTotals, expense) => {
-          if (expense.date) {
-            const date = new Date(expense.date);
-            const month = date.getMonth();
-            monthlyTotals = monthlyTotals[month]
-              ? monthlyTotals
-              : { ...monthlyTotals, [month]: { total: 0 } };
-            monthlyTotals[month] = monthlyTotals[month][category]
-              ? monthlyTotals[month]
-              : { ...monthlyTotals[month], [category]: [] };
-
-            monthlyTotals[month][category].push(expense);
-            monthlyTotals[month].total += expense.amount;
-          }
-          //   expenseTotals[category] += expense.amount;
-          //   expenseTotals.total += expense.amount;
-          return expenseTotals, monthlyTotals;
-        }, expenseTotals);
-      });
-    };
-
-    pies.forEach((pie) => getExpenseTotals(pie));
-
-    Object.entries(monthlyTotals).forEach(([month, expenses]) => {
-      summaryPies.push({
-        month: month,
-        expenses: expenses,
-      });
-    });
-    return { summaryPies, categoryDetails, expenseTotals };
-  };
-
-  const { summaryPies, categoryDetails } = getSummaryData();
-  const listData = summary ? summaryPies : pies;
-
   return (
     <>
       <View onLayout={onLayoutRootView}>
@@ -155,10 +78,24 @@ const PieList = ({ pies, setPies, currency, onLayoutRootView, summary }) => {
                 animated: true,
               });
             }}
-            data={listData}
+            data={pies}
             keyboardShouldPersistTaps="handled"
             ItemSeparatorComponent={ItemSeparator}
-            renderItem={({ item, index }) => renderItem({ item, index })}
+            renderItem={({ item, index }) => (
+              <Pie
+                pie={item}
+                index={index}
+                currency={currency}
+                handleNavigate={handleNavigate}
+                removePie={removePie}
+                savePie={updateStoragePie}
+                updateCategory={updateActiveCategory}
+                category={
+                  activeCategories?.filter((pie) => pie.index === index)[0]
+                    ?.activeCategory
+                }
+              />
+            )}
             keyExtractor={(_, i) => i}
           />
         ) : (
