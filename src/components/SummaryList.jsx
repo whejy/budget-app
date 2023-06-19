@@ -21,8 +21,20 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
     let monthlyTotals = {};
     let summaryPies = [];
 
+    function isEmpty(obj) {
+      for (const prop in obj) {
+        if (prop) {
+          return false;
+        }
+      }
+
+      return true;
+    }
+
     const getExpenseTotals = (pie) => {
       const { expenses } = pie;
+
+      if (isEmpty(expenses)) return null;
 
       Object.entries(expenses).forEach(([category, expenseArray]) => {
         expenseArray.forEach((expense) => {
@@ -54,6 +66,11 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
 
     pies.forEach((pie) => getExpenseTotals(pie));
 
+    if (isEmpty(monthlyTotals)) {
+      summaryPies = null;
+      return { summaryPies };
+    }
+
     Object.keys(monthlyTotals).forEach((year) => {
       Object.entries(monthlyTotals[year].expenses).forEach(
         ([month, expenses]) => {
@@ -66,23 +83,22 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
       );
     });
 
-    const mostRecentSort = (pies) => {
-      pies.sort((a, b) => b.month - a.month);
-      pies.sort((a, b) => b.year - a.year);
-      return pies;
-    };
-
-    const sortedSummaryPies = mostRecentSort(summaryPies);
-
-    return { sortedSummaryPies, categoryDetails };
+    return { summaryPies, categoryDetails };
   };
 
-  const { sortedSummaryPies, categoryDetails } = getSummaryData();
+  const mostRecentSort = (pies) => {
+    pies.sort((a, b) => b.month - a.month);
+    pies.sort((a, b) => b.year - a.year);
+    return pies;
+  };
+
+  const { summaryPies, categoryDetails } = getSummaryData();
+  const sortedSummaryPies = summaryPies ? mostRecentSort(summaryPies) : null;
 
   return (
     <>
       <View onLayout={onLayoutRootView}>
-        {pies.length > 0 ? (
+        {sortedSummaryPies ? (
           <FlatList
             contentContainerStyle={styles.pieList}
             ref={flatListRef}
@@ -92,7 +108,7 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
                 animated: true,
               });
             }}
-            data={sortedSummaryPies}
+            data={summaryPies}
             keyboardShouldPersistTaps="handled"
             ItemSeparatorComponent={ItemSeparator}
             renderItem={({ item, index }) => (
@@ -107,7 +123,7 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
           />
         ) : (
           <Subheading style={styles.emptyList}>
-            Add expenses to your pies to see a summary here.
+            Add expenses to your pies to see a monthly summary here.
           </Subheading>
         )}
       </View>

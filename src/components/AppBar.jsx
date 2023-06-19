@@ -5,7 +5,7 @@ import AppBarTab from './AppBarTab';
 import Prompt from '../Modals/Prompt';
 import MenuComponent from './Menu';
 import FactAlert from './Alert';
-import Text, { Heading } from './Text';
+import { Heading, Subheading } from './Text';
 import { AppBarIcon } from './Icon';
 import theme from '../../theme';
 
@@ -63,11 +63,15 @@ const AppBar = ({ pies, removeAllPies, currency, setCurrency }) => {
       </Appbar.Header>
       <View style={styles.actionsContainer}>
         <AppBarTab to={'/'}>
-          <Text>Home</Text>
+          <Subheading allowFontScaling={false} style={styles.actionText}>
+            Home
+          </Subheading>
           {/* <AppBarIcon name="pie-chart" type="material" /> */}
         </AppBarTab>
         <AppBarTab to={'/summary'}>
-          <Text>Summary</Text>
+          <Subheading allowFontScaling={false} style={styles.actionText}>
+            Summary
+          </Subheading>
           {/* <AppBarIcon name="insights" type="material" /> */}
         </AppBarTab>
       </View>
@@ -89,7 +93,10 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     paddingBottom: 10,
-    justifyContent: 'space-evenly',
+    justifyContent: 'space-around',
+  },
+  actionText: {
+    color: 'white',
   },
   header: {
     alignSelf: 'flex-start',

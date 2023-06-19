@@ -48,7 +48,7 @@ const FormFields = ({
     <View style={styles.form}>
       <FormikTextInput name="item" placeholder="Description" />
       <FormikNumberInput name="amount" placeholder="Amount" />
-      {formCategory !== 'Income' && (
+      {formCategory !== 'Income' && !incomeCategory && (
         <FormikDatesInput name="date" minDate={minDate} maxDate={maxDate} />
       )}
       {!incomeCategory && (
