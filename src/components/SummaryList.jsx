@@ -65,10 +65,19 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
         }
       );
     });
-    return { summaryPies, categoryDetails };
+
+    const mostRecentSort = (pies) => {
+      pies.sort((a, b) => b.month - a.month);
+      pies.sort((a, b) => b.year - a.year);
+      return pies;
+    };
+
+    const sortedSummaryPies = mostRecentSort(summaryPies);
+
+    return { sortedSummaryPies, categoryDetails };
   };
 
-  const { summaryPies, categoryDetails } = getSummaryData();
+  const { sortedSummaryPies, categoryDetails } = getSummaryData();
 
   return (
     <>
@@ -83,7 +92,7 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
                 animated: true,
               });
             }}
-            data={summaryPies}
+            data={sortedSummaryPies}
             keyboardShouldPersistTaps="handled"
             ItemSeparatorComponent={ItemSeparator}
             renderItem={({ item, index }) => (

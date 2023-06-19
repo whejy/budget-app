@@ -33,6 +33,7 @@ const DateInput = ({ name, minDate, maxDate, ...props }) => {
         onClose={toggleModal}
         minDate={minDate}
         maxDate={maxDate}
+        initialDate={minDate}
         error={showError}
         onDayPress={handlePress}
         {...props}
