@@ -25,7 +25,7 @@ const EditExpenses = ({
   return (
     <>
       <TouchableOpacity style={styles.itemDetails} onPress={onExpensePress}>
-        <Text style={styles.item}>{item.item}</Text>
+        {item.item && <Text style={styles.item}>{item.item}</Text>}
         <Text>
           {currency}
           {item.amount.toLocaleString('en-US')}

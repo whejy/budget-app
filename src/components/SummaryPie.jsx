@@ -19,7 +19,7 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
   const getCategoryDetails = (expenseTotals) => {
     const categoryDetails = {};
     Object.entries(expenseTotals).forEach(([category, total]) => {
-      categoryDetails[category] = [{ amount: total, item: 'Total Spend' }];
+      categoryDetails[category] = [{ amount: total, item: null }];
     });
     return categoryDetails;
   };

@@ -5,8 +5,7 @@ import AppBarTab from './AppBarTab';
 import Prompt from '../Modals/Prompt';
 import MenuComponent from './Menu';
 import FactAlert from './Alert';
-import { Heading, Subheading } from './Text';
-import { AppBarIcon } from './Icon';
+import { Heading } from './Text';
 import theme from '../../theme';
 
 const AppBar = ({ pies, removeAllPies, currency, setCurrency }) => {
@@ -62,18 +61,10 @@ const AppBar = ({ pies, removeAllPies, currency, setCurrency }) => {
         />
       </Appbar.Header>
       <View style={styles.actionsContainer}>
-        <AppBarTab to={'/'}>
-          <Subheading allowFontScaling={false} style={styles.actionText}>
-            Home
-          </Subheading>
-          {/* <AppBarIcon name="pie-chart" type="material" /> */}
-        </AppBarTab>
-        <AppBarTab to={'/summary'}>
-          <Subheading allowFontScaling={false} style={styles.actionText}>
-            Summary
-          </Subheading>
-          {/* <AppBarIcon name="insights" type="material" /> */}
-        </AppBarTab>
+        <AppBarTab to={'/'} text="Home" />
+        {/* <AppBarIcon name="pie-chart" type="material" /> */}
+        <AppBarTab to={'/summary'} text="Summary" />
+        {/* <AppBarIcon name="insights" type="material" /> */}
       </View>
       <Prompt
         modalOpen={promptOpen}
@@ -92,11 +83,7 @@ const styles = StyleSheet.create({
   actionsContainer: {
     display: 'flex',
     flexDirection: 'row',
-    paddingBottom: 10,
     justifyContent: 'space-around',
-  },
-  actionText: {
-    color: 'white',
   },
   header: {
     alignSelf: 'flex-start',
