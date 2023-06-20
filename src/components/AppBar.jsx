@@ -62,9 +62,7 @@ const AppBar = ({ pies, removeAllPies, currency, setCurrency }) => {
       </Appbar.Header>
       <View style={styles.actionsContainer}>
         <AppBarTab to={'/'} text="Home" />
-        {/* <AppBarIcon name="pie-chart" type="material" /> */}
         <AppBarTab to={'/summary'} text="Summary" />
-        {/* <AppBarIcon name="insights" type="material" /> */}
       </View>
       <Prompt
         modalOpen={promptOpen}

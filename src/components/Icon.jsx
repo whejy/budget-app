@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
   },
   appbar: {
     color: 'white',
-    size: 34,
+    size: 28,
   },
 });
 
