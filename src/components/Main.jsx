@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import AppBar from './AppBar';
-import Views from './Views';
+import TabViews from './TabViews';
 import PieStorage from '../../utils/pieStorage';
 import CurrencyStorage from '../../utils/currencyStorage';
 
@@ -21,7 +21,6 @@ const Main = () => {
         setAppIsReady(true);
       }
     }
-
     prepare();
   }, []);
 
@@ -63,7 +62,7 @@ const Main = () => {
         setCurrency={setNewCurrency}
         removeAllPies={removeAllPies}
       />
-      <Views
+      <TabViews
         pies={pies}
         setPies={setPies}
         currency={currency}
