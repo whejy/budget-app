@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { Appbar } from 'react-native-paper';
-import AppBarTab from './AppBarTab';
 import Prompt from '../Modals/Prompt';
 import MenuComponent from './Menu';
 import FactAlert from './Alert';
@@ -60,10 +59,6 @@ const AppBar = ({ pies, removeAllPies, currency, setCurrency }) => {
           visible={menuOpen}
         />
       </Appbar.Header>
-      <View style={styles.actionsContainer}>
-        <AppBarTab to={'/'} text="Home" />
-        <AppBarTab to={'/summary'} text="Summary" />
-      </View>
       <Prompt
         modalOpen={promptOpen}
         onClose={handleCancel}
@@ -77,11 +72,6 @@ const AppBar = ({ pies, removeAllPies, currency, setCurrency }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.primary,
-  },
-  actionsContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
   },
   header: {
     alignSelf: 'flex-start',

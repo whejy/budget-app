@@ -1,6 +1,6 @@
 import Main from './src/components/Main';
-import { NativeRouter } from 'react-router-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { NavigationContainer } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { Provider as PaperProvider } from 'react-native-paper';
@@ -15,9 +15,9 @@ const App = () => {
     >
       <PaperProvider theme="light">
         <StatusBar style="dark" translucent={false} />
-        <NativeRouter>
+        <NavigationContainer>
           <Main />
-        </NativeRouter>
+        </NavigationContainer>
       </PaperProvider>
     </SafeAreaProvider>
   );
