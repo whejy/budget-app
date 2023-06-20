@@ -97,7 +97,7 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
 
   return (
     <>
-      <View onLayout={onLayoutRootView}>
+      <View style={styles.container} onLayout={onLayoutRootView}>
         {sortedSummaryPies ? (
           <FlatList
             contentContainerStyle={styles.pieList}
@@ -123,7 +123,7 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
           />
         ) : (
           <Subheading style={styles.emptyList}>
-            Add expenses to your pies to see a monthly summary here.
+            Add expenses to your pies to see your monthly summary here.
           </Subheading>
         )}
       </View>
@@ -135,8 +135,12 @@ const styles = StyleSheet.create({
   separator: {
     height: 32,
   },
+  container: {
+    flex: 1,
+  },
   pieList: {
     paddingVertical: 20,
+    flexGrow: 1,
   },
   emptyList: {
     textAlign: 'center',

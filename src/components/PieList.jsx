@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import PieStorage from '../../utils/pieStorage';
 import Pie from './Pie';
-import FloatingButton from './FloatingButton';
 import { Subheading } from './Text';
 
 const ItemSeparator = () => <View style={styles.separator} />;
@@ -13,14 +12,8 @@ const PieList = ({ pies, setPies, currency, onLayoutRootView }) => {
 
   useEffect(() => {
     initialiseCategories(pies);
-  }, []);
-
-  async function setStoragePies(newPie) {
-    const updatedPies = await PieStorage.setPies(newPie);
-    resetNavigate();
-    initialiseCategories(updatedPies);
-    return setPies(updatedPies);
-  }
+    // resetNavigate()
+  }, [pies]);
 
   async function updateStoragePie(updatedPie) {
     const updatedPies = await PieStorage.updatePie(updatedPie);
@@ -67,7 +60,7 @@ const PieList = ({ pies, setPies, currency, onLayoutRootView }) => {
 
   return (
     <>
-      <View onLayout={onLayoutRootView}>
+      <View style={styles.container} onLayout={onLayoutRootView}>
         {pies.length > 0 ? (
           <FlatList
             contentContainerStyle={styles.pieList}
@@ -102,7 +95,6 @@ const PieList = ({ pies, setPies, currency, onLayoutRootView }) => {
           <Subheading style={styles.emptyList}>Add your first pie!</Subheading>
         )}
       </View>
-      <FloatingButton setStoragePies={setStoragePies} />
     </>
   );
 };
@@ -111,8 +103,12 @@ const styles = StyleSheet.create({
   separator: {
     height: 32,
   },
+  container: {
+    flex: 1,
+  },
   pieList: {
     paddingVertical: 20,
+    flexGrow: 1,
   },
   emptyList: {
     textAlign: 'center',

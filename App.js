@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import Main from './src/components/Main';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
@@ -9,14 +10,16 @@ import theme from './theme';
 SplashScreen.preventAutoHideAsync();
 
 const App = () => {
+  const navRef = useRef(null);
+
   return (
     <SafeAreaProvider
       style={{ flex: 1, backgroundColor: theme.colors.primary }}
     >
       <PaperProvider theme="light">
         <StatusBar style="dark" translucent={false} />
-        <NavigationContainer>
-          <Main />
+        <NavigationContainer ref={navRef}>
+          <Main navRef={navRef} />
         </NavigationContainer>
       </PaperProvider>
     </SafeAreaProvider>

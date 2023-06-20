@@ -69,7 +69,7 @@ const CategoryDetails = ({
     savePie(pie);
   };
 
-  const sortedFlatlistData = categoryItems.sort((a, b) => b.amount - a.amount);
+  const sortedFlatlistData = categoryItems?.sort((a, b) => b.amount - a.amount);
 
   return (
     <View onLayout={onLayout} style={styles.container}>
