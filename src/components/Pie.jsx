@@ -10,16 +10,8 @@ import Text from './Text';
 import theme from '../../theme';
 import EditDates from '../Modals/EditDatesModal';
 
-const Pie = ({
-  pie,
-  savePie,
-  removePie,
-  handleNavigate,
-  index,
-  updateCategory,
-  category,
-  currency,
-}) => {
+const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
+  const [category, setCategory] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
@@ -44,7 +36,7 @@ const Pie = ({
   const handlePieUpdate = (updatedPie) => {
     // Toggle active category if category no longer exists
     if (!Object.keys(expenses).includes(category) && category.length > 0) {
-      updateCategory({ index, activeCategory: '' });
+      setCategory('');
     }
     savePie(updatedPie);
   };
@@ -110,7 +102,7 @@ const Pie = ({
 
             {
               mutation: (props) => {
-                updateCategory({ index, activeCategory: props.datum.x });
+                setCategory(props.datum.x);
                 if (props.datum.x !== category) {
                   return {
                     style: {
@@ -121,6 +113,7 @@ const Pie = ({
                     },
                   };
                 }
+                setCategory('');
               },
             },
           ];

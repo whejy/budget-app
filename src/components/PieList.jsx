@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import PieStorage from '../../utils/pieStorage';
 import Pie from './Pie';
@@ -7,13 +7,7 @@ import { Subheading } from './Text';
 const ItemSeparator = () => <View style={styles.separator} />;
 
 const PieList = ({ pies, setPies, currency, onLayoutRootView }) => {
-  const [activeCategories, setActiveCategories] = useState();
   const flatListRef = useRef();
-
-  useEffect(() => {
-    initialiseCategories(pies);
-    // resetNavigate()
-  }, [pies]);
 
   async function updateStoragePie(updatedPie) {
     const updatedPies = await PieStorage.updatePie(updatedPie);
@@ -23,27 +17,8 @@ const PieList = ({ pies, setPies, currency, onLayoutRootView }) => {
   async function removePie(pie) {
     const updatedPies = await PieStorage.removePie(pie);
     resetNavigate();
-    initialiseCategories(updatedPies);
     return setPies(updatedPies);
   }
-
-  const initialiseCategories = (pies) => {
-    const categories = pies.reduce((acc, curr, index) => {
-      return [...acc, { index: index, activeCategory: '' }];
-    }, []);
-    setActiveCategories(categories);
-  };
-
-  const updateActiveCategory = ({ index, activeCategory }) => {
-    const updatedCategories = activeCategories.map((pie) =>
-      pie.index !== index
-        ? pie
-        : activeCategory === pie.activeCategory
-        ? { ...pie, activeCategory: '' }
-        : { ...pie, activeCategory }
-    );
-    setActiveCategories(updatedCategories);
-  };
 
   const handleNavigate = ({ height, index }) => {
     flatListRef.current?.scrollToIndex({
@@ -82,11 +57,6 @@ const PieList = ({ pies, setPies, currency, onLayoutRootView }) => {
                 handleNavigate={handleNavigate}
                 removePie={removePie}
                 savePie={updateStoragePie}
-                updateCategory={updateActiveCategory}
-                category={
-                  activeCategories?.filter((pie) => pie.index === index)[0]
-                    ?.activeCategory
-                }
               />
             )}
             keyExtractor={(_, i) => i}
