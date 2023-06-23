@@ -2,11 +2,10 @@ import { useState, useEffect, useCallback } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import AppBar from './AppBar';
 import TabViews from './TabViews';
-import FloatingButton from './FloatingButton';
 import PieStorage from '../../utils/pieStorage';
 import CurrencyStorage from '../../utils/currencyStorage';
 
-const Main = ({ navRef }) => {
+const Main = () => {
   const [appIsReady, setAppIsReady] = useState(false);
   const [pies, setPies] = useState([]);
   const [currency, setCurrency] = useState('');
@@ -40,12 +39,6 @@ const Main = ({ navRef }) => {
     return setPies(initialPies);
   }
 
-  async function setStoragePies(newPie) {
-    const updatedPies = await PieStorage.setPies(newPie);
-    navRef?.current && navRef.current.navigate('Home');
-    return setPies(updatedPies);
-  }
-
   async function removeAllPies() {
     await PieStorage.removePies();
     return setPies([]);
@@ -75,7 +68,6 @@ const Main = ({ navRef }) => {
         currency={currency}
         onLayoutRootView={onLayoutRootView}
       />
-      <FloatingButton setStoragePies={setStoragePies} />
     </>
   );
 };
