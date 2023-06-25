@@ -27,7 +27,6 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
           return false;
         }
       }
-
       return true;
     }
 
@@ -95,6 +94,15 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
   const { summaryPies, categoryDetails } = getSummaryData();
   const sortedSummaryPies = summaryPies ? mostRecentSort(summaryPies) : null;
 
+  const renderItem = ({ item, index }) => (
+    <SummaryPie
+      pie={item}
+      index={index}
+      currency={currency}
+      handleNavigate={handleNavigate}
+    />
+  );
+
   return (
     <>
       <View style={styles.container} onLayout={onLayoutRootView}>
@@ -111,14 +119,7 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
             data={summaryPies}
             keyboardShouldPersistTaps="handled"
             ItemSeparatorComponent={ItemSeparator}
-            renderItem={({ item, index }) => (
-              <SummaryPie
-                pie={item}
-                index={index}
-                currency={currency}
-                handleNavigate={handleNavigate}
-              />
-            )}
+            renderItem={renderItem}
             keyExtractor={(_, i) => i}
           />
         ) : (

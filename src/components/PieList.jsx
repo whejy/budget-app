@@ -42,7 +42,6 @@ const PieList = ({ pies, setPies, currency, onLayoutRootView }) => {
     <Pie
       pie={item}
       index={index}
-      key={item.id}
       currency={currency}
       handleNavigate={handleNavigate}
       removePie={removePie}
