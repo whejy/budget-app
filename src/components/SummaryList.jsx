@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import SummaryPie from './SummaryPie';
+import { isEmpty } from '../../utils/helpers';
 import { Subheading } from './Text';
 
 const ItemSeparator = () => <View style={styles.separator} />;
@@ -18,81 +19,80 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
   };
 
   const getSummaryData = () => {
-    let monthlyTotals = {};
-    let summaryPies = [];
+    const getMonthlyTotals = () => {
+      let monthlyTotals = {};
 
-    function isEmpty(obj) {
-      for (const prop in obj) {
-        if (prop) {
-          return false;
-        }
-      }
-      return true;
-    }
+      const calculateTotals = (pie) => {
+        const { expenses } = pie;
 
-    const getExpenseTotals = (pie) => {
-      const { expenses } = pie;
+        if (isEmpty(expenses)) return;
 
-      if (isEmpty(expenses)) return null;
+        Object.entries(expenses).forEach(([category, expenseArray]) => {
+          expenseArray.forEach((expense) => {
+            if (expense.date) {
+              const date = new Date(expense.date);
+              const month = date.getMonth();
+              const year = date.getFullYear();
 
-      Object.entries(expenses).forEach(([category, expenseArray]) => {
-        expenseArray.forEach((expense) => {
-          if (expense.date) {
-            const date = new Date(expense.date);
-            const month = date.getMonth();
-            const year = date.getFullYear();
+              monthlyTotals = monthlyTotals[year]
+                ? monthlyTotals
+                : { ...monthlyTotals, [year]: { expenses: {} } };
 
-            monthlyTotals = monthlyTotals[year]
-              ? monthlyTotals
-              : { ...monthlyTotals, [year]: { expenses: {} } };
+              monthlyTotals[year].expenses = monthlyTotals[year].expenses[month]
+                ? monthlyTotals[year].expenses
+                : { ...monthlyTotals[year].expenses, [month]: { total: 0 } };
 
-            monthlyTotals[year].expenses = monthlyTotals[year].expenses[month]
-              ? monthlyTotals[year].expenses
-              : { ...monthlyTotals[year].expenses, [month]: { total: 0 } };
+              monthlyTotals[year].expenses[month] = monthlyTotals[year]
+                .expenses[month][category]
+                ? monthlyTotals[year].expenses[month]
+                : { ...monthlyTotals[year].expenses[month], [category]: [] };
 
-            monthlyTotals[year].expenses[month] = monthlyTotals[year].expenses[
-              month
-            ][category]
-              ? monthlyTotals[year].expenses[month]
-              : { ...monthlyTotals[year].expenses[month], [category]: [] };
-
-            monthlyTotals[year].expenses[month][category].push(expense);
-            monthlyTotals[year].expenses[month].total += expense.amount;
-          }
+              monthlyTotals[year].expenses[month][category].push(expense);
+              monthlyTotals[year].expenses[month].total += expense.amount;
+            }
+          });
         });
-      });
+      };
+      pies.forEach((pie) => calculateTotals(pie));
+      return { monthlyTotals };
     };
 
-    pies.forEach((pie) => getExpenseTotals(pie));
+    const getSummaryData = (monthlyTotals) => {
+      let summaryData = [];
 
-    if (isEmpty(monthlyTotals)) {
-      summaryPies = null;
-      return { summaryPies };
-    }
+      if (isEmpty(monthlyTotals)) {
+        summaryData = null;
+      } else {
+        Object.keys(monthlyTotals).forEach((year) => {
+          Object.entries(monthlyTotals[year].expenses).forEach(
+            ([month, expenses]) => {
+              summaryData.push({
+                expenses,
+                month,
+                year,
+              });
+            }
+          );
+        });
+      }
 
-    Object.keys(monthlyTotals).forEach((year) => {
-      Object.entries(monthlyTotals[year].expenses).forEach(
-        ([month, expenses]) => {
-          summaryPies.push({
-            month: month,
-            expenses: expenses,
-            year: year,
-          });
-        }
-      );
-    });
+      return { summaryData };
+    };
 
-    return { summaryPies, categoryDetails };
+    const mostRecentSort = (pies) => {
+      pies.sort((a, b) => b.month - a.month);
+      pies.sort((a, b) => b.year - a.year);
+      return pies;
+    };
+
+    const { monthlyTotals } = getMonthlyTotals();
+    const { summaryData } = getSummaryData(monthlyTotals);
+    const summaryPies = summaryData ? mostRecentSort(summaryData) : null;
+
+    return { summaryPies };
   };
 
-  const mostRecentSort = (pies) => {
-    pies.sort((a, b) => b.month - a.month);
-    pies.sort((a, b) => b.year - a.year);
-    return pies;
-  };
-
-  const { summaryPies, categoryDetails } = getSummaryData();
-  const sortedSummaryPies = summaryPies ? mostRecentSort(summaryPies) : null;
+  const { summaryPies } = getSummaryData();
 
   const renderItem = ({ item, index }) => (
     <SummaryPie
@@ -106,7 +106,7 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
   return (
     <>
       <View style={styles.container} onLayout={onLayoutRootView}>
-        {sortedSummaryPies ? (
+        {summaryPies ? (
           <FlatList
             contentContainerStyle={styles.pieList}
             ref={flatListRef}

@@ -6,6 +6,15 @@ const isString = (text) => {
   return typeof text === 'string' || text instanceof String;
 };
 
+export const isEmpty = (obj) => {
+  for (const prop in obj) {
+    if (prop) {
+      return false;
+    }
+  }
+  return true;
+};
+
 export const parseNumber = (number) => {
   const parsedNumber = parseFloat(number);
   if (!parsedNumber || !isNumber(parsedNumber)) {
