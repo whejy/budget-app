@@ -7,7 +7,14 @@ import theme, { gradient } from '../../theme';
 
 const Tab = createMaterialTopTabNavigator();
 
-const TabViews = ({ pies, setPies, currency, onLayoutRootView }) => {
+const TabViews = ({
+  pies,
+  setPies,
+  currency,
+  handleNavigate,
+  onLayoutRootView,
+  setRef,
+}) => {
   return (
     <Tab.Navigator initialRouteName="Home" screenOptions={styles.tabs}>
       <Tab.Screen name="Home" options={{ title: 'Home' }}>
@@ -15,9 +22,11 @@ const TabViews = ({ pies, setPies, currency, onLayoutRootView }) => {
           <LinearGradient colors={gradient} style={styles.container}>
             <PieList
               pies={pies}
-              onLayoutRootView={onLayoutRootView}
               currency={currency}
               setPies={setPies}
+              handleNavigate={handleNavigate}
+              setRef={setRef}
+              onLayoutRootView={onLayoutRootView}
             />
           </LinearGradient>
         )}

@@ -1,20 +1,18 @@
-import { useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import PieStorage from '../../utils/pieStorage';
 import Pie from './Pie';
-import FloatingButton from './FloatingButton';
 import { Subheading } from './Text';
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-const PieList = ({ pies, setPies, currency, onLayoutRootView }) => {
-  const flatListRef = useRef();
-
-  async function setStoragePies(newPie) {
-    const updatedPies = await PieStorage.setPies(newPie);
-    resetNavigate();
-    return setPies(updatedPies);
-  }
+const PieList = ({
+  pies,
+  setPies,
+  currency,
+  handleNavigate,
+  onLayoutRootView,
+  setRef,
+}) => {
   async function updateStoragePie(updatedPie) {
     const updatedPies = await PieStorage.updatePie(updatedPie);
     return setPies(updatedPies);
@@ -24,19 +22,6 @@ const PieList = ({ pies, setPies, currency, onLayoutRootView }) => {
     const updatedPies = await PieStorage.removePie(pie);
     return setPies(updatedPies);
   }
-
-  const handleNavigate = ({ height, index }) => {
-    flatListRef.current?.scrollToIndex({
-      animated: true,
-      index: index,
-      viewPosition: 0,
-      viewOffset: 100 - height,
-    });
-  };
-
-  const resetNavigate = () => {
-    return handleNavigate({ height: 40, index: 0 });
-  };
 
   const renderItem = ({ item, index }) => (
     <Pie
@@ -55,9 +40,9 @@ const PieList = ({ pies, setPies, currency, onLayoutRootView }) => {
         {pies.length > 0 ? (
           <FlatList
             contentContainerStyle={styles.pieList}
-            ref={flatListRef}
+            ref={setRef}
             onScrollToIndexFailed={() => {
-              flatListRef.current?.scrollToOffset({
+              setRef.current?.scrollToOffset({
                 offset: 0,
                 animated: true,
               });
@@ -70,7 +55,6 @@ const PieList = ({ pies, setPies, currency, onLayoutRootView }) => {
         ) : (
           <Subheading style={styles.emptyList}>Add your first pie!</Subheading>
         )}
-        <FloatingButton setStoragePies={setStoragePies} />
       </View>
     </>
   );

@@ -1,14 +1,16 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import AppBar from './AppBar';
 import TabViews from './TabViews';
+import FloatingButton from './FloatingButton';
 import PieStorage from '../../utils/pieStorage';
 import CurrencyStorage from '../../utils/currencyStorage';
 
-const Main = () => {
+const Main = ({ navRef }) => {
   const [appIsReady, setAppIsReady] = useState(false);
   const [pies, setPies] = useState([]);
   const [currency, setCurrency] = useState('');
+  const flatListRef = useRef();
 
   useEffect(() => {
     async function prepare() {
@@ -39,10 +41,31 @@ const Main = () => {
     return setPies(initialPies);
   }
 
+  async function setStoragePies(newPie) {
+    const updatedPies = await PieStorage.setPies(newPie);
+    navRef?.current && navRef.current.navigate('Home');
+    resetNavigate();
+    return setPies(updatedPies);
+  }
+
   async function removeAllPies() {
     await PieStorage.removePies();
     return setPies([]);
   }
+
+  // Navigation for PieList
+  const handleNavigate = ({ height, index }) => {
+    flatListRef.current?.scrollToIndex({
+      animated: true,
+      index: index,
+      viewPosition: 0,
+      viewOffset: 100 - height,
+    });
+  };
+
+  const resetNavigate = () => {
+    return handleNavigate({ height: 40, index: 0 });
+  };
 
   const onLayoutRootView = useCallback(async () => {
     if (appIsReady) {
@@ -66,8 +89,11 @@ const Main = () => {
         pies={pies}
         setPies={setPies}
         currency={currency}
+        handleNavigate={handleNavigate}
         onLayoutRootView={onLayoutRootView}
+        setRef={flatListRef}
       />
+      <FloatingButton setStoragePies={setStoragePies} />
     </>
   );
 };
