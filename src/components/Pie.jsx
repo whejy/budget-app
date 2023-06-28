@@ -135,15 +135,16 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
         data={pieData}
         events={events}
         labels={({ datum }) => [datum.x, `${currency}${datum.y}`]}
+        labelComponent={<VictoryLabel textAnchor="middle" />}
         style={{
           data: {
             fill: ({ datum }) => datum.fill,
           },
           labels: styles.labels,
         }}
-        labelComponent={<VictoryLabel textAnchor="middle" />}
+        innerRadius={90}
+        padAngle={8}
       />
-
       {category?.length > 0 ? (
         <CategoryDetails
           category={category}
