@@ -48,6 +48,8 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
     return handleNavigate({ height, index });
   };
 
+  const minSliceProportion = (amount, total) => amount / total > 0.07;
+
   const getRemainingIncome = ({ income, pieData }) => {
     const totalIncome = income.reduce((acc, curr) => acc + curr.amount, 0);
 
@@ -56,7 +58,7 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
       totalIncome
     );
 
-    return remainingIncome;
+    return { remainingIncome, totalIncome };
   };
 
   const formatPieData = () => {
@@ -77,7 +79,10 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
 
     pieData.sort((a, b) => a.y - b.y);
 
-    const remainingIncome = getRemainingIncome({ income, pieData });
+    const { remainingIncome, totalIncome } = getRemainingIncome({
+      income,
+      pieData,
+    });
 
     remainingIncome > 0 &&
       pieData.push({
@@ -86,7 +91,7 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
         fill: theme.colors.pieData.Income,
       });
 
-    return { pieData, remainingIncome };
+    return { pieData, remainingIncome, totalIncome };
   };
 
   const events = [
@@ -122,19 +127,47 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
     },
   ];
 
-  const { pieData, remainingIncome } = formatPieData();
+  const { pieData, remainingIncome, totalIncome } = formatPieData();
   const categoryItems = category === 'Income' ? income : expenses[category];
   const emptyIncomeText = 'No remaining income for this period.';
+
+  const smallSlices = pieData.filter(
+    (category) =>
+      category.x !== 'Income' && !minSliceProportion(category.y, totalIncome)
+  );
+
+  const labels = ({ x, y }) => {
+    if (minSliceProportion(y, totalIncome) || x === 'Income') {
+      return [x, `${currency}${y}`];
+    }
+  };
 
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={toggleCalendar}>
         <Dates dates={pie.dates} />
       </TouchableOpacity>
+      <View style={styles.legendContainer}>
+        {smallSlices.map((category) => (
+          <View key={category.x} style={styles.legendItemContainer}>
+            <View style={styles.legendItem}>
+              <View
+                style={[styles.legendPoint, { backgroundColor: category.fill }]}
+              >
+                <Text style={styles.legendText}>{category.x}</Text>
+              </View>
+              <Text style={styles.legendText}>
+                {currency}
+                {category.y}
+              </Text>
+            </View>
+          </View>
+        ))}
+      </View>
       <VictoryPie
         data={pieData}
         events={events}
-        labels={({ datum }) => [datum.x, `${currency}${datum.y}`]}
+        labels={({ datum }) => labels(datum)}
         labelComponent={<VictoryLabel textAnchor="middle" />}
         style={{
           data: {
@@ -143,7 +176,8 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
           labels: styles.labels,
         }}
         innerRadius={90}
-        padAngle={8}
+        // origin={{ x: 180, y: 170 }}
+        padAngle={1}
       />
       {category?.length > 0 ? (
         <CategoryDetails
@@ -219,6 +253,28 @@ const styles = StyleSheet.create({
     padding: 10,
     fill: theme.colors.labels,
     fontFamily: theme.fonts.secondary,
+  },
+  legendContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    paddingTop: 20,
+    paddingHorizontal: 10,
+  },
+  legendItemContainer: {
+    flexDirection: 'row',
+  },
+  legendPoint: {
+    marginHorizontal: 5,
+    paddingHorizontal: 5,
+    borderRadius: 50,
+  },
+  legendText: {
+    fontSize: 10,
+    color: theme.colors.labels,
+    fontFamily: theme.fonts.secondary,
+    textAlign: 'center',
   },
   button: {
     paddingHorizontal: 25,
