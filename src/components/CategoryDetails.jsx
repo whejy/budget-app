@@ -97,8 +97,8 @@ const CategoryDetails = ({
           <FlatList
             data={sortedFlatlistData}
             ItemSeparatorComponent={ItemSeparator}
-            keyExtractor={(_, i) => i}
             numColumns={3}
+            listKey={(_, index) => 'D' + index.toString()}
             renderItem={({ item }) => (
               <EditExpenses
                 savePie={savePie}

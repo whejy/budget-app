@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
 import { VictoryPie, VictoryLabel } from 'victory-native';
 import CategoryDetails from './CategoryDetails';
 import Dates from './Dates';
@@ -142,12 +142,41 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
     }
   };
 
+  const toggleCategory = (legendCategory) => {
+    category === legendCategory ? setCategory('') : setCategory(legendCategory);
+  };
+
+  const ItemSeparator = () => <View style={styles.separator} />;
+
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      style={styles.itemDetails}
+      onPress={() => toggleCategory(item.x)}
+    >
+      <View style={[styles.legendPoint, { backgroundColor: item.fill }]}>
+        <Text style={styles.legendText}>{item.x}</Text>
+      </View>
+      <Text style={styles.legendText}>
+        {currency}
+        {item.y}
+      </Text>
+    </TouchableOpacity>
+  );
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={toggleCalendar}>
         <Dates dates={pie.dates} />
       </TouchableOpacity>
-      <View style={styles.legendContainer}>
+      <FlatList
+        data={smallSlices}
+        ItemSeparatorComponent={ItemSeparator}
+        renderItem={renderItem}
+        numColumns={3}
+        listKey={(_, index) => 'C' + index.toString()}
+        columnWrapperStyle={{ justifyContent: 'space-between' }}
+      />
+      {/* <View style={styles.legendContainer}>
         {smallSlices.map((category) => (
           <View key={category.x} style={styles.legendItemContainer}>
             <View style={styles.legendItem}>
@@ -163,7 +192,7 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
             </View>
           </View>
         ))}
-      </View>
+      </View> */}
       <VictoryPie
         data={pieData}
         events={events}
@@ -263,16 +292,12 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingHorizontal: 10,
   },
-  legendItemContainer: {
-    flexDirection: 'row',
-  },
   legendPoint: {
-    marginHorizontal: 5,
     paddingHorizontal: 5,
     borderRadius: 50,
   },
   legendText: {
-    fontSize: 10,
+    fontSize: 12,
     color: theme.colors.labels,
     fontFamily: theme.fonts.secondary,
     textAlign: 'center',
@@ -284,6 +309,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontStyle: 'italic',
     paddingBottom: 10,
+  },
+  itemDetails: {
+    minWidth: 100,
+    paddingTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  separator: {
+    height: 10,
   },
 });
 
