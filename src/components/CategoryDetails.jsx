@@ -1,12 +1,10 @@
 import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useState } from 'react';
-import Text from './Text';
-import { Subheading } from './Text';
+import { ItemSeparator } from './Separators';
 import EditExpense from '../Modals/ExpenseModal/EditExpense';
-import { SecondaryIcon } from './Icon';
 import Prompt from '../Modals/Prompt';
-
-const ItemSeparator = () => <View style={styles.separator} />;
+import { SecondaryIcon } from './Icon';
+import Text, { Subheading } from './Text';
 
 const EditExpenses = ({
   pie,
@@ -71,6 +69,18 @@ const CategoryDetails = ({
 
   const sortedFlatlistData = categoryItems?.sort((a, b) => b.amount - a.amount);
 
+  const renderItem = ({ item }) => (
+    <EditExpenses
+      savePie={savePie}
+      item={item}
+      category={category}
+      remainingIncome={remainingIncome}
+      pie={pie}
+      currency={currency}
+      summary={summary}
+    />
+  );
+
   return (
     <View onLayout={onLayout} style={styles.container}>
       <Prompt
@@ -96,20 +106,10 @@ const CategoryDetails = ({
           </View>
           <FlatList
             data={sortedFlatlistData}
-            ItemSeparatorComponent={ItemSeparator}
+            renderItem={renderItem}
             numColumns={3}
+            ItemSeparatorComponent={ItemSeparator}
             listKey={(_, index) => 'D' + index.toString()}
-            renderItem={({ item }) => (
-              <EditExpenses
-                savePie={savePie}
-                item={item}
-                category={category}
-                remainingIncome={remainingIncome}
-                pie={pie}
-                currency={currency}
-                summary={summary}
-              />
-            )}
           />
         </>
       )}
@@ -118,9 +118,6 @@ const CategoryDetails = ({
 };
 
 const styles = StyleSheet.create({
-  separator: {
-    height: 10,
-  },
   container: {
     display: 'flex',
     flexDirection: 'column',

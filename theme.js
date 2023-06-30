@@ -32,6 +32,7 @@ const theme = {
   },
   fontSizes: {
     body: 14,
+    labels: 16,
     subheading: 20,
     heading: 42,
   },

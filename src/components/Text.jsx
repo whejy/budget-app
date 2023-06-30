@@ -24,8 +24,12 @@ export const ErrorText = ({ ...props }) => {
   return <Text style={styles.errorText} {...props} />;
 };
 
+export const LegendText = ({ ...props }) => {
+  return <Text allowFontScaling={false} style={styles.legendText} {...props} />;
+};
+
 export const DatesText = ({ ...props }) => {
-  return <Text style={styles.textDates} {...props} />;
+  return <Text style={styles.datesText} {...props} />;
 };
 
 const styles = StyleSheet.create({
@@ -38,9 +42,15 @@ const styles = StyleSheet.create({
   textSecondary: {
     color: theme.colors.textSecondary,
   },
-  textDates: {
+  datesText: {
     color: theme.colors.textSecondary,
     fontSize: theme.fontSizes.subheading,
+  },
+  legendText: {
+    color: theme.colors.labels,
+    fontFamily: theme.fonts.secondary,
+    fontSize: theme.fontSizes.labels,
+    textAlign: 'center',
   },
   heading: {
     fontSize: theme.fontSizes.heading,

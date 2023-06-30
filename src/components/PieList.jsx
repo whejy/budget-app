@@ -1,9 +1,8 @@
 import { FlatList, StyleSheet, View } from 'react-native';
 import PieStorage from '../../utils/pieStorage';
 import Pie from './Pie';
+import { ListSeparator } from './Separators';
 import { Subheading } from './Text';
-
-const ItemSeparator = () => <View style={styles.separator} />;
 
 const PieList = ({
   pies,
@@ -49,7 +48,7 @@ const PieList = ({
             }}
             data={pies}
             keyboardShouldPersistTaps="handled"
-            ItemSeparatorComponent={ItemSeparator}
+            ItemSeparatorComponent={ListSeparator}
             renderItem={renderItem}
           />
         ) : (
@@ -61,9 +60,6 @@ const PieList = ({
 };
 
 const styles = StyleSheet.create({
-  separator: {
-    height: 32,
-  },
   container: {
     flex: 1,
   },

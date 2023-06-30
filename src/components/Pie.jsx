@@ -4,9 +4,10 @@ import { VictoryPie, VictoryLabel } from 'victory-native';
 import CategoryDetails from './CategoryDetails';
 import Dates from './Dates';
 import { PrimaryIcon, SecondaryIcon } from './Icon';
+import { ItemSeparator } from './Separators';
 import Prompt from '../Modals/Prompt';
 import AddExpense from '../Modals/ExpenseModal/AddExpense';
-import Text from './Text';
+import Text, { LegendText } from './Text';
 import theme from '../../theme';
 import EditDates from '../Modals/EditDatesModal';
 
@@ -47,8 +48,6 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
     }
     return handleNavigate({ height, index });
   };
-
-  const minSliceProportion = (amount, total) => amount / total > 0.07;
 
   const getRemainingIncome = ({ income, pieData }) => {
     const totalIncome = income.reduce((acc, curr) => acc + curr.amount, 0);
@@ -94,6 +93,18 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
     return { pieData, remainingIncome, totalIncome };
   };
 
+  const minSliceThreshold = (amount, total) => amount / total > 0.07;
+
+  const renderLabels = ({ x, y }) => {
+    if (minSliceThreshold(y, totalIncome) || x === 'Income') {
+      return [x, `${currency}${y}`];
+    }
+  };
+
+  const toggleCategory = (legendCategory) => {
+    category === legendCategory ? setCategory('') : setCategory(legendCategory);
+  };
+
   const events = [
     {
       target: 'data',
@@ -130,36 +141,23 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
   const { pieData, remainingIncome, totalIncome } = formatPieData();
   const categoryItems = category === 'Income' ? income : expenses[category];
   const emptyIncomeText = 'No remaining income for this period.';
-
-  const smallSlices = pieData.filter(
+  const legendCategories = pieData.filter(
     (category) =>
-      category.x !== 'Income' && !minSliceProportion(category.y, totalIncome)
+      category.x !== 'Income' && !minSliceThreshold(category.y, totalIncome)
   );
-
-  const labels = ({ x, y }) => {
-    if (minSliceProportion(y, totalIncome) || x === 'Income') {
-      return [x, `${currency}${y}`];
-    }
-  };
-
-  const toggleCategory = (legendCategory) => {
-    category === legendCategory ? setCategory('') : setCategory(legendCategory);
-  };
-
-  const ItemSeparator = () => <View style={styles.separator} />;
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      style={styles.itemDetails}
+      style={styles.legendItemContainer}
       onPress={() => toggleCategory(item.x)}
     >
-      <View style={[styles.legendPoint, { backgroundColor: item.fill }]}>
-        <Text style={styles.legendText}>{item.x}</Text>
+      <View style={[styles.legendColor, { backgroundColor: item.fill }]}>
+        <LegendText>{item.x}</LegendText>
       </View>
-      <Text style={styles.legendText}>
+      <LegendText>
         {currency}
         {item.y}
-      </Text>
+      </LegendText>
     </TouchableOpacity>
   );
 
@@ -169,44 +167,26 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
         <Dates dates={pie.dates} />
       </TouchableOpacity>
       <FlatList
-        data={smallSlices}
-        ItemSeparatorComponent={ItemSeparator}
+        data={legendCategories}
         renderItem={renderItem}
         numColumns={3}
+        columnWrapperStyle={styles.columnWrapperStyle}
+        ItemSeparatorComponent={ItemSeparator}
         listKey={(_, index) => 'C' + index.toString()}
-        columnWrapperStyle={{ justifyContent: 'space-between' }}
       />
-      {/* <View style={styles.legendContainer}>
-        {smallSlices.map((category) => (
-          <View key={category.x} style={styles.legendItemContainer}>
-            <View style={styles.legendItem}>
-              <View
-                style={[styles.legendPoint, { backgroundColor: category.fill }]}
-              >
-                <Text style={styles.legendText}>{category.x}</Text>
-              </View>
-              <Text style={styles.legendText}>
-                {currency}
-                {category.y}
-              </Text>
-            </View>
-          </View>
-        ))}
-      </View> */}
       <VictoryPie
         data={pieData}
         events={events}
-        labels={({ datum }) => labels(datum)}
+        labels={({ datum }) => renderLabels(datum)}
         labelComponent={<VictoryLabel textAnchor="middle" />}
+        innerRadius={90}
+        padAngle={1}
         style={{
           data: {
             fill: ({ datum }) => datum.fill,
           },
           labels: styles.labels,
         }}
-        innerRadius={90}
-        // origin={{ x: 180, y: 170 }}
-        padAngle={1}
       />
       {category?.length > 0 ? (
         <CategoryDetails
@@ -277,47 +257,32 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  labels: {
-    fontSize: 16,
-    padding: 10,
-    fill: theme.colors.labels,
-    fontFamily: theme.fonts.secondary,
-  },
-  legendContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    alignContent: 'space-between',
-    paddingTop: 20,
-    paddingHorizontal: 10,
-  },
-  legendPoint: {
-    paddingHorizontal: 5,
-    borderRadius: 50,
-  },
-  legendText: {
-    fontSize: 12,
-    color: theme.colors.labels,
-    fontFamily: theme.fonts.secondary,
-    textAlign: 'center',
-  },
   button: {
     paddingHorizontal: 25,
   },
-  emptyIncome: {
-    textAlign: 'center',
-    fontStyle: 'italic',
-    paddingBottom: 10,
+  columnWrapperStyle: {
+    justifyContent: 'space-between',
   },
-  itemDetails: {
+  labels: {
+    fontSize: theme.fontSizes.labels,
+    fontFamily: theme.fonts.secondary,
+    fill: theme.colors.labels,
+    padding: 10,
+  },
+  legendItemContainer: {
     minWidth: 100,
     paddingTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  separator: {
-    height: 10,
+  legendColor: {
+    paddingHorizontal: 5,
+    borderRadius: 50,
+  },
+  emptyIncome: {
+    textAlign: 'center',
+    fontStyle: 'italic',
+    paddingBottom: 10,
   },
 });
 

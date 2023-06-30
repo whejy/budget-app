@@ -1,10 +1,9 @@
 import { useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import SummaryPie from './SummaryPie';
+import { ListSeparator } from './Separators';
 import { isEmpty } from '../../utils/helpers';
 import { Subheading } from './Text';
-
-const ItemSeparator = () => <View style={styles.separator} />;
 
 const SummaryList = ({ pies, currency, onLayoutRootView }) => {
   const flatListRef = useRef();
@@ -108,19 +107,19 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
       <View style={styles.container} onLayout={onLayoutRootView}>
         {summaryPies ? (
           <FlatList
-            contentContainerStyle={styles.pieList}
             ref={flatListRef}
+            data={summaryPies}
+            renderItem={renderItem}
+            keyboardShouldPersistTaps="handled"
+            contentContainerStyle={styles.pieList}
+            ItemSeparatorComponent={ListSeparator}
+            keyExtractor={(_, i) => i}
             onScrollToIndexFailed={() => {
               flatListRef.current?.scrollToOffset({
                 offset: 0,
                 animated: true,
               });
             }}
-            data={summaryPies}
-            keyboardShouldPersistTaps="handled"
-            ItemSeparatorComponent={ItemSeparator}
-            renderItem={renderItem}
-            keyExtractor={(_, i) => i}
           />
         ) : (
           <Subheading style={styles.emptyList}>
@@ -133,9 +132,6 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
 };
 
 const styles = StyleSheet.create({
-  separator: {
-    height: 32,
-  },
   container: {
     flex: 1,
   },
