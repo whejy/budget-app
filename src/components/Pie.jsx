@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { VictoryPie, VictoryLabel } from 'victory-native';
 import CategoryDetails from './CategoryDetails';
 import Dates from './Dates';
-import { PrimaryIcon, SecondaryIcon } from './Icon';
-import { ItemSeparator } from './Separators';
+import Legend from './Legend';
 import Prompt from '../Modals/Prompt';
 import AddExpense from '../Modals/ExpenseModal/AddExpense';
-import Text, { LegendText } from './Text';
-import theme from '../../theme';
 import EditDates from '../Modals/EditDatesModal';
+import { PrimaryIcon, SecondaryIcon } from './Icon';
+import Text from './Text';
+import theme from '../../theme';
 
 const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
   const [category, setCategory] = useState('');
@@ -95,9 +95,9 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
 
   const minSliceThreshold = (amount, total) => amount / total > 0.07;
 
-  const renderLabels = ({ x, y }) => {
-    if (minSliceThreshold(y, totalIncome) || x === 'Income') {
-      return [x, `${currency}${y}`];
+  const renderLabels = ({ datum }) => {
+    if (minSliceThreshold(datum.y, totalIncome) || datum.x === 'Income') {
+      return [datum.x, `${currency}${datum.y}`];
     }
   };
 
@@ -146,38 +146,19 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
       category.x !== 'Income' && !minSliceThreshold(category.y, totalIncome)
   );
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      style={styles.legendItemContainer}
-      onPress={() => toggleCategory(item.x)}
-    >
-      <View style={[styles.legendColor, { backgroundColor: item.fill }]}>
-        <LegendText>{item.x}</LegendText>
-      </View>
-      <LegendText>
-        {currency}
-        {item.y}
-      </LegendText>
-    </TouchableOpacity>
-  );
-
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={toggleCalendar}>
-        <Dates dates={pie.dates} />
-      </TouchableOpacity>
-      <FlatList
+      <Dates dates={pie.dates} onPress={toggleCalendar} />
+      <Legend
         data={legendCategories}
-        renderItem={renderItem}
-        numColumns={3}
-        columnWrapperStyle={styles.columnWrapperStyle}
-        ItemSeparatorComponent={ItemSeparator}
-        listKey={(_, index) => 'C' + index.toString()}
+        currency={currency}
+        onPress={toggleCategory}
+        listKey="C"
       />
       <VictoryPie
         data={pieData}
         events={events}
-        labels={({ datum }) => renderLabels(datum)}
+        labels={renderLabels}
         labelComponent={<VictoryLabel textAnchor="middle" />}
         innerRadius={90}
         padAngle={1}
@@ -260,24 +241,11 @@ const styles = StyleSheet.create({
   button: {
     paddingHorizontal: 25,
   },
-  columnWrapperStyle: {
-    justifyContent: 'space-between',
-  },
   labels: {
     fontSize: theme.fontSizes.labels,
     fontFamily: theme.fonts.secondary,
     fill: theme.colors.labels,
     padding: 10,
-  },
-  legendItemContainer: {
-    minWidth: 100,
-    paddingTop: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  legendColor: {
-    paddingHorizontal: 5,
-    borderRadius: 50,
   },
   emptyIncome: {
     textAlign: 'center',

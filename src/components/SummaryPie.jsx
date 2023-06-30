@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { VictoryPie, VictoryLabel } from 'victory-native';
 import CategoryDetails from './CategoryDetails';
+import Legend from './Legend';
 import { DatesText } from './Text';
 import { months } from '../data/months';
 import theme from '../../theme';
@@ -67,6 +68,18 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
     return { pieData, categoryDetails };
   };
 
+  const minSliceThreshold = (amount) => amount > 7;
+
+  const renderLabels = ({ datum }) => {
+    if (minSliceThreshold(datum.y)) {
+      return [datum.x, `${datum.y}%`];
+    }
+  };
+
+  const toggleCategory = (legendCategory) => {
+    category === legendCategory ? setCategory('') : setCategory(legendCategory);
+  };
+
   const events = [
     {
       target: 'data',
@@ -102,22 +115,26 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
 
   const { pieData, categoryDetails } = formatPieData();
   const categoryItems = categoryDetails[category];
+  const legendCategories = pieData.filter(
+    (category) => !minSliceThreshold(category.y)
+  );
 
   return (
     <View style={styles.container}>
       <DatesText>{date.year}</DatesText>
       <DatesText>{date.month}</DatesText>
+      <Legend data={legendCategories} onPress={toggleCategory} listKey="F" />
       <VictoryPie
         data={pieData}
-        labels={({ datum }) => [datum.x, `${datum.y}%`]}
         events={events}
+        labels={renderLabels}
+        labelComponent={<VictoryLabel textAnchor="middle" />}
         style={{
           data: {
             fill: ({ datum }) => datum.fill,
           },
           labels: styles.labels,
         }}
-        labelComponent={<VictoryLabel textAnchor="middle" />}
       />
       {category?.length > 0 ? (
         <CategoryDetails

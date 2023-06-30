@@ -1,14 +1,14 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { parseDates } from '../../utils/helpers';
 import { DatesText } from './Text';
 
-const Dates = ({ dates }) => {
+const Dates = ({ dates, onPress }) => {
   const { startDate, endDate } = parseDates(dates);
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={styles.container}>
       <DatesText>{startDate}</DatesText>
       <DatesText>{endDate}</DatesText>
-    </View>
+    </TouchableOpacity>
   );
 };
 

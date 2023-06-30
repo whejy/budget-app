@@ -59,7 +59,7 @@ const Main = ({ navRef }) => {
       animated: true,
       index: index,
       viewPosition: 0,
-      viewOffset: 100 - height,
+      viewOffset: 20 - height,
     });
   };
 

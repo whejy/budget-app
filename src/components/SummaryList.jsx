@@ -13,7 +13,7 @@ const SummaryList = ({ pies, currency, onLayoutRootView }) => {
       animated: true,
       index: index,
       viewPosition: 0,
-      viewOffset: 110 - height,
+      viewOffset: 20 - height,
     });
   };
 
