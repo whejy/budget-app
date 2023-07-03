@@ -29,6 +29,11 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
     return null;
   }
 
+  const onLayout = (event) => {
+    const { height } = event.nativeEvent.layout;
+    return handleNavigate({ height, index });
+  };
+
   const handleDeletePie = () => {
     togglePrompt();
     removePie(pie);
@@ -40,13 +45,6 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
       setCategory('');
     }
     savePie(updatedPie);
-  };
-
-  const getItemLayout = ({ height }) => {
-    if (category === 'Income') {
-      height += 7;
-    }
-    return handleNavigate({ height, index });
   };
 
   const getRemainingIncome = ({ income, pieData }) => {
@@ -147,7 +145,7 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
   );
 
   return (
-    <View style={styles.container}>
+    <View onLayout={onLayout} style={styles.container}>
       <Dates dates={pie.dates} onPress={toggleCalendar} />
       <Legend
         data={legendCategories}
@@ -160,8 +158,11 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
         events={events}
         labels={renderLabels}
         labelComponent={<VictoryLabel textAnchor="middle" />}
-        innerRadius={90}
+        // innerRadius={80}
+        // padAngle={1}
+        innerRadius={70}
         padAngle={1}
+        padding={60}
         style={{
           data: {
             fill: ({ datum }) => datum.fill,
@@ -177,7 +178,6 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
           savePie={handlePieUpdate}
           categoryItems={categoryItems}
           remainingIncome={remainingIncome}
-          getItemLayout={getItemLayout}
         />
       ) : null}
       {remainingIncome === 0 && (

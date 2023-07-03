@@ -48,18 +48,12 @@ const CategoryDetails = ({
   pie,
   savePie,
   remainingIncome,
-  getItemLayout,
   currency,
   summary,
 }) => {
   const [promptOpen, setPromptOpen] = useState(false);
 
   const togglePrompt = () => setPromptOpen(!promptOpen);
-
-  const onLayout = (event) => {
-    const { height } = event.nativeEvent.layout;
-    return getItemLayout({ height });
-  };
 
   const removeCategory = () => {
     delete pie.expenses[category];
@@ -82,7 +76,7 @@ const CategoryDetails = ({
   );
 
   return (
-    <View onLayout={onLayout} style={styles.container}>
+    <View style={styles.container}>
       <Prompt
         modalOpen={promptOpen}
         onClose={togglePrompt}

@@ -13,7 +13,8 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
   const { expenses, month, year } = pie;
   const date = { month: months[month], year: year };
 
-  const getItemLayout = ({ height }) => {
+  const onLayout = (event) => {
+    const { height } = event.nativeEvent.layout;
     return handleNavigate({ height, index });
   };
 
@@ -120,7 +121,7 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
   );
 
   return (
-    <View style={styles.container}>
+    <View onLayout={onLayout} style={styles.container}>
       <DatesText>{date.year}</DatesText>
       <DatesText>{date.month}</DatesText>
       <Legend data={legendCategories} onPress={toggleCategory} listKey="F" />
@@ -129,6 +130,9 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
         events={events}
         labels={renderLabels}
         labelComponent={<VictoryLabel textAnchor="middle" />}
+        innerRadius={70}
+        padAngle={1}
+        padding={60}
         style={{
           data: {
             fill: ({ datum }) => datum.fill,
@@ -139,7 +143,6 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
       {category?.length > 0 ? (
         <CategoryDetails
           category={category}
-          getItemLayout={getItemLayout}
           categoryItems={categoryItems}
           currency={currency}
           summary
