@@ -13,6 +13,10 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
   const { expenses, month, year } = pie;
   const date = { month: months[month], year: year };
 
+  const toggleCategory = (newCategory) => {
+    category === newCategory ? setCategory('') : setCategory(newCategory);
+  };
+
   const onLayout = (event) => {
     const { height } = event.nativeEvent.layout;
     return handleNavigate({ height, index });
@@ -77,10 +81,6 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
     }
   };
 
-  const toggleCategory = (legendCategory) => {
-    category === legendCategory ? setCategory('') : setCategory(legendCategory);
-  };
-
   const events = [
     {
       target: 'data',
@@ -94,7 +94,7 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
 
             {
               mutation: (props) => {
-                setCategory(props.datum.x);
+                toggleCategory(props.datum.x);
                 if (props.datum.x !== category) {
                   return {
                     style: {
@@ -105,7 +105,7 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
                     },
                   };
                 }
-                setCategory('');
+                toggleCategory(props.datum.x);
               },
             },
           ];

@@ -16,10 +16,15 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [promptOpen, setPromptOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
+  const [canScroll, setCanScroll] = useState(false);
 
   const toggleModal = () => setModalOpen(!modalOpen);
   const togglePrompt = () => setPromptOpen(!promptOpen);
   const toggleCalendar = () => setCalendarOpen(!calendarOpen);
+  const toggleCategory = (newCategory) => {
+    category === newCategory ? setCategory('') : setCategory(newCategory);
+    !canScroll && setCanScroll(true);
+  };
 
   const { expenses, income } = pie;
 
@@ -31,7 +36,7 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
 
   const onLayout = (event) => {
     const { height } = event.nativeEvent.layout;
-    return handleNavigate({ height, index });
+    if (canScroll) return handleNavigate({ height, index });
   };
 
   const handleDeletePie = () => {
@@ -99,10 +104,6 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
     }
   };
 
-  const toggleCategory = (legendCategory) => {
-    category === legendCategory ? setCategory('') : setCategory(legendCategory);
-  };
-
   const events = [
     {
       target: 'data',
@@ -116,7 +117,7 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
 
             {
               mutation: (props) => {
-                setCategory(props.datum.x);
+                toggleCategory(props.datum.x);
                 if (props.datum.x !== category) {
                   return {
                     style: {
@@ -127,7 +128,7 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
                     },
                   };
                 }
-                setCategory('');
+                toggleCategory(props.datum.x);
               },
             },
           ];
