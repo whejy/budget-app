@@ -124,15 +124,20 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
     <View onLayout={onLayout} style={styles.container}>
       <DatesText>{date.year}</DatesText>
       <DatesText>{date.month}</DatesText>
-      <Legend data={legendCategories} onPress={toggleCategory} listKey="F" />
+      <Legend
+        data={legendCategories}
+        category={category}
+        toggleCategory={toggleCategory}
+        listKey="F"
+      />
       <VictoryPie
         data={pieData}
         events={events}
         labels={renderLabels}
         labelComponent={<VictoryLabel textAnchor="middle" />}
         innerRadius={70}
-        padAngle={1}
         padding={60}
+        padAngle={1}
         style={{
           data: {
             fill: ({ datum }) => datum.fill,

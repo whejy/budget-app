@@ -2,13 +2,27 @@ import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ItemSeparator } from './Separators';
 import { LegendText } from './Text';
 
-const Legend = ({ data, listKey, currency, onPress }) => {
+const Legend = ({ data, listKey, currency, category, toggleCategory }) => {
+  const onPress = (newCategory) => {
+    toggleCategory(newCategory);
+  };
+
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.legendItemContainer}
       onPress={() => onPress(item.x)}
     >
-      <View style={[styles.legendColor, { backgroundColor: item.fill }]}>
+      <View
+        style={
+          item.x !== category
+            ? [styles.legendColor, { backgroundColor: item.fill }]
+            : [
+                styles.legendColor,
+                styles.legendColorActive,
+                { backgroundColor: `${item.fill}99`, borderColor: item.fill },
+              ]
+        }
+      >
         <LegendText>{item.x}</LegendText>
       </View>
       <LegendText>
@@ -35,13 +49,16 @@ const styles = StyleSheet.create({
   },
   legendItemContainer: {
     minWidth: 100,
-    paddingTop: 20,
+    minHeight: 60,
     alignItems: 'center',
     justifyContent: 'center',
   },
   legendColor: {
     paddingHorizontal: 5,
     borderRadius: 50,
+  },
+  legendColorActive: {
+    borderWidth: 4,
   },
 });
 

@@ -18,6 +18,41 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [canScroll, setCanScroll] = useState(false);
 
+  // const [externalMutations, setExternalMutations] = useState(null);
+
+  // const handleLegendPress = (newCategory) => {
+  //   setExternalMutations([
+  //     {
+  //       childname: `pie${index}`,
+  //       target: 'data',
+  //       eventKey: 'all',
+  //       mutation: () => null,
+  //     },
+  //     {
+  //       childname: `pie${index}`,
+  //       target: 'data',
+  //       eventKey: 'all',
+  //       mutation: (props) => {
+  //         // console.log(props.data, props.slice);
+  //         console.log(props);
+  //         toggleCategory(props.datum.x);
+  //         if (props.datum.x !== category) {
+  //           return {
+  //             // style: {
+  //             //   ...props.style,
+  //             //   stroke: props.style.fill,
+  //             //   fillOpacity: 0.6,
+  //             //   strokeWidth: 4,
+  //             // },
+  //           };
+  //         }
+  //         toggleCategory(props.datum.x);
+  //       },
+  //     },
+  //   ]);
+  //   toggleCategory(newCategory);
+  // };
+
   const toggleModal = () => setModalOpen(!modalOpen);
   const togglePrompt = () => setPromptOpen(!promptOpen);
   const toggleCalendar = () => setCalendarOpen(!calendarOpen);
@@ -117,6 +152,7 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
 
             {
               mutation: (props) => {
+                // console.log(props.data, props.slice);
                 toggleCategory(props.datum.x);
                 if (props.datum.x !== category) {
                   return {
@@ -137,6 +173,23 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
     },
   ];
 
+  // const events = [
+  //   {
+  //     target: 'data',
+  //     eventHandlers: {
+  //       onPressIn: () => {
+  //         return [
+  //           {
+  //             mutation: (props) => {
+  //               toggleCategory(props.datum.x);
+  //             },
+  //           },
+  //         ];
+  //       },
+  //     },
+  //   },
+  // ];
+
   const { pieData, remainingIncome, totalIncome } = formatPieData();
   const categoryItems = category === 'Income' ? income : expenses[category];
   const emptyIncomeText = 'No remaining income for this period.';
@@ -151,19 +204,20 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
       <Legend
         data={legendCategories}
         currency={currency}
-        onPress={toggleCategory}
+        toggleCategory={toggleCategory}
+        category={category}
         listKey="C"
       />
       <VictoryPie
         data={pieData}
         events={events}
+        // externalEventMutations={externalMutations}
+        name={`pie${index}`}
         labels={renderLabels}
         labelComponent={<VictoryLabel textAnchor="middle" />}
-        // innerRadius={80}
-        // padAngle={1}
         innerRadius={70}
-        padAngle={1}
         padding={60}
+        padAngle={1}
         style={{
           data: {
             fill: ({ datum }) => datum.fill,
@@ -243,10 +297,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 25,
   },
   labels: {
+    padding: 10,
     fontSize: theme.fontSizes.labels,
     fontFamily: theme.fonts.secondary,
     fill: theme.colors.labels,
-    padding: 10,
   },
   emptyIncome: {
     textAlign: 'center',
