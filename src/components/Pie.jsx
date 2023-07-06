@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { VictoryPie, VictoryLabel } from 'victory-native';
 import CategoryDetails from './CategoryDetails';
@@ -17,41 +17,11 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
   const [promptOpen, setPromptOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [canScroll, setCanScroll] = useState(false);
+  const [externalEventMutations, setExternalEventMutations] = useState(null);
 
-  // const [externalMutations, setExternalMutations] = useState(null);
-
-  // const handleLegendPress = (newCategory) => {
-  //   setExternalMutations([
-  //     {
-  //       childname: `pie${index}`,
-  //       target: 'data',
-  //       eventKey: 'all',
-  //       mutation: () => null,
-  //     },
-  //     {
-  //       childname: `pie${index}`,
-  //       target: 'data',
-  //       eventKey: 'all',
-  //       mutation: (props) => {
-  //         // console.log(props.data, props.slice);
-  //         console.log(props);
-  //         toggleCategory(props.datum.x);
-  //         if (props.datum.x !== category) {
-  //           return {
-  //             // style: {
-  //             //   ...props.style,
-  //             //   stroke: props.style.fill,
-  //             //   fillOpacity: 0.6,
-  //             //   strokeWidth: 4,
-  //             // },
-  //           };
-  //         }
-  //         toggleCategory(props.datum.x);
-  //       },
-  //     },
-  //   ]);
-  //   toggleCategory(newCategory);
-  // };
+  useEffect(() => {
+    setExternalEventMutations(externalEvents);
+  }, [category]);
 
   const toggleModal = () => setModalOpen(!modalOpen);
   const togglePrompt = () => setPromptOpen(!promptOpen);
@@ -60,14 +30,6 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
     category === newCategory ? setCategory('') : setCategory(newCategory);
     !canScroll && setCanScroll(true);
   };
-
-  const { expenses, income } = pie;
-
-  // Check if app is using retired data structure
-  if (typeof income === 'number') {
-    removePie(pie);
-    return null;
-  }
 
   const onLayout = (event) => {
     const { height } = event.nativeEvent.layout;
@@ -134,7 +96,7 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
   const minSliceThreshold = (amount, total) => amount / total > 0.07;
 
   const renderLabels = ({ datum }) => {
-    if (minSliceThreshold(datum.y, totalIncome) || datum.x === 'Income') {
+    if (minSliceThreshold(datum.y, totalIncome)) {
       return [datum.x, `${currency}${datum.y}`];
     }
   };
@@ -146,24 +108,7 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
         onPressIn: () => {
           return [
             {
-              eventKey: 'all',
-              mutation: () => null,
-            },
-
-            {
               mutation: (props) => {
-                // console.log(props.data, props.slice);
-                toggleCategory(props.datum.x);
-                if (props.datum.x !== category) {
-                  return {
-                    style: {
-                      ...props.style,
-                      stroke: props.style.fill,
-                      fillOpacity: 0.6,
-                      strokeWidth: 4,
-                    },
-                  };
-                }
                 toggleCategory(props.datum.x);
               },
             },
@@ -173,29 +118,46 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
     },
   ];
 
-  // const events = [
-  //   {
-  //     target: 'data',
-  //     eventHandlers: {
-  //       onPressIn: () => {
-  //         return [
-  //           {
-  //             mutation: (props) => {
-  //               toggleCategory(props.datum.x);
-  //             },
-  //           },
-  //         ];
-  //       },
-  //     },
-  //   },
-  // ];
+  const externalEvents = [
+    {
+      childname: `pie${index}`,
+      target: 'data',
+      eventKey: 'all',
+      mutation: (props) =>
+        props.datum.x === category
+          ? {
+              style: {
+                ...props.style,
+                stroke: props.style.fill,
+                fillOpacity: 0.6,
+                strokeWidth: 4,
+              },
+            }
+          : {
+              style: {
+                ...props.style,
+                stroke: props.style.fill,
+                fillOpacity: 1,
+                strokeWidth: 1,
+              },
+            },
+      callback: setExternalEventMutations,
+    },
+  ];
+
+  const { expenses, income } = pie;
+
+  // Check if app is using retired data structure
+  if (typeof income === 'number') {
+    removePie(pie);
+    return null;
+  }
 
   const { pieData, remainingIncome, totalIncome } = formatPieData();
   const categoryItems = category === 'Income' ? income : expenses[category];
   const emptyIncomeText = 'No remaining income for this period.';
   const legendCategories = pieData.filter(
-    (category) =>
-      category.x !== 'Income' && !minSliceThreshold(category.y, totalIncome)
+    (category) => !minSliceThreshold(category.y, totalIncome)
   );
 
   return (
@@ -204,14 +166,14 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
       <Legend
         data={legendCategories}
         currency={currency}
-        toggleCategory={toggleCategory}
+        onPress={toggleCategory}
         category={category}
         listKey="C"
       />
       <VictoryPie
         data={pieData}
         events={events}
-        // externalEventMutations={externalMutations}
+        externalEventMutations={externalEventMutations}
         name={`pie${index}`}
         labels={renderLabels}
         labelComponent={<VictoryLabel textAnchor="middle" />}

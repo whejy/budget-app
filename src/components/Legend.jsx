@@ -2,11 +2,7 @@ import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native';
 import { ItemSeparator } from './Separators';
 import { LegendText } from './Text';
 
-const Legend = ({ data, listKey, currency, category, toggleCategory }) => {
-  const onPress = (newCategory) => {
-    toggleCategory(newCategory);
-  };
-
+const Legend = ({ data, listKey, currency, category, onPress }) => {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.legendItemContainer}
