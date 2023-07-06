@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingBottom: 10,
+    minHeight: 50,
   },
   itemDetails: {
     width: 100,

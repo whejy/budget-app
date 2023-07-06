@@ -32,6 +32,7 @@ const Legend = ({ data, listKey, currency, category, onPress }) => {
       data={data}
       renderItem={renderItem}
       numColumns={3}
+      style={styles.container}
       columnWrapperStyle={styles.columnWrapperStyle}
       ItemSeparatorComponent={ItemSeparator}
       listKey={(_, index) => listKey + index.toString()}
@@ -42,6 +43,9 @@ const Legend = ({ data, listKey, currency, category, onPress }) => {
 const styles = StyleSheet.create({
   columnWrapperStyle: {
     justifyContent: 'space-between',
+  },
+  container: {
+    marginTop: 15,
   },
   legendItemContainer: {
     minWidth: 100,
