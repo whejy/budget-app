@@ -14,6 +14,7 @@ const FormFields = ({
   setFormCategory,
   incomeCategory,
   incomeIsRemovable,
+  remainingIncome,
   categories,
   dates,
 }) => {
@@ -52,7 +53,11 @@ const FormFields = ({
         <FormikDatesInput name="date" minDate={minDate} maxDate={maxDate} />
       )}
       {!incomeCategory && (
-        <FormikSelectInput setFormCategory={setFormCategory} name="category">
+        <FormikSelectInput
+          enabled={remainingIncome === 0 ? false : true}
+          setFormCategory={setFormCategory}
+          name="category"
+        >
           {categories.map((category, i) => (
             <Picker.Item key={i} label={category} value={category} />
           ))}

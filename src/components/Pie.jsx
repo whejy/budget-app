@@ -207,11 +207,9 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
         <Text style={styles.emptyIncome}>{emptyIncomeText}</Text>
       )}
       <View style={styles.buttonContainer}>
-        {remainingIncome > 0 && (
-          <TouchableOpacity onPress={toggleModal}>
-            <PrimaryIcon {...styles.button} name="edit" type="material" />
-          </TouchableOpacity>
-        )}
+        <TouchableOpacity onPress={toggleModal}>
+          <PrimaryIcon {...styles.button} name="edit" type="material" />
+        </TouchableOpacity>
         <TouchableOpacity onPress={togglePrompt}>
           <SecondaryIcon {...styles.button} name="delete" type="material" />
         </TouchableOpacity>
@@ -222,7 +220,7 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
         savePie={handlePieUpdate}
         pie={pie}
         remainingIncome={remainingIncome}
-        selectedCategory={category}
+        selectedCategory={remainingIncome === 0 ? 'Income' : category}
       />
       <Prompt
         modalOpen={promptOpen}

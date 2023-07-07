@@ -78,6 +78,7 @@ const AddExpenseForm = ({
             onSubmit={handleSubmit}
             onCancel={onClose}
             categories={categories}
+            remainingIncome={remainingIncome}
             dates={pie.dates}
           />
         )}
