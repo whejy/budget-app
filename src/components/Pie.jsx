@@ -101,6 +101,11 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
     }
   };
 
+  const sortLegend = (categories) => [
+    ...categories.filter((category) => category.x === 'Income'),
+    ...categories.filter((category) => category.x !== 'Income'),
+  ];
+
   const events = [
     {
       target: 'data',
@@ -159,12 +164,13 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
   const legendCategories = pieData.filter(
     (category) => !minSliceThreshold(category.y, totalIncome)
   );
+  const sortedLegend = sortLegend(legendCategories);
 
   return (
     <View onLayout={onLayout} style={styles.container}>
       <Dates dates={pie.dates} onPress={toggleCalendar} />
       <Legend
-        data={legendCategories}
+        data={sortedLegend}
         currency={currency}
         onPress={toggleCategory}
         category={category}
