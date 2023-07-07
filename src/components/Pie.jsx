@@ -167,7 +167,7 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
   const sortedLegend = sortLegend(legendCategories);
 
   return (
-    <View onLayout={onLayout} style={styles.container}>
+    <View key={category} onLayout={onLayout} style={styles.container}>
       <Dates dates={pie.dates} onPress={toggleCalendar} />
       <Legend
         data={sortedLegend}
@@ -271,7 +271,7 @@ const styles = StyleSheet.create({
   emptyIncome: {
     textAlign: 'center',
     fontStyle: 'italic',
-    paddingBottom: 10,
+    paddingBottom: 20,
   },
 });
 

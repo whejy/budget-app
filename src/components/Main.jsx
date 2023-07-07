@@ -55,6 +55,7 @@ const Main = ({ navRef }) => {
 
   // Navigation for PieList
   const handleNavigate = ({ height, index }) => {
+    console.log('CALL');
     flatListRef.current?.scrollToIndex({
       animated: true,
       index: index,
