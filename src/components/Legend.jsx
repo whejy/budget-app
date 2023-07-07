@@ -11,11 +11,14 @@ const Legend = ({ data, listKey, currency, category, onPress }) => {
       <View
         style={
           item.x !== category
-            ? [styles.legendColor, { backgroundColor: item.fill }]
+            ? [styles.legendItem, { backgroundColor: item.fill }]
             : [
-                styles.legendColor,
-                styles.legendColorActive,
-                { backgroundColor: `${item.fill}99`, borderColor: item.fill },
+                styles.legendItem,
+                {
+                  backgroundColor: `${item.fill}99`,
+                  borderColor: item.fill,
+                  borderWidth: 4,
+                },
               ]
         }
       >
@@ -53,12 +56,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  legendColor: {
+  legendItem: {
     paddingHorizontal: 5,
     borderRadius: 50,
-  },
-  legendColorActive: {
-    borderWidth: 4,
   },
 });
 
