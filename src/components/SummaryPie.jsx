@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import { VictoryPie, VictoryLabel } from 'victory-native';
+import PieWrapper from './PieWrapper';
 import CategoryDetails from './CategoryDetails';
 import Legend from './Legend';
 import { DatesText } from './Text';
@@ -9,11 +9,6 @@ import theme from '../../theme';
 
 const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
   const [category, setCategory] = useState('');
-  const [externalEventMutations, setExternalEventMutations] = useState(null);
-
-  useEffect(() => {
-    setExternalEventMutations(externalEvents);
-  }, [category]);
 
   const { expenses, month, year } = pie;
   const date = { month: months[month], year: year };
@@ -87,50 +82,6 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
     }
   };
 
-  const events = [
-    {
-      target: 'data',
-      eventHandlers: {
-        onPressIn: () => {
-          return [
-            {
-              mutation: (props) => {
-                toggleCategory(props.datum.x);
-              },
-            },
-          ];
-        },
-      },
-    },
-  ];
-
-  const externalEvents = [
-    {
-      childname: `pie${index}`,
-      target: 'data',
-      eventKey: 'all',
-      mutation: (props) =>
-        props.datum.x === category
-          ? {
-              style: {
-                ...props.style,
-                stroke: props.style.fill,
-                fillOpacity: 0.6,
-                strokeWidth: 4,
-              },
-            }
-          : {
-              style: {
-                ...props.style,
-                stroke: props.style.fill,
-                fillOpacity: 1,
-                strokeWidth: 1,
-              },
-            },
-      callback: setExternalEventMutations,
-    },
-  ];
-
   const { pieData, categoryDetails } = formatPieData();
   const categoryItems = categoryDetails[category];
   const legendCategories = pieData.filter(
@@ -147,21 +98,12 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
         onPress={toggleCategory}
         listKey="F"
       />
-      <VictoryPie
-        data={pieData}
-        events={events}
-        externalEventMutations={externalEventMutations}
-        labels={renderLabels}
-        labelComponent={<VictoryLabel textAnchor="middle" />}
-        innerRadius={70}
-        padding={60}
-        padAngle={1}
-        style={{
-          data: {
-            fill: ({ datum }) => datum.fill,
-          },
-          labels: styles.labels,
-        }}
+      <PieWrapper
+        pieData={pieData}
+        toggleCategory={toggleCategory}
+        category={category}
+        index={index}
+        renderLabels={renderLabels}
       />
       {category?.length > 0 ? (
         <CategoryDetails
@@ -191,12 +133,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.3,
     shadowRadius: 3,
-  },
-  labels: {
-    fontSize: 16,
-    padding: 10,
-    fill: theme.colors.labels,
-    fontFamily: theme.fonts.secondary,
   },
   emptyList: {
     textAlign: 'center',

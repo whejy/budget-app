@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import { VictoryPie, VictoryLabel } from 'victory-native';
+import PieWrapper from './PieWrapper';
 import CategoryDetails from './CategoryDetails';
 import Dates from './Dates';
 import Legend from './Legend';
@@ -17,11 +17,6 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
   const [promptOpen, setPromptOpen] = useState(false);
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [canScroll, setCanScroll] = useState(false);
-  const [externalEventMutations, setExternalEventMutations] = useState(null);
-
-  useEffect(() => {
-    setExternalEventMutations(externalEvents);
-  }, [category]);
 
   const toggleModal = () => setModalOpen(!modalOpen);
   const togglePrompt = () => setPromptOpen(!promptOpen);
@@ -106,50 +101,6 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
     ...categories.filter((category) => category.x !== 'Income'),
   ];
 
-  const events = [
-    {
-      target: 'data',
-      eventHandlers: {
-        onPressIn: () => {
-          return [
-            {
-              mutation: (props) => {
-                toggleCategory(props.datum.x);
-              },
-            },
-          ];
-        },
-      },
-    },
-  ];
-
-  const externalEvents = [
-    {
-      childname: `pie${index}`,
-      target: 'data',
-      eventKey: 'all',
-      mutation: (props) =>
-        props.datum.x === category
-          ? {
-              style: {
-                ...props.style,
-                stroke: props.style.fill,
-                fillOpacity: 0.6,
-                strokeWidth: 4,
-              },
-            }
-          : {
-              style: {
-                ...props.style,
-                stroke: props.style.fill,
-                fillOpacity: 1,
-                strokeWidth: 1,
-              },
-            },
-      callback: setExternalEventMutations,
-    },
-  ];
-
   const { expenses, income } = pie;
 
   // Check if app is using retired data structure
@@ -176,22 +127,12 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
         category={category}
         listKey="C"
       />
-      <VictoryPie
-        data={pieData}
-        events={events}
-        externalEventMutations={externalEventMutations}
-        name={`pie${index}`}
-        labels={renderLabels}
-        labelComponent={<VictoryLabel textAnchor="middle" />}
-        innerRadius={70}
-        padding={60}
-        padAngle={1}
-        style={{
-          data: {
-            fill: ({ datum }) => datum.fill,
-          },
-          labels: styles.labels,
-        }}
+      <PieWrapper
+        pieData={pieData}
+        toggleCategory={toggleCategory}
+        category={category}
+        index={index}
+        renderLabels={renderLabels}
       />
       {category?.length > 0 ? (
         <CategoryDetails
@@ -261,12 +202,6 @@ const styles = StyleSheet.create({
   },
   button: {
     paddingHorizontal: 25,
-  },
-  labels: {
-    padding: 10,
-    fontSize: theme.fontSizes.labels,
-    fontFamily: theme.fonts.secondary,
-    fill: theme.colors.labels,
   },
   emptyIncome: {
     textAlign: 'center',
