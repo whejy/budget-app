@@ -46,16 +46,17 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
       expenseTotals = expenseTotals[category]
         ? expenseTotals
         : { ...expenseTotals, [category]: 0 };
+
       Object.values(expenses[category]).forEach(
         (expense) => (expenseTotals[category] += expense.amount)
       );
     });
 
-    Object.entries(expenseTotals).forEach(
-      ([category, total]) =>
-        (percentages[category] =
-          (100 * Math.round((1000 * total) / expenses.total)) / 1000)
-    );
+    Object.entries(expenseTotals).forEach(([category, total]) => {
+      expenseTotals[category] = Math.round(100 * total) / 100;
+      percentages[category] =
+        (100 * Math.round((1000 * total) / expenses.total)) / 1000;
+    });
 
     return { percentages, expenseTotals };
   };
