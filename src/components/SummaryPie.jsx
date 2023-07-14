@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import PieWrapper from './PieWrapper';
 import CategoryDetails from './CategoryDetails';
-import Legend from './Legend';
 import { roundCurrency, roundPercentage } from '../../utils/helpers';
 import { DatesText } from './Text';
 import { months } from '../data/months';
@@ -74,36 +73,19 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
     return { pieData, categoryDetails };
   };
 
-  const minSliceThreshold = (amount) => amount > 7;
-
-  const renderLabels = ({ datum }) => {
-    if (minSliceThreshold(datum.y)) {
-      return [datum.x, `${datum.y}%`];
-    }
-  };
-
   const { pieData, categoryDetails } = formatPieData();
   const categoryItems = categoryDetails[category];
-  const legendCategories = pieData.filter(
-    (category) => !minSliceThreshold(category.y)
-  );
 
   return (
     <View onLayout={onLayout} style={styles.container}>
       <DatesText>{date.year}</DatesText>
       <DatesText>{date.month}</DatesText>
-      <Legend
-        data={legendCategories}
-        category={category}
-        onPress={toggleCategory}
-        listKey="F"
-      />
       <PieWrapper
         pieData={pieData}
         toggleCategory={toggleCategory}
         category={category}
         index={index}
-        renderLabels={renderLabels}
+        currency={currency}
       />
       {category?.length > 0 ? (
         <CategoryDetails

@@ -3,7 +3,6 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import PieWrapper from './PieWrapper';
 import CategoryDetails from './CategoryDetails';
 import Dates from './Dates';
-import Legend from './Legend';
 import Prompt from '../Modals/Prompt';
 import AddExpense from '../Modals/ExpenseModal/AddExpense';
 import EditDates from '../Modals/EditDatesModal';
@@ -89,19 +88,6 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
     return { pieData, remainingIncome, totalIncome };
   };
 
-  const minSliceThreshold = (amount, total) => amount / total > 0.07;
-
-  const renderLabels = ({ datum }) => {
-    if (minSliceThreshold(datum.y, totalIncome)) {
-      return [datum.x, `${currency}${datum.y}`];
-    }
-  };
-
-  const sortLegend = (categories) => [
-    ...categories.filter((category) => category.x === 'Income'),
-    ...categories.filter((category) => category.x !== 'Income'),
-  ];
-
   const { expenses, income } = pie;
 
   // Check if app is using retired data structure
@@ -113,27 +99,17 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
   const { pieData, remainingIncome, totalIncome } = formatPieData();
   const categoryItems = category === 'Income' ? income : expenses[category];
   const emptyIncomeText = 'No remaining income for this period.';
-  const legendCategories = pieData.filter(
-    (category) => !minSliceThreshold(category.y, totalIncome)
-  );
-  const sortedLegend = sortLegend(legendCategories);
 
   return (
     <View key={category} onLayout={onLayout} style={styles.container}>
       <Dates dates={pie.dates} onPress={toggleCalendar} />
-      <Legend
-        data={sortedLegend}
-        currency={currency}
-        onPress={toggleCategory}
-        category={category}
-        listKey="C"
-      />
       <PieWrapper
         pieData={pieData}
         toggleCategory={toggleCategory}
         category={category}
         index={index}
-        renderLabels={renderLabels}
+        currency={currency}
+        totalIncome={totalIncome}
       />
       {category?.length > 0 ? (
         <CategoryDetails
