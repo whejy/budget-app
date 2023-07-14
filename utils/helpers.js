@@ -39,3 +39,8 @@ export const parseDates = (dates) => {
   };
   return parsedDates;
 };
+
+export const roundCurrency = (input) => Math.round(100 * input) / 100;
+
+export const roundPercentage = (amount, total) =>
+  Math.round((1000 * amount) / total) / 10;

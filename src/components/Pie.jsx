@@ -8,6 +8,7 @@ import Prompt from '../Modals/Prompt';
 import AddExpense from '../Modals/ExpenseModal/AddExpense';
 import EditDates from '../Modals/EditDatesModal';
 import { PrimaryIcon, SecondaryIcon } from './Icon';
+import { roundCurrency } from '../../utils/helpers';
 import Text from './Text';
 import theme from '../../theme';
 
@@ -66,7 +67,7 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
 
       pieData.push({
         x: category,
-        y: Math.round(100 * expenses[category].total) / 100,
+        y: roundCurrency(expenses[category].total),
         fill: theme.colors.pieData[category],
       });
     });
@@ -81,7 +82,7 @@ const Pie = ({ pie, savePie, removePie, handleNavigate, index, currency }) => {
     remainingIncome > 0 &&
       pieData.push({
         x: 'Income',
-        y: Math.round(100 * remainingIncome) / 100,
+        y: roundCurrency(remainingIncome),
         fill: theme.colors.pieData.Income,
       });
 

@@ -3,6 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import PieWrapper from './PieWrapper';
 import CategoryDetails from './CategoryDetails';
 import Legend from './Legend';
+import { roundCurrency, roundPercentage } from '../../utils/helpers';
 import { DatesText } from './Text';
 import { months } from '../data/months';
 import theme from '../../theme';
@@ -48,9 +49,8 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
     });
 
     Object.entries(expenseTotals).forEach(([category, total]) => {
-      expenseTotals[category] = Math.round(100 * total) / 100;
-      percentages[category] =
-        (100 * Math.round((1000 * total) / expenses.total)) / 1000;
+      expenseTotals[category] = roundCurrency(total);
+      percentages[category] = roundPercentage(total, expenses.total);
     });
 
     return { percentages, expenseTotals };
