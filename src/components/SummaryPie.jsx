@@ -85,7 +85,6 @@ const SummaryPie = ({ pie, currency, handleNavigate, index }) => {
         toggleCategory={toggleCategory}
         category={category}
         index={index}
-        currency={currency}
       />
       {category?.length > 0 ? (
         <CategoryDetails
